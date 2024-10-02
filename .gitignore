@@ -1,0 +1,13 @@
+/autosave/req/
+/autosave/save/
+/as/req/
+/as/save/
+.vscode/
+records.dbl
+#/config
+*.swo
+*.swp
+O.*
+db/
+bin/
+dbd/
