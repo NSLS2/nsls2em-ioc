@@ -1,0 +1,86 @@
+#Rx waveform: 1st waveform has ID of 16 (0x10)
+record(waveform, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Raw") {
+	field(DTYP, "PSC Block I8 In")
+	field(INP , "@AdcPort_$(PSC) 16")
+	field(SCAN, "I/O Intr")
+	field(FTVL, "CHAR")
+	field(NELM, "$(ADC10K_POINTS)")
+	field(FLNK, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Parse")
+}
+
+record(aSub, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Parse") {
+	field(SNAM, "ADCSnapShotParse")
+	field(INPA, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Raw")
+	field(FTA, "CHAR")
+	field(NOA, "$(ADC10K_POINTS)")
+
+	field(FTVA, "FLOAT")
+	field(NOVA, "$(ADCSnapShot_POINTS)")
+	field(FTVB, "FLOAT")
+	field(NOVB, "$(ADCSnapShot_POINTS)")
+	field(FTVC, "FLOAT")
+	field(NOVC, "$(ADCSnapShot_POINTS)")
+	field(FTVD, "FLOAT")
+	field(NOVD, "$(ADCSnapShot_POINTS)")
+	field(FTVE, "FLOAT")
+	field(NOVE, "$(ADCSnapShot_POINTS)")
+	field(FTVF, "FLOAT")
+	field(NOVF, "$(ADCSnapShot_POINTS)")
+	field(FTVG, "FLOAT")
+	field(NOVG, "$(ADCSnapShot_POINTS)")
+	field(FTVH, "FLOAT")
+	field(NOVH, "$(ADCSnapShot_POINTS)")
+
+	field(FLNK, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Parse2")
+}
+
+record(aSub, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Parse2") {
+	field(SNAM, "ADCSnapShotParse2")
+	field(INPA, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Raw")
+	field(FTA, "CHAR")
+	field(NOA, "$(ADC10K_POINTS)")
+
+	field(FTVA, "FLOAT")
+	field(NOVA, "$(ADCSnapShot_POINTS)")
+	field(FTVB, "FLOAT")
+	field(NOVB, "$(ADCSnapShot_POINTS)")
+	field(FTVC, "FLOAT")
+	field(NOVC, "$(ADCSnapShot_POINTS)")
+	field(FTVD, "FLOAT")
+	field(NOVD, "$(ADCSnapShot_POINTS)")
+	field(FTVE, "FLOAT")
+	field(NOVE, "$(ADCSnapShot_POINTS)")
+	field(FTVF, "FLOAT")
+	field(NOVF, "$(ADCSnapShot_POINTS)")
+	field(FTVG, "FLOAT")
+	field(NOVG, "$(ADCSnapShot_POINTS)")
+	field(FTVH, "FLOAT")
+	field(NOVH, "$(ADCSnapShot_POINTS)")
+
+	field(FLNK, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Parse3")
+}
+
+record(aSub, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Parse3") {
+	field(SNAM, "ADCSnapShotParse3")
+	field(INPA, "$(PriSys){$(PSC):$(Chan)}ADCSnapShot_Raw")
+	field(FTA, "CHAR")
+	field(NOA, "$(ADC10K_POINTS)")
+
+	field(FTVA, "FLOAT")
+	field(NOVA, "$(ADCSnapShot_POINTS)")
+	field(FTVB, "FLOAT")
+	field(NOVB, "$(ADCSnapShot_POINTS)")
+	field(FTVC, "FLOAT")
+	field(NOVC, "$(ADCSnapShot_POINTS)")
+	field(FTVD, "FLOAT")
+	field(NOVD, "$(ADCSnapShot_POINTS)")
+	field(FTVE, "FLOAT")
+	field(NOVE, "$(ADCSnapShot_POINTS)")
+	field(FTVF, "FLOAT")
+	field(NOVF, "$(ADCSnapShot_POINTS)")
+	field(FTVG, "FLOAT")
+	field(NOVG, "$(ADCSnapShot_POINTS)")
+	field(FTVH, "FLOAT")
+	field(NOVH, "$(ADCSnapShot_POINTS)")
+}
+

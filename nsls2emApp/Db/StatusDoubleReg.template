@@ -1,0 +1,7 @@
+record(ai, "$(PriSys){$(PSC)}$(Reg)-Double-I")
+{
+  field(DESC, "$(Reg)-Double")
+  field(DTYP, "PSC Reg F64")
+  field(INP , "@quadEMPort_$(PSC) 60 $(RegOffset-Double)")
+  field(SCAN, "I/O Intr")
+}

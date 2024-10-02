@@ -1,0 +1,8 @@
+file db/StatusFloatReg.template
+{pattern
+{RegOffset,Reg,Name}
+{804,Reg201,Ch-A-I}
+{808,Reg202,Ch-B-I}
+{812,Reg203,Ch-C-I}
+{816,Reg204,Ch-D-I}
+}

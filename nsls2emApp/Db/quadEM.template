@@ -1,0 +1,1082 @@
+# Database for quadEM driver (APS, Elettra, and Caen ELS quad electrometers)
+#   Mark Rivers
+#   June 3, 2012
+
+#include "/epics/utils/rhel8-epics-config/BUILD/support/areaDetector/ADCore/db/NDArrayBase.template"
+ 
+record(mbbi,"$(P)$(R)Model") {
+    field(DESC, "Model")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_MODEL")
+    field(ZRVL, "0")
+    field(ZRST, "Unknown")
+    field(ONVL, "1")
+    field(ONST, "APS_EM")
+    field(TWVL, "2")
+    field(TWST, "AH401B")
+    field(THVL, "3")
+    field(THST, "AH401D")
+    field(FRVL, "4")
+    field(FRST, "AH501")
+    field(FVVL, "5")
+    field(FVST, "AH501BE")
+    field(SXVL, "6")
+    field(SXST, "AH501C")
+    field(SVVL, "7")
+    field(SVST, "AH501D")
+    field(EIVL, "8")
+    field(EIST, "TetrAMM")
+    field(NIVL, "9")
+    field(NIST, "NSLS_EM")
+    field(TEVL, "10")
+    field(TEST, "NSLS2_EM")
+    field(ELVL, "11")
+    field(ELST, "NSLS2_IC")
+    field(TVVL, "12")
+    field(TVST, "PCR4")
+    field(TTVL, "13")
+    field(TTST, "SoftDevice")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform,"$(P)$(R)Firmware") {
+    field(DESC, "Firmware")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT) 0)QE_FIRMWARE")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)AcquireMode") {
+    field(DESC, "Acquire Mode")
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_ACQUIRE_MODE")
+    field(ZRVL, "0")
+    field(ZRST, "Continuous")
+    field(ONVL, "1")
+    field(ONST, "Multiple")
+    field(TWVL, "2")
+    field(TWST, "Single")
+}
+
+record(mbbi,"$(P)$(R)AcquireMode_RBV") {
+    field(DESC, "AcquireMode")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_ACQUIRE_MODE")
+    field(ZRVL, "0")
+    field(ZRST, "Continuous")
+    field(ONVL, "1")
+    field(ONST, "Multiple")
+    field(TWVL, "2")
+    field(TWST, "Single")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)Range") {
+    field(DESC, "Range")
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_RANGE")
+}
+
+record(mbbi,"$(P)$(R)Range_RBV") {
+    field(DESC, "Range")
+    field(DTYP,  "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_RANGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)Range1") {
+    field(DESC, "Range 1")
+    field(PINI, "YES")
+    field(PHAS, "2")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 1)QE_RANGE")
+}
+
+record(mbbi,"$(P)$(R)Range1_RBV") {
+    field(DESC, "Range 1")
+    field(DTYP,  "asynInt32")
+    field(INP,  "@asyn($(PORT) 1)QE_RANGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)Range2") {
+    field(DESC, "Range 2")
+    field(PINI, "YES")
+    field(PHAS, "2")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 2)QE_RANGE")
+}
+
+record(mbbi,"$(P)$(R)Range2_RBV") {
+    field(DESC, "Range 2")
+    field(DTYP,  "asynInt32")
+    field(INP,  "@asyn($(PORT) 2)QE_RANGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)Range3") {
+    field(DESC, "Range 3")
+    field(PINI, "YES")
+    field(PHAS, "2")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 3)QE_RANGE")
+}
+
+record(mbbi,"$(P)$(R)Range3_RBV") {
+    field(DESC, "Range 3")
+    field(DTYP,  "asynInt32")
+    field(INP,  "@asyn($(PORT) 3)QE_RANGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)Range4") {
+    field(DESC, "Range 4")
+    field(PINI, "YES")
+    field(PHAS, "2")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 4)QE_RANGE")
+}
+
+record(mbbi,"$(P)$(R)Range4_RBV") {
+    field(DESC, "Range 4")
+    field(DTYP,  "asynInt32")
+    field(INP,  "@asyn($(PORT) 4)QE_RANGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)PingPong") {
+    field(DESC, "PingPong")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "No")
+    field(ONVL, "1")
+    field(ONST, "Yes")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_PING_PONG")
+}
+
+record(mbbi,"$(P)$(R)PingPong_RBV") {
+    field(DESC, "PingPong")
+    field(ZRVL, "0")
+    field(ZRST, "No")
+    field(ONVL, "1")
+    field(ONST, "Yes")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_PING_PONG")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao,"$(P)$(R)IntegrationTime") {
+    field(DESC, "Conversion Time (sec)")
+    field(PINI, "YES")
+    field(PREC, "4")
+    field(VAL,  "0.1")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 0)QE_INTEGRATION_TIME")
+}
+
+record(ai,"$(P)$(R)IntegrationTime_RBV") {
+    field(DESC, "Conversion Time (sec)")
+    field(PREC, "4")
+    field(VAL,  "0.1")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_INTEGRATION_TIME")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai,"$(P)$(R)SampleTime_RBV") {
+    field(DESC, "Sampling time (sec)")
+    field(PREC, "4")
+    field(VAL,  "0.1")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_SAMPLE_TIME")
+    field(SCAN, "I/O Intr")
+}
+
+# Each model defines these differently
+record(mbbo,"$(P)$(R)TriggerMode") {
+    field(DESC, "Trigger mode")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "Internal")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_TRIGGER_MODE")
+}
+
+record(mbbi,"$(P)$(R)TriggerMode_RBV") {
+    field(DESC, "Trigger mode")
+    field(ZRVL, "0")
+    field(ZRST, "Internal")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_TRIGGER_MODE")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo,"$(P)$(R)TriggerPolarity") {
+    field(DESC, "Trigger polarity")
+    field(PINI, "YES")
+    field(ZNAM, "Positive")
+    field(ONAM, "Negative")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_TRIGGER_POLARITY")
+}
+
+record(bi,"$(P)$(R)TriggerPolarity_RBV") {
+    field(DESC, "Trigger polarity")
+    field(ZNAM, "Positive")
+    field(ONAM, "Negative")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_TRIGGER_POLARITY")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)NumChannels") {
+    field(DESC, "Number of input channels")
+    field(PINI, "YES")
+    field(ZRVL, "1")
+    field(ZRST, "1")
+    field(ONVL, "2")
+    field(ONST, "2")
+    field(TWVL, "4")
+    field(TWST, "4")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_NUM_CHANNELS")
+}
+
+record(mbbi,"$(P)$(R)NumChannels_RBV") {
+    field(DESC, "Number of input channels")
+    field(ZRVL, "1")
+    field(ZRST, "1")
+    field(ONVL, "2")
+    field(ONST, "2")
+    field(TWVL, "4")
+    field(TWST, "4")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_NUM_CHANNELS")
+    field(SCAN, "I/O Intr")
+}
+
+record(mbbo,"$(P)$(R)Resolution") {
+    field(DESC, "Resolution")
+    field(PINI, "YES")
+    field(ZRVL, "16")
+    field(ZRST, "16 bits")
+    field(ONVL, "24")
+    field(ONST, "24 bits")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_RESOLUTION")
+}
+
+record(mbbi,"$(P)$(R)Resolution_RBV") {
+    field(DESC, "Resolution")
+    field(ZRVL, "16")
+    field(ZRST, "16 bits")
+    field(ONVL, "24")
+    field(ONST, "24 bits")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_RESOLUTION")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo,"$(P)$(R)BiasState") {
+    field(DESC, "Bias voltage state")
+    field(PINI, "YES")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_BIAS_STATE")
+}
+
+record(bi,"$(P)$(R)BiasState_RBV") {
+    field(DESC, "Bias voltage state")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_BIAS_STATE")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao,"$(P)$(R)BiasVoltage") {
+    field(DESC, "Bias voltage")
+    field(PINI, "YES")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 0)QE_BIAS_VOLTAGE")
+}
+
+record(ai,"$(P)$(R)BiasVoltage_RBV") {
+    field(DESC, "Bias voltage")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_BIAS_VOLTAGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo,"$(P)$(R)BiasInterlock") {
+    field(DESC, "Bias interlock")
+    field(PINI, "YES")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_BIAS_INTERLOCK")
+}
+
+record(bi,"$(P)$(R)BiasInterlock_RBV") {
+    field(DESC, "Bias interlock")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_BIAS_INTERLOCK")
+    field(SCAN, "I/O Intr")
+}
+
+record(bi,"$(P)$(R)HVSReadback") {
+    field(DESC, "Bias state readback")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_HVS_READBACK")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai,"$(P)$(R)HVVReadback") {
+    field(DESC, "Bias voltage readback")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_HVV_READBACK")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai,"$(P)$(R)HVIReadback") {
+    field(DESC, "Bias current readback")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_HVI_READBACK")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai,"$(P)$(R)Temperature") {
+    field(DESC, "Temperature")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_TEMPERATURE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout,"$(P)$(R)ValuesPerRead") {
+    field(DESC, "Values per read")
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(VAL,  "1")
+    field(OUT,  "@asyn($(PORT) 0)QE_VALUES_PER_READ")
+}
+
+record(longin,"$(P)$(R)ValuesPerRead_RBV") {
+    field(DESC, "Values per read")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_VALUES_PER_READ")
+    field(SCAN, "I/O Intr")
+}
+
+record(longout,"$(P)$(R)NumAcquire") {
+    field(DESC, "Number of acquisitions")
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(VAL,  "1")
+    field(OUT,  "@asyn($(PORT) 0)QE_NUM_ACQUIRE")
+}
+
+record(longin,"$(P)$(R)NumAcquire_RBV") {
+    field(DESC, "Number of acquisitions")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_NUM_ACQUIRE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin,"$(P)$(R)NumAcquired") {
+    field(DESC, "Number of acquisitions complete")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_NUM_ACQUIRED")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo,"$(P)$(R)ReadFormat") {
+    field(DESC, "Read format")
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_READ_FORMAT")
+    field(ZNAM, "Binary")
+    field(ONAM, "ASCII")
+}
+
+record(bi,"$(P)$(R)ReadFormat_RBV") {
+    field(DESC, "Read format")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_READ_FORMAT")
+    field(ZNAM, "Binary")
+    field(ONAM, "ASCII")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao,"$(P)$(R)AveragingTime") {
+    field(DESC, "Averaging time")
+    field(PINI, "YES")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "0.1")
+    field(OUT,  "@asyn($(PORT) 0)QE_AVERAGING_TIME")
+}
+
+record(ai,"$(P)$(R)AveragingTime_RBV") {
+    field(DESC, "Averaging time")
+    field(PREC, "2")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT) 0)QE_AVERAGING_TIME")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin,"$(P)$(R)NumAverage_RBV") {
+    field(DESC, "Number of samples to average")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_NUM_AVERAGE")
+    field(SCAN, "I/O Intr")
+}
+
+record(longin,"$(P)$(R)NumAveraged_RBV") {
+    field(DESC, "Number of samples actually averaged")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_NUM_AVERAGED")
+    field(SCAN, "I/O Intr")
+}
+
+record(bo,"$(P)$(R)Reset") {
+    field(DESC, "Reset")
+    field(DTYP, "asynInt32")
+    field(VAL,  "1")
+    field(OUT,  "@asyn($(PORT) 0)QE_RESET")
+}
+
+record(bo,"$(P)$(R)ReadStatus") {
+    field(DESC, "Read status")
+    field(DTYP, "asynInt32")
+    field(VAL,  "1")
+    field(OUT,  "@asyn($(PORT) 0)QE_READ_STATUS")
+}
+
+record(mbbo,"$(P)$(R)Geometry") {
+    field(DESC, "Position geometry")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "Diamond")
+    field(ONVL, "1")
+    field(ONST, "Square")
+    field(TWVL, "2")
+    field(TWST, "SquareCC")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_GEOMETRY")
+}
+
+record(mbbi,"$(P)$(R)Geometry_RBV") {
+    field(DESC, "Position geometry")
+    field(ZRVL, "0")
+    field(ZRST, "Diamond")
+    field(ONVL, "1")
+    field(ONST, "Square")
+    field(TWVL, "2")
+    field(TWST, "SquareCC")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_GEOMETRY")
+    field(SCAN, "I/O Intr")
+}
+
+record(stringin,"$(P)$(R)CurrentName1") {
+    field(DESC, "Name")
+    field(VAL,  "1")
+}
+
+record(stringin,"$(P)$(R)CurrentName2") {
+    field(DESC, "Name")
+    field(VAL,  "2")
+}
+
+record(stringin,"$(P)$(R)CurrentName3") {
+    field(DESC, "Name")
+    field(VAL,  "3")
+}
+
+record(stringin,"$(P)$(R)CurrentName4") {
+    field(DESC, "Name")
+    field(VAL,  "4")
+}
+
+record(ao,"$(P)$(R)CurrentOffset1") {
+    field(DESC, "Offset")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 0)QE_CURRENT_OFFSET")
+}
+
+record(mbbo,"$(P)$(R)CurrentPrec1") {
+    field(DESC, "Precision")
+    field(OUT, "$(P)$(R)CurrentPrecFanout1 PP")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "0")
+    field(ONVL, "1")
+    field(ONST, "1")
+    field(TWVL, "2")
+    field(TWST, "2")
+    field(THVL, "3")
+    field(THST, "3")
+    field(FRVL, "4")
+    field(FRST, "4")
+    field(FVVL, "5")
+    field(FVST, "5")
+    field(SXVL, "6")
+    field(SXST, "6")
+    field(SVVL, "7")
+    field(SVST, "7")
+    field(EIVL, "8")
+    field(EIST, "8")
+    field(NIVL, "9")
+    field(NIST, "9")
+}
+
+record(dfanout,"$(P)$(R)CurrentPrecFanout1") {
+    field(DESC, "Precision fanout")
+    field(OUTA, "$(P)$(R)Current1:MeanValue_RBV.PREC NPP")
+    field(OUTB, "$(P)$(R)Current1:Sigma_RBV.PREC NPP")
+    field(OUTC, "$(P)$(R)SumX:MeanValue_RBV.PREC NPP")
+    field(OUTD, "$(P)$(R)SumX:Sigma_RBV.PREC NPP")
+    field(OUTE, "$(P)$(R)DiffX:MeanValue_RBV.PREC NPP")
+    field(OUTF, "$(P)$(R)DiffX:Sigma_RBV.PREC NPP")
+    field(OUTG, "$(P)$(R)CurrentOffset1.PREC NPP")
+    field(OUTH, "$(P)$(R)CurrentPrecFanout1Ave PP")
+}
+
+record(dfanout,"$(P)$(R)CurrentPrecFanout1Ave") {
+    field(OUTA, "$(P)$(R)Current1Ave.PREC NPP")
+    field(OUTB, "$(P)$(R)SumXAve.PREC NPP")
+    field(OUTC, "$(P)$(R)DiffXAve.PREC NPP")
+}
+
+record(mbbo,"$(P)$(R)CurrentPrec2") {
+    field(DESC, "Precision")
+    field(OUT, "$(P)$(R)CurrentPrecFanout2 PP")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "0")
+    field(ONVL, "1")
+    field(ONST, "1")
+    field(TWVL, "2")
+    field(TWST, "2")
+    field(THVL, "3")
+    field(THST, "3")
+    field(FRVL, "4")
+    field(FRST, "4")
+    field(FVVL, "5")
+    field(FVST, "5")
+    field(SXVL, "6")
+    field(SXST, "6")
+    field(SVVL, "7")
+    field(SVST, "7")
+    field(EIVL, "8")
+    field(EIST, "8")
+    field(NIVL, "9")
+    field(NIST, "9")
+}
+
+record(dfanout,"$(P)$(R)CurrentPrecFanout2") {
+    field(DESC, "Precision fanout")
+    field(OUTA, "$(P)$(R)Current2:MeanValue_RBV.PREC NPP")
+    field(OUTB, "$(P)$(R)Current2:Sigma_RBV.PREC NPP")
+    field(OUTC, "$(P)$(R)CurrentOffset2.PREC NPP")
+    field(OUTC, "$(P)$(R)SumAll:MeanValue_RBV.PREC NPP")
+    field(OUTD, "$(P)$(R)SumAll:Sigma_RBV.PREC NPP")
+    field(OUTE, "$(P)$(R)Current2Ave.PREC NPP")
+    field(OUTF, "$(P)$(R)SumAllAve.PREC NPP")
+}
+
+record(ao,"$(P)$(R)CurrentOffset2") {
+    field(DESC, "Offset")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 1)QE_CURRENT_OFFSET")
+}
+
+record(mbbo,"$(P)$(R)CurrentPrec3") {
+    field(DESC, "Precision")
+    field(OUT, "$(P)$(R)CurrentPrecFanout3 PP")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "0")
+    field(ONVL, "1")
+    field(ONST, "1")
+    field(TWVL, "2")
+    field(TWST, "2")
+    field(THVL, "3")
+    field(THST, "3")
+    field(FRVL, "4")
+    field(FRST, "4")
+    field(FVVL, "5")
+    field(FVST, "5")
+    field(SXVL, "6")
+    field(SXST, "6")
+    field(SVVL, "7")
+    field(SVST, "7")
+    field(EIVL, "8")
+    field(EIST, "8")
+    field(NIVL, "9")
+    field(NIST, "9")
+}
+
+record(dfanout,"$(P)$(R)CurrentPrecFanout3") {
+    field(DESC, "Precision fanout")
+    field(OUTA, "$(P)$(R)Current3:MeanValue_RBV.PREC NPP")
+    field(OUTB, "$(P)$(R)Current3:Sigma_RBV.PREC NPP")
+    field(OUTC, "$(P)$(R)SumY:MeanValue_RBV.PREC NPP")
+    field(OUTD, "$(P)$(R)SumY:Sigma_RBV.PREC NPP")
+    field(OUTE, "$(P)$(R)DiffY:MeanValue_RBV.PREC NPP")
+    field(OUTF, "$(P)$(R)DiffY:Sigma_RBV.PREC NPP")
+    field(OUTG, "$(P)$(R)CurrentOffset3.PREC NPP")
+    field(OUTH, "$(P)$(R)CurrentPrecFanout3Ave PP")
+}
+
+record(dfanout,"$(P)$(R)CurrentPrecFanout3Ave") {
+    field(OUTA, "$(P)$(R)Current3Ave.PREC NPP")
+    field(OUTB, "$(P)$(R)SumYAve.PREC NPP")
+    field(OUTC, "$(P)$(R)DiffYAve.PREC NPP")
+}
+
+record(ao,"$(P)$(R)CurrentOffset3") {
+    field(DESC, "Offset")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 2)QE_CURRENT_OFFSET")
+}
+
+record(mbbo,"$(P)$(R)CurrentPrec4") {
+    field(DESC, "Precision")
+    field(OUT, "$(P)$(R)CurrentPrecFanout4 PP")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "0")
+    field(ONVL, "1")
+    field(ONST, "1")
+    field(TWVL, "2")
+    field(TWST, "2")
+    field(THVL, "3")
+    field(THST, "3")
+    field(FRVL, "4")
+    field(FRST, "4")
+    field(FVVL, "5")
+    field(FVST, "5")
+    field(SXVL, "6")
+    field(SXST, "6")
+    field(SVVL, "7")
+    field(SVST, "7")
+    field(EIVL, "8")
+    field(EIST, "8")
+    field(NIVL, "9")
+    field(NIST, "9")
+}
+
+record(dfanout,"$(P)$(R)CurrentPrecFanout4") {
+    field(DESC, "Precision fanout")
+    field(OUTA, "$(P)$(R)Current4:MeanValue_RBV.PREC NPP")
+    field(OUTB, "$(P)$(R)Current4:Sigma_RBV.PREC NPP")
+    field(OUTC, "$(P)$(R)CurrentOffset4.PREC NPP")
+    field(OUTD, "$(P)$(R)Current4Ave.PREC NPP")
+}
+
+record(ao,"$(P)$(R)CurrentOffset4") {
+    field(DESC, "Offset")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 3)QE_CURRENT_OFFSET")
+}
+
+record(calcout,"$(P)$(R)ComputeCurrentOffset1") {
+    field(DESC, "Compute Offset 1")
+    field(INPA, "$(P)$(R)Current1:MeanValue_RBV")
+    field(INPB, "$(P)$(R)CurrentOffset1")
+    field(CALC, "A+B")
+    field(OUT,  "$(P)$(R)CurrentOffset1 PP")
+}
+
+record(calcout,"$(P)$(R)ComputeCurrentOffset2") {
+    field(DESC, "Compute Offset 2")
+    field(INPA, "$(P)$(R)Current2:MeanValue_RBV")
+    field(INPB, "$(P)$(R)CurrentOffset2")
+    field(CALC, "A+B")
+    field(OUT,  "$(P)$(R)CurrentOffset2 PP")
+}
+
+record(calcout,"$(P)$(R)ComputeCurrentOffset3") {
+    field(DESC, "Compute Offset 3")
+    field(INPA, "$(P)$(R)Current3:MeanValue_RBV")
+    field(INPB, "$(P)$(R)CurrentOffset3")
+    field(CALC, "A+B")
+    field(OUT,  "$(P)$(R)CurrentOffset3 PP")
+}
+
+record(calcout,"$(P)$(R)ComputeCurrentOffset4") {
+    field(DESC, "Compute Offset 4")
+    field(INPA, "$(P)$(R)Current4:MeanValue_RBV")
+    field(INPB, "$(P)$(R)CurrentOffset4")
+    field(CALC, "A+B")
+    field(OUT,  "$(P)$(R)CurrentOffset4 PP")
+}
+
+record(ao,"$(P)$(R)CurrentScale1") {
+    field(DESC, "Scale 1")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 0)QE_CURRENT_SCALE")
+    field(VAL,  "1.0")
+    field(PREC, "3")
+    field(PREC, "3")
+}
+
+record(ao,"$(P)$(R)CurrentScale2") {
+    field(DESC, "Scale 2")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 1)QE_CURRENT_SCALE")
+    field(VAL,  "1.0")
+    field(PREC, "3")
+}
+
+record(ao,"$(P)$(R)CurrentScale3") {
+    field(DESC, "Scale 3")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 2)QE_CURRENT_SCALE")
+    field(VAL,  "1.0")
+    field(PREC, "3")
+}
+
+record(ao,"$(P)$(R)CurrentScale4") {
+    field(DESC, "Scale 4")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 3)QE_CURRENT_SCALE")
+    field(VAL,  "1.0")
+    field(PREC, "3")
+}
+
+record(mbbo,"$(P)$(R)PositionPrecX") {
+    field(DESC, "Precision")
+    field(OUT, "$(P)$(R)PositionPrecFanoutX PP")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "0")
+    field(ONVL, "1")
+    field(ONST, "1")
+    field(TWVL, "2")
+    field(TWST, "2")
+    field(THVL, "3")
+    field(THST, "3")
+    field(FRVL, "4")
+    field(FRST, "4")
+    field(FVVL, "5")
+    field(FVST, "5")
+    field(SXVL, "6")
+    field(SXST, "6")
+    field(SVVL, "7")
+    field(SVST, "7")
+    field(EIVL, "8")
+    field(EIST, "8")
+    field(NIVL, "9")
+    field(NIST, "9")
+}
+
+record(dfanout,"$(P)$(R)PositionPrecFanoutX") {
+    field(DESC, "Precision fanout")
+    field(OUTA, "$(P)$(R)PosX:MeanValue_RBV.PREC NPP")
+    field(OUTB, "$(P)$(R)PosX:Sigma_RBV.PREC NPP")
+    field(OUTC, "$(P)$(R)PositionOffsetX.PREC NPP")
+    field(OUTD, "$(P)$(R)PositionXAve.PREC NPP")
+}
+
+record(ao,"$(P)$(R)PositionOffsetX") {
+    field(DESC, "Offset X")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 0)QE_POSITION_OFFSET")
+}
+
+record(mbbo,"$(P)$(R)PositionPrecY") {
+    field(DESC, "Precision")
+    field(OUT, "$(P)$(R)PositionPrecFanoutY PP")
+    field(PINI, "YES")
+    field(ZRVL, "0")
+    field(ZRST, "0")
+    field(ONVL, "1")
+    field(ONST, "1")
+    field(TWVL, "2")
+    field(TWST, "2")
+    field(THVL, "3")
+    field(THST, "3")
+    field(FRVL, "4")
+    field(FRST, "4")
+    field(FVVL, "5")
+    field(FVST, "5")
+    field(SXVL, "6")
+    field(SXST, "6")
+    field(SVVL, "7")
+    field(SVST, "7")
+    field(EIVL, "8")
+    field(EIST, "8")
+    field(NIVL, "9")
+    field(NIST, "9")
+}
+
+record(dfanout,"$(P)$(R)PositionPrecFanoutY") {
+    field(DESC, "Precision fanout")
+    field(OUTA, "$(P)$(R)PosY:MeanValue_RBV.PREC NPP")
+    field(OUTB, "$(P)$(R)PosY:Sigma_RBV.PREC NPP")
+    field(OUTC, "$(P)$(R)PositionOffsetY.PREC NPP")
+    field(OUTD, "$(P)$(R)PositionYAve.PREC NPP")
+}
+
+record(ao,"$(P)$(R)PositionOffsetY") {
+    field(DESC, "Offset Y")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(OUT,  "@asyn($(PORT) 1)QE_POSITION_OFFSET")
+}
+
+record(calcout,"$(P)$(R)ComputePosOffsetX") {
+    field(DESC, "Compute Offset X")
+    field(INPA, "$(P)$(R)PosX:MeanValue_RBV")
+    field(INPB, "$(P)$(R)PositionOffsetX")
+    field(CALC, "A+B")
+    field(OUT,  "$(P)$(R)PositionOffsetX PP")
+}
+
+record(calcout,"$(P)$(R)ComputePosOffsetY") {
+    field(DESC, "Compute Offset Y")
+    field(INPA, "$(P)$(R)PosY:MeanValue_RBV")
+    field(INPB, "$(P)$(R)PositionOffsetY")
+    field(CALC, "A+B")
+    field(OUT,  "$(P)$(R)PositionOffsetY PP")
+}
+
+record(ao,"$(P)$(R)PositionScaleX") {
+    field(DESC, "Scale X")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "1000000.")
+    field(PREC, "3")
+    field(OUT,  "@asyn($(PORT) 0)QE_POSITION_SCALE")
+}
+
+record(ao,"$(P)$(R)PositionScaleY") {
+    field(DESC, "Scale Y")
+    field(PINI, "YES")
+    field(DTYP, "asynFloat64")
+    field(VAL,  "1000000.")
+    field(PREC, "3")
+    field(OUT,  "@asyn($(PORT) 1)QE_POSITION_SCALE")
+}
+
+record(longin,"$(P)$(R)RingOverflows") {
+    field(DESC, "Ring buffer overflows")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0)QE_RING_OVERFLOWS")
+    field(SCAN, "I/O Intr")
+}
+
+record(busy,"$(P)$(R)ReadData") {
+    field(DESC, "Read ring buffer")
+    field(ZNAM, "Done")
+    field(ONAM, "Read")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT) 0)QE_READ_DATA")
+}
+
+record(waveform, "$(P)$(R)NDAttributesFile")
+{
+    field(PINI, "YES")
+    field(DTYP, "asynOctetWrite")
+    field(INP,  "@asyn($(PORT) 0)ND_ATTRIBUTES_FILE")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+}
+
+record(asyn, "$(P)$(R)Asyn") {
+    field(PORT, "$(PORT)")
+}
+
+record(ai, "$(P)$(R)Current1Ave") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 0)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Current2Ave") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 1)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Current3Ave") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 2)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Current4Ave") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 3)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)SumXAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 4)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)SumYAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 5)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)SumAllAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 6)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)DiffXAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 7)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)DiffYAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 8)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)PositionXAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 9)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)PositionYAve") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 10)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(ao, "$(P)$(R)FastAveragingTime") {
+    field(VAL, "0.1")
+    field(PREC, "3")
+    field(PINI, "YES")
+}
+
+record(transform, "$(P)$(R)FastAverageCalc") {
+    field(INPA, "$(P)$(R)FastAveragingTime CP")
+    field(INPB, "$(P)$(R)SampleTime_RBV CP")
+    field(CLCC, "FLOOR(A/B+0.5)")
+    field(OUTC, "$(P)$(R)NumFastAverage PP")
+    field(CLCD, "B*C")
+    field(OUTD, "$(P)$(R)FastAveragingTime_RBV PP")    
+    field(PREC, "3")
+}
+
+record(ao, "$(P)$(R)FastAveragingTime_RBV") {
+    field(PREC, "3")
+}
+
+record(longin, "$(P)$(R)NumFastAverage") {
+    field(FLNK, "$(P)$(R)ProcessAve")
+}
+
+record(seq, "$(P)$(R)ProcessAve") {
+    field(DOL1, "$(P)$(R)NumFastAverage")
+    field(LNK1, "$(P)$(R)Current1Ave.SVAL")
+    field(DOL2, "$(P)$(R)NumFastAverage")
+    field(LNK2, "$(P)$(R)Current2Ave.SVAL")
+    field(DOL3, "$(P)$(R)NumFastAverage")
+    field(LNK3, "$(P)$(R)Current3Ave.SVAL")
+    field(DOL4, "$(P)$(R)NumFastAverage")
+    field(LNK4, "$(P)$(R)Current4Ave.SVAL")
+    field(DOL5, "$(P)$(R)NumFastAverage")
+    field(LNK5, "$(P)$(R)SumXAve.SVAL")
+    field(DOL6, "$(P)$(R)NumFastAverage")
+    field(LNK6, "$(P)$(R)SumYAve.SVAL")
+    field(DOL7, "$(P)$(R)NumFastAverage")
+    field(LNK7, "$(P)$(R)SumAllAve.SVAL")
+    field(DOL8, "$(P)$(R)NumFastAverage")
+    field(LNK8, "$(P)$(R)DiffXAve.SVAL")
+    field(DOL9, "$(P)$(R)NumFastAverage")
+    field(LNK9, "$(P)$(R)DiffYAve.SVAL")
+    field(FLNK, "$(P)$(R)ProcessAve2.PROC")
+}
+
+record(seq, "$(P)$(R)ProcessAve2") {
+    field(DOL1, "$(P)$(R)NumFastAverage")
+    field(LNK1, "$(P)$(R)PositionXAve.SVAL")
+    field(DOL2, "$(P)$(R)NumFastAverage")
+    field(LNK2, "$(P)$(R)PositionYAve.SVAL")
+    field(DOL3, "$(P)$(R)NumFastAverage")
+    field(LNK3, "$(P)$(R)FastAverageScan.SVAL")
+}
+
+# This record is a duplicate of Current1Ave, used to set the scan rate of all fast average records
+record(ai, "$(P)$(R)FastAverageScan") {
+    field(DTYP, "asynFloat64Average")
+    field(INP,  "@asyn($(PORT) 0)QE_DOUBLE_DATA")
+    field(SCAN, "I/O Intr")
+}
+
+record(calcout, "$(P)$(R)FastScanCalc") {
+    field(INPA, "$(P)$(R)FastAverageScan.SCAN")
+    field(CALC, "A")
+    field(OOPT, "On Change")
+    field(OCAL, "1")
+    field(DOPT, "Use OCAL")
+    field(SCAN, ".1 second")
+    field(OUT,  "$(P)$(R)FastScanSeq.PROC PP")
+}
+
+record(seq, "$(P)$(R)FastScanSeq") {
+    field(DOL1, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK1, "$(P)$(R)Current1Ave.SCAN")
+    field(DOL2, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK2, "$(P)$(R)Current2Ave.SCAN")
+    field(DOL3, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK3, "$(P)$(R)Current3Ave.SCAN")
+    field(DOL4, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK4, "$(P)$(R)Current4Ave.SCAN")
+    field(DOL5, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK5, "$(P)$(R)SumXAve.SCAN")
+    field(DOL6, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK6, "$(P)$(R)SumYAve.SCAN")
+    field(DOL7, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK7, "$(P)$(R)SumAllAve.SCAN")
+    field(DOL8, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK8, "$(P)$(R)DiffXAve.SCAN")
+    field(DOL9, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK9, "$(P)$(R)DiffYAve.SCAN")
+    field(FLNK, "$(P)$(R)FastScanSeq2.PROC")
+}
+
+record(seq, "$(P)$(R)FastScanSeq2") {
+    field(DOL1, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK1, "$(P)$(R)PositionXAve.SCAN")
+    field(DOL2, "$(P)$(R)FastAverageScan.SCAN")
+    field(LNK2, "$(P)$(R)PositionYAve.SCAN")
+}
+

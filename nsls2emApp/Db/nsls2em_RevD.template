@@ -1,0 +1,149 @@
+# Database for NSLS2 Rev-D electrometer
+
+
+#include "quadEM.template"
+
+# We replace the choices for the Ranges
+record(mbbo,"$(P)$(R)Range") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbi,"$(P)$(R)Range_RBV") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbo,"$(P)$(R)Range1") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbi,"$(P)$(R)Range1_RBV") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbo,"$(P)$(R)Range2") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbi,"$(P)$(R)Range2_RBV") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbo,"$(P)$(R)Range3") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbi,"$(P)$(R)Range3_RBV") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbo,"$(P)$(R)Range4") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+record(mbbi,"$(P)$(R)Range4_RBV") {
+    field(ZRVL,"0")
+    field(ZRST,"+- 120 uA")
+    field(ONVL,"1")
+    field(ONST,"+- 120 nA")
+}
+
+# We replace the choices for the TriggerMode
+record(mbbo,"$(P)$(R)TriggerMode") {
+    field(ZRVL, "0")
+    field(ZRST, "Free run")
+    field(ONVL, "2")
+    field(ONST, "Ext. trig.")
+    field(TWVL, "3")
+    field(TWST, "Ext. bulb")
+    field(THVL, "4")
+    field(THST, "Ext. gate")
+}
+
+record(mbbi,"$(P)$(R)TriggerMode_RBV") {
+    field(ZRVL, "0")
+    field(ZRST, "Free run")
+    field(ONVL, "2")
+    field(ONST, "Ext. trig.")
+    field(TWVL, "3")
+    field(TWST, "Ext. bulb")
+    field(THVL, "4")
+    field(THST, "Ext. gate")
+}
+
+############################################
+# NSLS2_EM and pscdrv interface
+############################################
+record(bi,"$(P)$(R)AcquireStatus") {
+    field(DESC, "Acquire status for control pscdrv")
+    field(DTYP, "asynInt32")
+    field(ZNAM, "STOP")
+    field(ONAM, "RUN")
+    field(INP,  "@asyn($(PORT) 0) NSLS2EM_STREAM_SEND")
+    field(SCAN, "I/O Intr")
+}
+
+record(calcout, "$(P)$(R)SetAcquireStatus")
+{
+    field(INPA, "$(P)$(R)AcquireStatus NPP")
+    field(CALC, "A")
+    field(OOPT, "On Change")
+#    field(OUT,  "$(P)$(R)AcquireBusy PP")
+}
+
+
+record(longin,"$(P)$(R)StreamCount-I") {
+    field(DESC, "Steam rate monitoring")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT) 0) NSLS2EM_STREAM_RATE")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)$(R)Cnt:FaTrigPrev-I_") {
+    field(DESC, "10 Hz Trigger count value")
+    field(INP,  "$(P)$(R)StreamCount-I")
+}
+
+record(calc, "$(P)$(R)StreamRate-I") {
+    field(DESC, "Stream data updat rate")
+    field(SCAN, "10 second")
+    # Rate of change w/ rollover at 2^32
+    field(CALC, "(B-A+(B<A?C:0))/10")
+    field(INPA, "$(P)$(R)Cnt:FaTrigPrev-I_ NPP")
+    field(INPB, "$(P)$(R)Cnt:FaTrigPrev-I_ PP")
+    field(INPC, "0xffffffff")
+    field(EGU,  "Cnt/s")
+    #field(LOLO , "8000.0")
+    #field(LOW , "9000.0")
+    #field(HIGH, "12000.0")
+    field(PREC, "1")
+    #field(HSV , "MAJOR")
+    #field(LSV , "MAJOR")
+    #field(LLSV, "INVALID")
+}

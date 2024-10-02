@@ -1,0 +1,6 @@
+record(lsi, "$(user):nsls2em:version") {
+    field(DTYP, "nsls2em version")
+    field(DESC, "Version string")
+    field(SIZV, "$(SIZV=200)")
+    field(PINI, "YES")
+}

@@ -1,0 +1,8 @@
+file db/StatusDoubleReg.template
+{pattern
+{RegOffset-Double,Reg}
+{0,Reg0}
+{8,Reg1}
+{16,Reg2}
+{24,Reg3}
+}

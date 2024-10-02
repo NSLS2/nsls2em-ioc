@@ -1,0 +1,19 @@
+# Misc PVs
+record(longout, "$(PriSys){$(PSC)}ChanA-Range-Sp") {}
+record(longout, "$(PriSys){$(PSC)}ChanB-Range-Sp") {}
+record(longout, "$(PriSys){$(PSC)}ChanC-Range-Sp") {}
+record(longout, "$(PriSys){$(PSC)}ChanD-Range-Sp") {}
+
+record(calcout, "$(PriSys){$(PSC)}Chan-Range-Calc")
+{
+  field(DESC, "Chan A range selection")
+  field(SCAN, "1 second")
+  field(INPA, "$(PriSys){$(PSC)}ChanA-Range-Sp PP")
+  field(INPB, "$(PriSys){$(PSC)}ChanB-Range-Sp PP")
+  field(INPC, "$(PriSys){$(PSC)}ChanC-Range-Sp PP")
+  field(INPD, "$(PriSys){$(PSC)}ChanD-Range-Sp PP")
+  field(CALC, "(A<<24) + (A<<16) + (A<<8) + A")
+  field(OUT, "$(PriSys){$(PSC)}Reg28-Sp PP")
+}
+
+

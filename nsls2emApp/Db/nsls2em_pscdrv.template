@@ -1,0 +1,194 @@
+
+
+# run-stop
+record(bo,    "$(PriSys){$(PSC)}Run-Cmd") {
+  field(DESC, "Reg100")
+  field(DTYP, "PSC Single U32")
+  field(ZNAM, "STOP")
+  field(ONAM, "RUN")
+  field(OUT , "@CmdPort_$(PSC) 80 400")
+}
+
+record(longout, "$(PriSys){$(PSC)}Run-Sp") {
+  field(DESC,   "Reg100")
+  field(SCAN,   "Passive")
+  field(DTYP,   "PSC Reg")
+  field(OUT ,   "@CmdPort_$(PSC) 80 400")
+}
+
+# stream data run/stop, oly for ARM
+record(mbbo,"$(PriSys){$(PSC)}SRun-Sp") {
+    field(SCAN, "Passive")
+    field(DTYP, "PSC Reg")
+    field(ZRVL, "0")
+    field(ZRST, "Stop")
+    field(ONVL, "1")
+    field(ONST, "Run")
+    field(OUT , "@CmdPort_$(PSC) 80 400")
+}
+
+
+record(longin, "$(PriSys){$(PSC)}SA_RateCnt-I")
+{
+  field(DESC, "Reg16")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 64")
+  field(SCAN, "I/O Intr")
+}
+
+record(ai,    "$(PriSys){$(PSC)}Cnt:SaTrigPrev-I_") {
+  field(DESC, "10 Hz Trigger count value")
+  field(INP,  "$(PriSys){$(PSC)}SA_RateCnt-I")
+}
+
+record(calc, "$(PriSys){$(PSC)}SaRate-I") {
+  field(DESC, "SA data updat rate")
+  field(SCAN, "10 second")
+  # Rate of change w/ rollover at 2^32
+  field(CALC, "(B-A+(B<A?C:0))/10")
+  field(INPA, "$(PriSys){$(PSC)}Cnt:SaTrigPrev-I_ NPP")
+  field(INPB, "$(PriSys){$(PSC)}Cnt:SaTrigPrev-I_ PP")
+  field(INPC, "0xffffffff")
+  field(EGU,  "Cnt/s")
+  #field(LOLO , "8.0")
+  #field(LOW , "9.0")
+  #field(HIGH, "12.0")
+  field(PREC, "1")
+  #field(HSV , "MAJOR")
+  #field(LSV , "MAJOR")
+  #field(LLSV, "INVALID")
+}
+
+#1/510000
+record(ai, "$(PriSys){$(PSC)}Ampl:ChA-I") {
+  field(DESC, "Reg36 CH A Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 144")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+}
+record(ai, "$(PriSys){$(PSC)}Ampl:ChB-I") {
+  field(DESC, "Reg37 CH B Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 148")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+}
+record(ai, "$(PriSys){$(PSC)}Ampl:ChC-I") {
+  field(DESC, "Reg38 CH C Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 152")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+}
+record(ai, "$(PriSys){$(PSC)}Ampl:ChD-I") {
+  field(DESC, "Reg39 CH D Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 156")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+  field(FLNK, "$(PriSys){$(PSC)}Ampl:SSA-Calc")
+}
+
+
+#1/510000
+record(ai, "$(PriSys){$(PSC)}Ampl:SaChA-I") {
+  field(DESC, "Reg44 CH A Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 176")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+}
+record(ai, "$(PriSys){$(PSC)}Ampl:SaChB-I") {
+  field(DESC, "Reg45 CH B Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 180")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+}
+record(ai, "$(PriSys){$(PSC)}Ampl:SaChC-I") {
+  field(DESC, "Reg46 CH C Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 184")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+}
+record(ai, "$(PriSys){$(PSC)}Ampl:SaChD-I") {
+  field(DESC, "Reg47 CH D Raw Ampl.")
+  field(DTYP, "PSC Reg")
+  field(INP , "@CmdPort_$(PSC) 80 188")
+  field(SCAN, "I/O Intr")
+  field(ESLO, "1.96078431372549e-6")
+  #field(HOPR, "0.8")
+  field(PREC, "6")
+  field(LINR,"LINEAR")
+  field(FLNK, "$(PriSys){$(PSC)}Ampl:SSA-Calc")
+}
+
+record(calc, "$(PriSys){$(PSC)}Ampl:SSA-Calc") {
+  field(DESC, "Button Sum calculation")
+  field(CALC, "A+B+C+D")
+  field(INPA, "$(PriSys){$(PSC)}Ampl:SaChA-I.VAL NPP MS")
+  field(INPB, "$(PriSys){$(PSC)}Ampl:SaChB-I.VAL NPP MS")
+  field(INPC, "$(PriSys){$(PSC)}Ampl:SaChC-I.VAL NPP MS")
+  field(INPD, "$(PriSys){$(PSC)}Ampl:SaChD-I.VAL NPP MS")
+  field(PREC, "3")
+  field(EGU,  "I")
+  field(FLNK, "$(PriSys){$(PSC)}Pos:XSA-Calc")
+}
+
+##Xpos   =  (((( a +  d ) - ( b + c )) / mb_sum) * 10000000) - offset;
+record(calc, "$(PriSys){$(PSC)}Pos:XSA-Calc") {
+  field(DESC, "FA to Slow Piloton X calculation")
+  field(CALC, "(((((A+D)-(B+C))/E) * F)-G)/1")
+  field(INPA, "$(PriSys){$(PSC)}Ampl:SaChA-I.VAL NPP MS")
+  field(INPB, "$(PriSys){$(PSC)}Ampl:SaChB-I.VAL NPP MS")
+  field(INPC, "$(PriSys){$(PSC)}Ampl:SaChC-I.VAL NPP MS")
+  field(INPD, "$(PriSys){$(PSC)}Ampl:SaChD-I.VAL NPP MS")
+  field(INPE, "$(PriSys){$(PSC)}Ampl:SSA-Calc.VAL NPP MS")
+  field(INPF, "$(PriSys){$(PSC)}Reg17-Sp.VAL NPP MS")
+  field(INPG, "$(PriSys){$(PSC)}Reg34-Sp.VAL NPP MS")
+  field(PREC,  "0")
+  field(EGU,   "(nm)")
+  field(FLNK,  "$(PriSys){$(PSC)}Pos:YSA-Calc")
+}
+
+#Ypos   =  (((( a +  b ) - ( c + d )) / mb_sum) * DFE_CONTROL_REGS->ioReg[KY_SCALE]) - DFE_CONTROL_REGS->ioReg[SA_Y_POS_OFFSET];        
+record(calc, "$(PriSys){$(PSC)}Pos:YSA-Calc") {
+  field(DESC, "FA to Slow Piloton Y calculation")
+  field(CALC, "(((((A+B)-(C+D))/E) * F)-G)/1")
+  field(INPA, "$(PriSys){$(PSC)}Ampl:SaChA-I.VAL NPP MS")
+  field(INPB, "$(PriSys){$(PSC)}Ampl:SaChB-I.VAL NPP MS")
+  field(INPC, "$(PriSys){$(PSC)}Ampl:SaChC-I.VAL NPP MS")
+  field(INPD, "$(PriSys){$(PSC)}Ampl:SaChD-I.VAL NPP MS")
+  field(INPE, "$(PriSys){$(PSC)}Ampl:SSA-Calc.VAL NPP MS")
+  field(INPF,"$(PriSys){$(PSC)}Reg18-Sp.VAL NPP MS")
+  field(INPG,"$(PriSys){$(PSC)}Reg35-Sp.VAL NPP MS")
+  field(PREC, "0")
+  field(EGU,  "(nm)")
+}
+
+
+###
+

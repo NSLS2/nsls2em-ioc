@@ -1,0 +1,29 @@
+# Status from PSC
+record(ai, "$(PriSys){$(PSC)}Reg136-I")
+{
+  field(DESC, "Reg136")
+  field(DTYP, "PSC Reg F32")
+  field(INP , "@CmdPort_$(PSC) 80 544")
+  field(SCAN, "I/O Intr")
+}# Status from PSC
+record(ai, "$(PriSys){$(PSC)}Reg137-I")
+{
+  field(DESC, "Reg137")
+  field(DTYP, "PSC Reg F32")
+  field(INP , "@CmdPort_$(PSC) 80 548")
+  field(SCAN, "I/O Intr")
+}# Status from PSC
+record(ai, "$(PriSys){$(PSC)}Reg138-I")
+{
+  field(DESC, "Reg138")
+  field(DTYP, "PSC Reg F32")
+  field(INP , "@CmdPort_$(PSC) 80 552")
+  field(SCAN, "I/O Intr")
+}# Status from PSC
+record(ai, "$(PriSys){$(PSC)}Reg139-I")
+{
+  field(DESC, "Reg139")
+  field(DTYP, "PSC Reg F32")
+  field(INP , "@CmdPort_$(PSC) 80 556")
+  field(SCAN, "I/O Intr")
+}

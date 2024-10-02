@@ -1,0 +1,7 @@
+#
+# Ansible managed
+#
+NAME=nsls2em_b
+USER=softioc-hxn
+PORT=6134
+HOST=xf03idc-ioc2

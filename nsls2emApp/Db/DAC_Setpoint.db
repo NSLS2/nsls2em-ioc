@@ -1,0 +1,101 @@
+# DAC Setpoint
+record(ao, "$(PriSys){$(PSC)}DAC-Chan1-Sp")
+{  
+  field(HOPR, "9.999")
+  field(DRVH, "9.999")
+  field(LOPR, "-9.999")
+  field(DRVL, "-9.999")  
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Chan1-calcout")
+}
+
+#2nd complement
+record(calcout, "$(PriSys){$(PSC)}DAC-Chan1-calcout") {
+  field(INPA, "$(PriSys){$(PSC)}DAC-Chan1-Sp")  
+  field(CALC, "((1-1)<<16)+((A>=0)?(A*3276.8):(65535+(A*3276.8)))")  
+  field(OUT , "$(PriSys){$(PSC)}R210-Sp")  
+  field(FLNK, "$(PriSys){$(PSC)}R210-Sp")
+}
+
+record(longout, "$(PriSys){$(PSC)}R210-Sp") {
+  field(DESC, "R210-DAC1-Sp")
+  field(SCAN, "Passive")
+  field(DTYP, "PSC Reg")
+  field(OUT , "@CmdPort_$(PSC) 80 840")  
+}
+
+# DAC Setpoint
+record(ao, "$(PriSys){$(PSC)}DAC-Chan2-Sp")
+{  
+  field(HOPR, "9.999")
+  field(DRVH, "9.999")
+  field(LOPR, "-9.999")
+  field(DRVL, "-9.999")  
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Chan2-calcout")
+}
+
+#2nd complement
+record(calcout, "$(PriSys){$(PSC)}DAC-Chan2-calcout") {
+  field(INPA, "$(PriSys){$(PSC)}DAC-Chan2-Sp")  
+  field(CALC, "((2-1)<<16)+((A>=0)?(A*3276.8):(65535+(A*3276.8)))")  
+  field(OUT , "$(PriSys){$(PSC)}R211-Sp")  
+  field(FLNK, "$(PriSys){$(PSC)}R211-Sp")
+}
+
+record(longout, "$(PriSys){$(PSC)}R211-Sp") {
+  field(DESC, "R211-DAC1-Sp")
+  field(SCAN, "Passive")
+  field(DTYP, "PSC Reg")
+  field(OUT , "@CmdPort_$(PSC) 80 844")  
+}
+
+# DAC Setpoint
+record(ao, "$(PriSys){$(PSC)}DAC-Chan3-Sp")
+{  
+  field(HOPR, "9.999")
+  field(DRVH, "9.999")
+  field(LOPR, "-9.999")
+  field(DRVL, "-9.999")  
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Chan3-calcout")
+}
+
+#2nd complement
+record(calcout, "$(PriSys){$(PSC)}DAC-Chan3-calcout") {
+  field(INPA, "$(PriSys){$(PSC)}DAC-Chan3-Sp")  
+  field(CALC, "((3-1)<<16)+((A>=0)?(A*3276.8):(65535+(A*3276.8)))")  
+  field(OUT , "$(PriSys){$(PSC)}R212-Sp")  
+  field(FLNK, "$(PriSys){$(PSC)}R212-Sp")
+}
+
+record(longout, "$(PriSys){$(PSC)}R212-Sp") {
+  field(DESC, "R212-DAC1-Sp")
+  field(SCAN, "Passive")
+  field(DTYP, "PSC Reg")
+  field(OUT , "@CmdPort_$(PSC) 80 848")  
+}
+
+# DAC Setpoint
+record(ao, "$(PriSys){$(PSC)}DAC-Chan4-Sp")
+{  
+  field(HOPR, "9.999")
+  field(DRVH, "9.999")
+  field(LOPR, "-9.999")
+  field(DRVL, "-9.999")  
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Chan4-calcout")
+}
+
+#2nd complement
+record(calcout, "$(PriSys){$(PSC)}DAC-Chan4-calcout") {
+  field(INPA, "$(PriSys){$(PSC)}DAC-Chan4-Sp")  
+  field(CALC, "((4-1)<<16)+((A>=0)?(A*3276.8):(65535+(A*3276.8)))")  
+  field(OUT , "$(PriSys){$(PSC)}R213-Sp")  
+  field(FLNK, "$(PriSys){$(PSC)}R213-Sp")
+}
+
+record(longout, "$(PriSys){$(PSC)}R213-Sp") {
+  field(DESC, "R213-DAC1-Sp")
+  field(SCAN, "Passive")
+  field(DTYP, "PSC Reg")
+  field(OUT , "@CmdPort_$(PSC) 80 852")  
+}
+
+
