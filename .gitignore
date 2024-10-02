@@ -4,7 +4,7 @@
 /as/save/
 .vscode/
 records.dbl
-#/config
+/config
 *.swo
 *.swp
 O.*
