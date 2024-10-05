@@ -1,29 +1,18 @@
 #!../../bin/linux-x86_64/nsls2em
 
+#< /epics/common/xf03idc-ioc2-netsetup.cmd
+< /epics/common/xf31id1-ioc1-netsetup.cmd
+
 
 errlogInit(5000)
-epicsEnvSet("QUADEM",   "/epics/iocs/quadEM")
 
-< envPaths
+< "$(FILE_ENV_PATHS=envPaths.cmd)"
+< "$(FILE_EPICS_ENV=epicsEnv.cmd)"
 
-epicsEnvSet("PREFIX",    "XF:31ID-BI:")
-epicsEnvSet("RECORD",    "NSLS2_EM:")
-epicsEnvSet("PORT",      "NSLS2_EM")
-epicsEnvSet("TEMPLATE",  "NSLS2_EM")
-##epicsEnvSet("MODEL",     "NSLS2_EM")
-epicsEnvSet("QSIZE",     "20")
-epicsEnvSet("RING_SIZE", "10000")
-epicsEnvSet("TSPOINTS",  "1000")
-epicsEnvSet("IP",        "10.69.58.70:17")
-#epicsEnvSet("QUAD_DET",        "TetrAMM.cmd")
-epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "1000000")
-
-
-#cd "${TOP}"
-cd "/epics/iocs/nsls2em"
+epicsEnvSet("PREFIX", "$(SYS){$(DEV)}")
 
 ## Register all support components
-dbLoadDatabase "dbd/nsls2em.dbd"
+dbLoadDatabase "$(NSLS2EM)/dbd/nsls2em.dbd"
 nsls2em_registerRecordDeviceDriver pdbbase
 
 ## Load record instances
@@ -37,12 +26,12 @@ asynOctetSetInputEos("IP_$(PORT)",  0, "\r\n")
 asynOctetSetOutputEos("IP_$(PORT)", 0, "\r")
 # Set both TRACE_IO_ESCAPE (for ASCII command/response) and TRACE_IO_HEX (for binary data)
 asynSetTraceIOMask("IP_$(PORT)", 0, 6)
-#asynSetTraceFile("IP_$(PORT)",   0, "AHxxx.out")
-#asynSetTraceMask("IP_$(PORT)",   0,  9)
+#asynSetTraceFile("IP_$(PORT)", 0, "AHxxx.out")
+#asynSetTraceMask("IP_$(PORT)", 0, 9)
 asynSetTraceIOTruncateSize("IP_$(PORT)", 0, 4000)
 # Load asynRecord record
-dbLoadRecords("$(ASYN)/db/asynRecord.db", "P=$(PREFIX), R=asyn1,PORT=IP_$(PORT),ADDR=0,OMAX=256,IMAX=256")
-asynSetTraceIOMask("$(PORT)",0,2)
+dbLoadRecords("$(ASYN)/db/asynRecord.db","P=$(PREFIX),R=asyn1,PORT=IP_$(PORT),ADDR=0,OMAX=256,IMAX=256")
+asynSetTraceIOMask("IP_$(PORT)",0,2)
 # Enable ASYN_TRACE_ERROR and ASYN_TRACE_WARNING
 #asynSetTraceMask("$(PORT)",  0, 0x21)
 
@@ -50,125 +39,122 @@ asynSetTraceIOMask("$(PORT)",0,2)
 ## /epics/utils/rhel8-epics-config/BUILD/support/areaDetector/ADCore/ADApp/Db/NDArrayBase.template
 ##
 drvNSLS2_VEMConfigure("$(PORT)", "IP_$(PORT)", $(RING_SIZE))
-dbLoadRecords("$(ADCORE)/db/NDArrayBase.template", "P=$(PREFIX), R=$(RECORD), PORT=$(PORT), ADDR=0, TIMEOUT=1")
-dbLoadRecords("db/quadEM_nsls2em.template",  "P=$(PREFIX), R=$(RECORD), PORT=$(PORT), ADDR=0, TIMEOUT=1")
-dbLoadRecords("db/nsls2em_RevD.template", "P=$(PREFIX), R=$(RECORD), PORT=$(PORT), ADDR=0, TIMEOUT=1")
+dbLoadRecords("$(ADCORE)/db/NDArrayBase.template", "P=$(SYS), R="{$(DEV)}", PORT=$(PORT), ADDR=0, TIMEOUT=1")
+dbLoadRecords("$(NSLS2EM)/db/quadEM_nsls2em.template",  "P=$(SYS), R="{$(DEV)}", PORT=$(PORT), ADDR=0, TIMEOUT=1")
+dbLoadRecords("$(NSLS2EM)/db/nsls2em_RevD.template", "P=$(SYS), R="{$(DEV)}", PORT=$(PORT), ADDR=0, TIMEOUT=1")
+
 ### Plugins
+#< ${TOP}/commonPlugins.cmd
 < ${TOP}/iocBoot/${IOC}/commonPlugins.cmd
 ###################################################
 
 ######################################################
 ## Load pscdrv record instances
 ######################################################
-dbLoadRecords("db/nsls2em_pscdrv.template", "PriSys=$(PREFIX),PSC=$(RECORD)")
+dbLoadRecords("$(NSLS2EM)/db/nsls2em_pscdrv.template", "PriSys=$(SYS),PSC=$(DEV)")
+
+epicsEnvSet("_WORK_DIR", $(PWD))
 
 #Port 7: Command and Status
-dbLoadRecords("db/Connection.db",    "PriSys=$(PREFIX),PSC=$(RECORD)")
-dbLoadRecords("db/Misc.db",          "PriSys=$(PREFIX),PSC=$(RECORD)")
-dbLoadTemplate ("db/CommandReg.substitutions", "PriSys=$(PREFIX),PSC=$(RECORD)")
-dbLoadTemplate ("db/StatusFloatReg.substitutions", "PriSys=$(PREFIX),PSC=$(RECORD)")
-dbLoadTemplate ("db/StatusReg.substitutions", "PriSys=$(PREFIX),PSC=$(RECORD)")
-
+cd $(NSLS2EM)
+dbLoadRecords("$(NSLS2EM)/db/Connection.db", "PriSys=$(SYS),PSC=$(DEV)")
+dbLoadRecords("$(NSLS2EM)/db/Misc.db", "PriSys=$(SYS),PSC=$(DEV)")
+dbLoadRecords("$(NSLS2EM)/db/DAC_Setpoint.db", "PriSys=$(SYS),PSC=$(DEV)")
+dbLoadTemplate ("$(NSLS2EM)/db/CommandReg.substitutions", "PriSys=$(SYS),PSC=$(DEV)")
+dbLoadTemplate ("$(NSLS2EM)/db/StatusFloatReg.substitutions", "PriSys=$(SYS),PSC=$(DEV)")
+dbLoadTemplate ("$(NSLS2EM)/db/StatusReg.substitutions", "PriSys=$(SYS),PSC=$(DEV)")
+dbLoadTemplate ("$(NSLS2EM)/db/RangeGainOffset.substitutions", "PriSys=$(SYS),PSC=$(DEV)")
+cd $(_WORK_DIR)
 
 # pscDrv port
 epicsThreadSleep 1
 var(PSCDebug, 1)
 #Port 7 for command and status
-createPSC("CmdPort_$(RECORD)", "10.69.58.70", 7,0)
-setPSCSendBlockSize("CmdPort_$(RECORD)", 80, 1400)
+#createPSC("CmdPort_$(PORT)", "$(DEVICE_IP)", 7,0)
+#setPSCSendBlockSize("CmdPort_$(PORT)", 80, 1400)
+createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 7,0)
+setPSCSendBlockSize("CmdPort_$(DEV)", 80, 1400)
 epicsThreadSleep 1
 
 #Port 17 for ADC waveform
-#dbLoadRecords("./db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
-#createPSC("AdcPort_EM1", "10.69.58.70", 17,0)
+#dbLoadRecords("$(NSLS2EM)//db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
+#createPSC("AdcPort_EM1", "$(DEVICE_IP)", 17,0)
 
-
-######################################################
-set_savefile_path("$(PWD)/as","/save/")
-set_requestfile_path("$(PWD)/as","/req/")
-system "install -m 744 -d $(PWD)/as/save"
-system "install -m 744 -d $(PWD)/as/req"
-
-set_pass0_restoreFile("settings.sav")
-######################################################
-
-
-######################################################
-#< ${TOP}/iocBoot/${IOC}/saveRestore.cmd
-######################################################
-
-cd "${TOP}/iocBoot/${IOC}"
+< $(TOP)/iocBoot/iocnsls2em/saveRestore.cmd
 
 iocInit()
 
-###########
-set_savefile_path("$(PWD)/as","/save/")
-set_requestfile_path("$(PWD)/as","/req/")
-system "install -m 744 -d $(PWD)/as/save"
-system "install -m 744 -d $(PWD)/as/req"
-
-set_pass0_restoreFile("settings.sav")
-############
-
+makeAutosaveFileFromDbInfo("$(TOP)/as/req/info_settings.req", "autosaveFields")
+makeAutosaveFileFromDbInfo("$(TOP)/as/req/info_positions.req", "autosaveFields_pass0")
+create_monitor_set("info_settings.req",30)
+create_monitor_set("info_positions.req",10)
 
 #default calibration parameters
 # 1: for pscDrv  0 for quadEM
-dbpf $(PREFIX){$(RECORD)}Reg200-Sp 0
+dbpf $(PREFIX)Reg200-Sp 0
+#
+dbpf $(PREFIX)ChanA-Range-Sp 0
+epicsThreadSleep 1
+dbpf $(PREFIX)ChanA-Range-Sp 1
+epicsThreadSleep 1
+dbpf $(PREFIX)ChanA-Range-Sp 0
+#
+dbpf $(PREFIX)Reg140-Sp 100
+dbpf $(PREFIX)Reg141-Sp 100
+dbpf $(PREFIX)Reg142-Sp 100
+dbpf $(PREFIX)Reg143-Sp 100
+dbpf $(PREFIX)Reg144-Sp 100
+dbpf $(PREFIX)Reg145-Sp 100
+dbpf $(PREFIX)Reg146-Sp 510000
+dbpf $(PREFIX)Reg147-Sp 510000
+dbpf $(PREFIX)Reg148-Sp 510000
+dbpf $(PREFIX)Reg149-Sp 510000
+dbpf $(PREFIX)Reg150-Sp 510000
+dbpf $(PREFIX)Reg151-Sp 510000
+dbpf $(PREFIX)Reg152-Sp 100
+dbpf $(PREFIX)Reg153-Sp 100
+dbpf $(PREFIX)Reg154-Sp 100
+dbpf $(PREFIX)Reg155-Sp 100
+dbpf $(PREFIX)Reg156-Sp 100
+dbpf $(PREFIX)Reg157-Sp 100
+dbpf $(PREFIX)Reg158-Sp 510000
+dbpf $(PREFIX)Reg159-Sp 510000
+dbpf $(PREFIX)Reg160-Sp 510000
+dbpf $(PREFIX)Reg161-Sp 510000
+dbpf $(PREFIX)Reg162-Sp 510000
+dbpf $(PREFIX)Reg163-Sp 510000
+dbpf $(PREFIX)Reg164-Sp 100
+dbpf $(PREFIX)Reg165-Sp 100
+dbpf $(PREFIX)Reg166-Sp 100
+dbpf $(PREFIX)Reg167-Sp 100
+dbpf $(PREFIX)Reg168-Sp 100
+dbpf $(PREFIX)Reg169-Sp 100
+dbpf $(PREFIX)Reg170-Sp 510000
+dbpf $(PREFIX)Reg171-Sp 510000
+dbpf $(PREFIX)Reg172-Sp 510000
+dbpf $(PREFIX)Reg173-Sp 510000
+dbpf $(PREFIX)Reg174-Sp 510000
+dbpf $(PREFIX)Reg175-Sp 510000
+dbpf $(PREFIX)Reg176-Sp 100
+dbpf $(PREFIX)Reg177-Sp 100
+dbpf $(PREFIX)Reg178-Sp 100
+dbpf $(PREFIX)Reg179-Sp 100
+dbpf $(PREFIX)Reg180-Sp 100
+dbpf $(PREFIX)Reg181-Sp 100
+dbpf $(PREFIX)Reg182-Sp 510000
+dbpf $(PREFIX)Reg183-Sp 510000
+dbpf $(PREFIX)Reg184-Sp 510000
+dbpf $(PREFIX)Reg185-Sp 510000
+dbpf $(PREFIX)Reg186-Sp 510000
+dbpf $(PREFIX)Reg187-Sp 510000
 
-dbpf $(PREFIX){$(RECORD)}Reg140-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg141-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg142-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg143-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg144-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg145-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg146-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg147-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg148-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg149-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg150-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg151-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg152-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg153-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg154-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg155-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg156-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg157-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg158-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg159-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg160-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg161-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg162-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg163-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg164-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg165-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg166-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg167-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg168-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg169-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg170-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg171-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg172-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg173-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg174-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg175-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg176-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg177-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg178-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg179-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg180-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg181-Sp 100
-dbpf $(PREFIX){$(RECORD)}Reg182-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg183-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg184-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg185-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg186-Sp 510000
-dbpf $(PREFIX){$(RECORD)}Reg187-Sp 510000
+dbpf $(PREFIX)Reg8-Sp 32000
+dbpf $(PREFIX)Reg24-Sp 32000
+dbpf $(PREFIX)Reg25-Sp 32000
+dbpf $(PREFIX)Reg26-Sp 32000
+dbpf $(PREFIX)Reg27-Sp 32000
 
-dbpf $(PREFIX){$(RECORD)}Reg8-Sp 32000
-dbpf $(PREFIX){$(RECORD)}Reg24-Sp 32000
-dbpf $(PREFIX){$(RECORD)}Reg25-Sp 32000
-dbpf $(PREFIX){$(RECORD)}Reg26-Sp 32000
-dbpf $(PREFIX){$(RECORD)}Reg27-Sp 32000
+dbpf $(PREFIX)Reg17-Sp 10000000
+dbpf $(PREFIX)Reg18-Sp 10000000
 
-dbpf $(PREFIX){$(RECORD)}Reg17-Sp 10000000
-dbpf $(PREFIX){$(RECORD)}Reg18-Sp 10000000
+dbl > $(TOP)/records.dbl
