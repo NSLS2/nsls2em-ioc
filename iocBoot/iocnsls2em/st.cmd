@@ -44,8 +44,7 @@ dbLoadRecords("$(NSLS2EM)/db/quadEM_nsls2em.template",  "P=$(SYS), R="{$(DEV)}",
 dbLoadRecords("$(NSLS2EM)/db/nsls2em_RevD.template", "P=$(SYS), R="{$(DEV)}", PORT=$(PORT), ADDR=0, TIMEOUT=1")
 
 ### Plugins
-#< ${TOP}/commonPlugins.cmd
-< ${TOP}/iocBoot/${IOC}/commonPlugins.cmd
+< ${NSLS2EM}/iocBoot/iocnsls2em/commonPlugins.cmd
 ###################################################
 
 ######################################################
@@ -80,7 +79,7 @@ epicsThreadSleep 1
 #dbLoadRecords("$(NSLS2EM)//db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
 #createPSC("AdcPort_EM1", "$(DEVICE_IP)", 17,0)
 
-< $(TOP)/iocBoot/iocnsls2em/saveRestore.cmd
+< $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
 
 iocInit()
 

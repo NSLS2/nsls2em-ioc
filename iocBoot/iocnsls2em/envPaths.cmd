@@ -1,7 +1,6 @@
 #epicsEnvSet("TOP","/epics/iocs/nsls2em_b")
 epicsEnvSet("TOP","/nsls2/users/dgavrilov/repos/nsls2em-ioc")
 epicsEnvSet("NSLS2EM","$(TOP)")
-epicsEnvSet("IOC","iocnsls2em")
 epicsEnvSet("SUPPORT","/usr/lib/epics")
 epicsEnvSet("QUADEM","/epics/modules/quadEM")
 epicsEnvSet("IPAC","/usr/lib/epics")
