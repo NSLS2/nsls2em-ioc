@@ -39,7 +39,7 @@ nsls2em_DBD += system.dbd
 nsls2em_DBD += caPutLog.dbd
 nsls2em_DBD += caPutLog.dbd
 nsls2em_DBD += NDFileNetCDF.dbd
-#nsls2em_DBD += NDFileHDF5.dbd
+nsls2em_DBD += NDFileHDF5.dbd
 
 #
 nsls2em_SRCS += drvTetrAMM.cpp
