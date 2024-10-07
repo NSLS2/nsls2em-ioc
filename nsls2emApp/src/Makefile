@@ -34,6 +34,13 @@ nsls2em_DBD += ADSupport.dbd
 nsls2em_DBD += NDPluginSupport.dbd
 nsls2em_DBD += busySupport.dbd
 nsls2em_DBD += calcSupport.dbd
+nsls2em_DBD += devIocStats.dbd
+nsls2em_DBD += system.dbd
+nsls2em_DBD += caPutLog.dbd
+nsls2em_DBD += caPutLog.dbd
+nsls2em_DBD += NDFileNetCDF.dbd
+nsls2em_DBD += NDFileHDF5.dbd
+
 #
 nsls2em_SRCS += drvTetrAMM.cpp
 nsls2em_SRCS += subCalcAlarm.c

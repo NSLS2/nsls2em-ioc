@@ -49,10 +49,10 @@ CALC=/usr/lib/epics
 #PSCDRV=$(SUPPORT)/pscdrv
 PSCDRV=/epics/modules/pscdrv
 
+NPDPLUGIN=/epics/modules
 AREA_DETECTOR=/epics/modules
 ADCORE=/epics/modules/ADCore
 
-NPDPLUGIN=/epics/modules
 
 # These lines allow developers to override these RELEASE settings
 # without having to modify this file directly.
