@@ -1,7 +1,12 @@
 record(longout, "$(PriSys){$(PSC)}$(Reg)-Sp") {
   field(DESC, "$(Reg)-$(Name)")
-  field(SCAN, "$(SCAN)")
+#  field(SCAN, "$(SCAN)")
   field(DTYP, "PSC Reg")
+#
+  info(autosaveFields_pass0, "VAL")
+  info(SYNC, "ProcOnConn")
+  field(TPRO, "1")
+#
   field(OUT , "@CmdPort_$(PSC) 80 $(RegOffset)")  
 }
 

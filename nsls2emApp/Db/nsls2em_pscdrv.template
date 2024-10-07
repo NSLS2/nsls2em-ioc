@@ -190,5 +190,15 @@ record(calc, "$(PriSys){$(PSC)}Pos:YSA-Calc") {
 }
 
 
+
+record(seq, "$(PriSys){$(PSC)}Autosave-Seq_")
+{
+#  field(LNK1, "$(PriSys){$(PSC)}RangeCtrl-SP.PROC PP NMS")
+  field(LNK1, "$(PriSys){$(PSC)}RangeCtrl-SP.VAL PP NMS")
+  field(PINI, "YES")
+  field(DLY1, "3")
+  field(DOL1, "0")
+}
+
 ###
 

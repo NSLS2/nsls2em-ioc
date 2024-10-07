@@ -4,11 +4,30 @@ record(longout, "$(PriSys){$(PSC)}ChanB-Range-Sp") {}
 record(longout, "$(PriSys){$(PSC)}ChanC-Range-Sp") {}
 record(longout, "$(PriSys){$(PSC)}ChanD-Range-Sp") {}
 
+record(mbbo, "$(PriSys){$(PSC)}RangeCtrl-SP") {
+    field(DESC, "Current Range selection")
+    field(ZRST, "10 mA")
+    field(ONST, "1 mA")
+    field(TWST, "100 uA")
+    field(THST, "10 uA")
+    field(FRST, "1 uA")
+    field(FVST, "100 nA")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    info(autosaveFields_pass0, "VAL")
+    field(FLNK, "$(PriSys){$(PSC)}Chan-Range-Calc")
+}
+
 record(calcout, "$(PriSys){$(PSC)}Chan-Range-Calc")
 {
   field(DESC, "Chan A range selection")
-  field(SCAN, "1 second")
-  field(INPA, "$(PriSys){$(PSC)}ChanA-Range-Sp PP")
+#  field(SCAN, "1 second")
+#  field(INPA, "$(PriSys){$(PSC)}ChanA-Range-Sp PP")
+  field(INPA, "$(PriSys){$(PSC)}RangeCtrl-SP PP")
   field(INPB, "$(PriSys){$(PSC)}ChanB-Range-Sp PP")
   field(INPC, "$(PriSys){$(PSC)}ChanC-Range-Sp PP")
   field(INPD, "$(PriSys){$(PSC)}ChanD-Range-Sp PP")

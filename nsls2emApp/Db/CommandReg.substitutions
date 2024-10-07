@@ -1,4 +1,4 @@
-file "db/CommandReg.template"
+file db/CommandReg.template
 {pattern
 {SCAN,RegOffset,Reg,Name}
 {".1 second",4,Reg1,Gpio}
