@@ -1,4 +1,9 @@
-# DAC Setpoint
+#
+# 4 Channel DAC output control
+# ao -> calout -> longout --> pscdrv tcp/ip -> ARM tcp server -> FPGA DAC spi control
+#
+
+# DAC0 Setpoint
 record(ao, "$(PriSys){$(PSC)}DAC-Chan1-Sp")
 {  
   field(HOPR, "9.999")
@@ -20,10 +25,11 @@ record(longout, "$(PriSys){$(PSC)}R210-Sp") {
   field(DESC, "R210-DAC1-Sp")
   field(SCAN, "Passive")
   field(DTYP, "PSC Reg")
+#  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 840")  
 }
 
-# DAC Setpoint
+# DAC1 Setpoint
 record(ao, "$(PriSys){$(PSC)}DAC-Chan2-Sp")
 {  
   field(HOPR, "9.999")
@@ -45,10 +51,11 @@ record(longout, "$(PriSys){$(PSC)}R211-Sp") {
   field(DESC, "R211-DAC1-Sp")
   field(SCAN, "Passive")
   field(DTYP, "PSC Reg")
+#  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 844")  
 }
 
-# DAC Setpoint
+# DAC2 Setpoint
 record(ao, "$(PriSys){$(PSC)}DAC-Chan3-Sp")
 {  
   field(HOPR, "9.999")
@@ -70,10 +77,11 @@ record(longout, "$(PriSys){$(PSC)}R212-Sp") {
   field(DESC, "R212-DAC1-Sp")
   field(SCAN, "Passive")
   field(DTYP, "PSC Reg")
+#  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 848")  
 }
 
-# DAC Setpoint
+# DAC3 Setpoint
 record(ao, "$(PriSys){$(PSC)}DAC-Chan4-Sp")
 {  
   field(HOPR, "9.999")
@@ -95,6 +103,7 @@ record(longout, "$(PriSys){$(PSC)}R213-Sp") {
   field(DESC, "R213-DAC1-Sp")
   field(SCAN, "Passive")
   field(DTYP, "PSC Reg")
+#  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 852")  
 }
 

@@ -1,3 +1,13 @@
+#
+# 4 Channel gain control
+# {}RangeCtrl-SP - 4 channel common range control
+# {}RangeCtrl:A-SP - Channel A range selection
+# {}RangeCtrl:B-SP - Channel B range selection
+# {}RangeCtrl:C-SP - Channel C range selection
+# {}RangeCtrl:D-SP - Channel D range selection
+#
+
+
 # Misc PVs
 record(longout, "$(PriSys){$(PSC)}ChanA-Range-Sp") {}
 record(longout, "$(PriSys){$(PSC)}ChanB-Range-Sp") {}
@@ -35,4 +45,85 @@ record(calcout, "$(PriSys){$(PSC)}Chan-Range-Calc")
   field(OUT, "$(PriSys){$(PSC)}Reg28-Sp PP")
 }
 
+
+### Indivisual gain control
+record(mbbo, "$(PriSys){$(PSC)}RangeCtrl:A-SP") {
+    field(DESC, "CH-A Current Range selection")
+    field(ZRST, "10 mA")
+    field(ONST, "1 mA")
+    field(TWST, "100 uA")
+    field(THST, "10 uA")
+    field(FRST, "1 uA")
+    field(FVST, "100 nA")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    info(autosaveFields_pass0, "VAL")
+    field(FLNK, "$(PriSys){$(PSC)}Chan-IRange-Calc")
+}
+record(mbbo, "$(PriSys){$(PSC)}RangeCtrl:B-SP") {
+    field(DESC, "CH-B Current Range selection")
+    field(ZRST, "10 mA")
+    field(ONST, "1 mA")
+    field(TWST, "100 uA")
+    field(THST, "10 uA")
+    field(FRST, "1 uA")
+    field(FVST, "100 nA")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    info(autosaveFields_pass0, "VAL")
+    field(FLNK, "$(PriSys){$(PSC)}Chan-IRange-Calc")
+}
+record(mbbo, "$(PriSys){$(PSC)}RangeCtrl:C-SP") {
+    field(DESC, "CH-C Current Range selection")
+    field(ZRST, "10 mA")
+    field(ONST, "1 mA")
+    field(TWST, "100 uA")
+    field(THST, "10 uA")
+    field(FRST, "1 uA")
+    field(FVST, "100 nA")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    info(autosaveFields_pass0, "VAL")
+    field(FLNK, "$(PriSys){$(PSC)}Chan-IRange-Calc")
+}
+record(mbbo, "$(PriSys){$(PSC)}RangeCtrl:D-SP") {
+    field(DESC, "CH-D Current Range selection")
+    field(ZRST, "10 mA")
+    field(ONST, "1 mA")
+    field(TWST, "100 uA")
+    field(THST, "10 uA")
+    field(FRST, "1 uA")
+    field(FVST, "100 nA")
+    field(ZRVL, "0")
+    field(ONVL, "1")
+    field(TWVL, "2")
+    field(THVL, "3")
+    field(FRVL, "4")
+    field(FVVL, "5")
+    info(autosaveFields_pass0, "VAL")
+    field(FLNK, "$(PriSys){$(PSC)}Chan-IRange-Calc")
+}
+record(calcout, "$(PriSys){$(PSC)}Chan-IRange-Calc")
+{
+  field(DESC, "Chan ABCD range selection")
+#  field(SCAN, "1 second")
+  field(INPA, "$(PriSys){$(PSC)}RangeCtrl:A-SP PP")
+  field(INPB, "$(PriSys){$(PSC)}RangeCtrl:B-SP PP")
+  field(INPC, "$(PriSys){$(PSC)}RangeCtrl:C-SP PP")
+  field(INPD, "$(PriSys){$(PSC)}RangeCtrl:D-SP PP")
+  field(CALC, "(D<<24) + (C<<16) + (B<<8) + A")
+  field(OUT, "$(PriSys){$(PSC)}Reg28-Sp PP")
+}
 
