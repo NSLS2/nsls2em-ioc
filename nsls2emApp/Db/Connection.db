@@ -14,7 +14,7 @@ record(bi, "$(PriSys){$(PSC)}Txconn") {
 #flush reg to socket buffer, trigger send to send all socket buffer to PSC
 record(longout, "$(PriSys){$(PSC)}regsend") {
   field(DTYP, "PSC Ctrl Send")
-  field(SCAN, ".1 second")  
+  field(SCAN, ".02 second")  
   field(OUT , "@CmdPort_$(PSC)")
   field(VAL , "80")
   field(FLNK, "$(PriSys){$(PSC)}send")
