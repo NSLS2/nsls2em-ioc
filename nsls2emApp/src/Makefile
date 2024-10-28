@@ -40,6 +40,7 @@ nsls2em_DBD += caPutLog.dbd
 nsls2em_DBD += caPutLog.dbd
 nsls2em_DBD += NDFileNetCDF.dbd
 nsls2em_DBD += NDFileHDF5.dbd
+#nsls2em_DBD += epidRecord.dbd
 
 #
 nsls2em_SRCS += drvTetrAMM.cpp
@@ -61,6 +62,7 @@ nsls2em_LIBS += NDPlugin
 nsls2em_LIBS += ADBase
 nsls2em_LIBS += busy
 nsls2em_LIBS += calc
+#nsls2em_LIBS += std
 
 
 

@@ -79,6 +79,10 @@ epicsThreadSleep 1
 #dbLoadRecords("$(NSLS2EM)//db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
 #createPSC("AdcPort_EM1", "$(DEVICE_IP)", 17,0)
 
+# EPID records for X and Y axes
+#dbLoadRecords("$(EPICS_BASE)/db/pid_control.db", "P=$(SYS){$(DEV)},PID=PIDX")
+#dbLoadRecords("$(EPICS_BASE)/db/pid_control.db", "P=$(SYS){$(DEV)},PID=PIDY")
+
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
 
 iocInit()
