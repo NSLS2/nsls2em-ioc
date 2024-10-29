@@ -76,12 +76,16 @@ setPSCSendBlockSize("CmdPort_$(DEV)", 80, 1400)
 epicsThreadSleep 1
 
 #Port 17 for ADC waveform
-#dbLoadRecords("$(NSLS2EM)//db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
+#dbLoadRecords("$(NSLS2EM)/db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
 #createPSC("AdcPort_EM1", "$(DEVICE_IP)", 17,0)
 
 # EPID records for X and Y axes
-#dbLoadRecords("$(EPICS_BASE)/db/pid_control.db", "P=$(SYS){$(DEV)},PID=PIDX")
-#dbLoadRecords("$(EPICS_BASE)/db/pid_control.db", "P=$(SYS){$(DEV)},PID=PIDY")
+
+epicsEnvSet("PID_X", "PID_X")
+epicsEnvSet("PID_Y", "PID_Y")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID")
+
 
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
 
@@ -91,6 +95,9 @@ makeAutosaveFileFromDbInfo("$(TOP)/as/req/info_settings.req", "autosaveFields")
 makeAutosaveFileFromDbInfo("$(TOP)/as/req/info_positions.req", "autosaveFields_pass0")
 create_monitor_set("info_settings.req",30)
 create_monitor_set("info_positions.req",10)
+
+dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X).INP 
+dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y).INP 
 
 #default calibration parameters
 # 1: for pscDrv  0 for quadEM
