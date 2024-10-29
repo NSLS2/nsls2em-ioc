@@ -22,6 +22,7 @@ DB += StatusDoubleReg.template StatusDoubleReg.substitutions
 DB += StatusFloatReg.template StatusFloatReg.substitutions
 DB += StatusReg.template StatusReg.substitutions
 DB += RangeGainOffset.template RangeGainOffset.substitutions
+DB += fb_epid.db
 
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_TEMPLATE = <templatename>
