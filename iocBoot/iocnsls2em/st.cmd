@@ -83,8 +83,8 @@ epicsThreadSleep 1
 
 epicsEnvSet("PID_X", "PID_X")
 epicsEnvSet("PID_Y", "PID_Y")
-dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID")
-dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID,OEGU=nm")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID,OEGU=nm")
 
 
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
