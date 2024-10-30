@@ -83,8 +83,8 @@ epicsThreadSleep 1
 
 epicsEnvSet("PID_X", "PID_X")
 epicsEnvSet("PID_Y", "PID_Y")
-dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID")
-dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID,OEGU=nm")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID,OEGU=nm")
 
 
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
@@ -96,8 +96,13 @@ makeAutosaveFileFromDbInfo("$(TOP)/as/req/info_positions.req", "autosaveFields_p
 create_monitor_set("info_settings.req",30)
 create_monitor_set("info_positions.req",10)
 
-dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X).INP 
-dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y).INP 
+# Set the update rate (50 Hz)
+dbpf $(PREFIX)regsend.SCAN "0.02 second"
+dbpf $(PREFIX)Reg8-Sp 7520
+
+# Link updates to EPID records for X and Y axes
+dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X) 
+dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y) 
 
 #default calibration parameters
 # 1: for pscDrv  0 for quadEM
