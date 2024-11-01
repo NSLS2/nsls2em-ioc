@@ -1,6 +1,6 @@
-#########################################################
-# Calibration for NSLS2 Electrometer: serial number E0027
-#########################################################
+##########################################################
+# Calibration for NSLS2 Electrometer: serial number EC0027
+##########################################################
 
 # Calibration for 10mA range
 dbpf ${PREFIX}ChA-10mA-Gain-SP 516452

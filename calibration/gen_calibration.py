@@ -76,9 +76,9 @@ if __name__ == '__main__':
     print(f"Extracting calibration to temporary directory {fln_tmp!r}")
 
     for sn in serial_numbers:
-        fln = f"EC{sn}"
+        electrometer_serial = f"EC{sn}"
+        fln = electrometer_serial
         fln_zip = f"{fln}.zip"
-        electrometer_serial = f"E{sn}"
         fln_calib = f"{electrometer_serial}.cmd"
         print(f"Processing file {fln_zip!r}")
         with zipfile.ZipFile(fln_zip, "r") as z:
