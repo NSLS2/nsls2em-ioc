@@ -12,15 +12,15 @@ dbpf ${PREFIX}ChB-10mA-Ofst-SP 2353
 dbpf ${PREFIX}ChC-10mA-Ofst-SP 1142
 dbpf ${PREFIX}ChD-10mA-Ofst-SP 2451
 
-# Calibration for 1ma range
-dbpf ${PREFIX}ChA-1ma-Gain-SP 514820
-dbpf ${PREFIX}ChB-1ma-Gain-SP 513977
-dbpf ${PREFIX}ChC-1ma-Gain-SP 515485
-dbpf ${PREFIX}ChD-1ma-Gain-SP 515554
-dbpf ${PREFIX}ChA-1ma-Ofst-SP 994
-dbpf ${PREFIX}ChB-1ma-Ofst-SP 2347
-dbpf ${PREFIX}ChC-1ma-Ofst-SP 1139
-dbpf ${PREFIX}ChD-1ma-Ofst-SP 2451
+# Calibration for 1mA range
+dbpf ${PREFIX}ChA-1mA-Gain-SP 514820
+dbpf ${PREFIX}ChB-1mA-Gain-SP 513977
+dbpf ${PREFIX}ChC-1mA-Gain-SP 515485
+dbpf ${PREFIX}ChD-1mA-Gain-SP 515554
+dbpf ${PREFIX}ChA-1mA-Ofst-SP 994
+dbpf ${PREFIX}ChB-1mA-Ofst-SP 2347
+dbpf ${PREFIX}ChC-1mA-Ofst-SP 1139
+dbpf ${PREFIX}ChD-1mA-Ofst-SP 2451
 
 # Calibration for 100uA range
 dbpf ${PREFIX}ChA-100uA-Gain-SP 515629

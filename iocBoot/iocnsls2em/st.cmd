@@ -86,7 +86,6 @@ epicsEnvSet("PID_Y", "PID_Y")
 dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID,OEGU=nm")
 dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID,OEGU=nm")
 
-
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
 
 iocInit()
@@ -96,8 +95,15 @@ makeAutosaveFileFromDbInfo("$(TOP)/as/req/info_positions.req", "autosaveFields_p
 create_monitor_set("info_settings.req",30)
 create_monitor_set("info_positions.req",10)
 
+epicsThreadSleep 1
+
+# Load calibration for the device (based on the serial number)
+< $(NSLS2EM)/calibration/$(DEVICE_SN).cmd
+
+epicsThreadSleep 1
+
 # Set the update rate (50 Hz)
-dbpf $(PREFIX)regsend.SCAN "0.02 second"
+dbpf $(PREFIX)regsend.SCAN ".02 second"
 dbpf $(PREFIX)Reg8-Sp 7520
 
 # Link updates to EPID records for X and Y axes
@@ -106,70 +112,70 @@ dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y)
 
 #default calibration parameters
 # 1: for pscDrv  0 for quadEM
-dbpf $(PREFIX)Reg200-Sp 0
+#dbpf $(PREFIX)Reg200-Sp 0
 #
-dbpf $(PREFIX)ChanA-Range-Sp 0
-epicsThreadSleep 1
-dbpf $(PREFIX)ChanA-Range-Sp 1
-epicsThreadSleep 1
-dbpf $(PREFIX)ChanA-Range-Sp 0
+#dbpf $(PREFIX)ChanA-Range-Sp 0
+#epicsThreadSleep 1
+#dbpf $(PREFIX)ChanA-Range-Sp 1
+#epicsThreadSleep 1
+#dbpf $(PREFIX)ChanA-Range-Sp 0
 #
-dbpf $(PREFIX)Reg140-Sp 100
-dbpf $(PREFIX)Reg141-Sp 100
-dbpf $(PREFIX)Reg142-Sp 100
-dbpf $(PREFIX)Reg143-Sp 100
-dbpf $(PREFIX)Reg144-Sp 100
-dbpf $(PREFIX)Reg145-Sp 100
-dbpf $(PREFIX)Reg146-Sp 510000
-dbpf $(PREFIX)Reg147-Sp 510000
-dbpf $(PREFIX)Reg148-Sp 510000
-dbpf $(PREFIX)Reg149-Sp 510000
-dbpf $(PREFIX)Reg150-Sp 510000
-dbpf $(PREFIX)Reg151-Sp 510000
-dbpf $(PREFIX)Reg152-Sp 100
-dbpf $(PREFIX)Reg153-Sp 100
-dbpf $(PREFIX)Reg154-Sp 100
-dbpf $(PREFIX)Reg155-Sp 100
-dbpf $(PREFIX)Reg156-Sp 100
-dbpf $(PREFIX)Reg157-Sp 100
-dbpf $(PREFIX)Reg158-Sp 510000
-dbpf $(PREFIX)Reg159-Sp 510000
-dbpf $(PREFIX)Reg160-Sp 510000
-dbpf $(PREFIX)Reg161-Sp 510000
-dbpf $(PREFIX)Reg162-Sp 510000
-dbpf $(PREFIX)Reg163-Sp 510000
-dbpf $(PREFIX)Reg164-Sp 100
-dbpf $(PREFIX)Reg165-Sp 100
-dbpf $(PREFIX)Reg166-Sp 100
-dbpf $(PREFIX)Reg167-Sp 100
-dbpf $(PREFIX)Reg168-Sp 100
-dbpf $(PREFIX)Reg169-Sp 100
-dbpf $(PREFIX)Reg170-Sp 510000
-dbpf $(PREFIX)Reg171-Sp 510000
-dbpf $(PREFIX)Reg172-Sp 510000
-dbpf $(PREFIX)Reg173-Sp 510000
-dbpf $(PREFIX)Reg174-Sp 510000
-dbpf $(PREFIX)Reg175-Sp 510000
-dbpf $(PREFIX)Reg176-Sp 100
-dbpf $(PREFIX)Reg177-Sp 100
-dbpf $(PREFIX)Reg178-Sp 100
-dbpf $(PREFIX)Reg179-Sp 100
-dbpf $(PREFIX)Reg180-Sp 100
-dbpf $(PREFIX)Reg181-Sp 100
-dbpf $(PREFIX)Reg182-Sp 510000
-dbpf $(PREFIX)Reg183-Sp 510000
-dbpf $(PREFIX)Reg184-Sp 510000
-dbpf $(PREFIX)Reg185-Sp 510000
-dbpf $(PREFIX)Reg186-Sp 510000
-dbpf $(PREFIX)Reg187-Sp 510000
+#dbpf $(PREFIX)Reg140-Sp 100
+#dbpf $(PREFIX)Reg141-Sp 100
+#dbpf $(PREFIX)Reg142-Sp 100
+#dbpf $(PREFIX)Reg143-Sp 100
+#dbpf $(PREFIX)Reg144-Sp 100
+#dbpf $(PREFIX)Reg145-Sp 100
+#dbpf $(PREFIX)Reg146-Sp 510000
+#dbpf $(PREFIX)Reg147-Sp 510000
+#dbpf $(PREFIX)Reg148-Sp 510000
+#dbpf $(PREFIX)Reg149-Sp 510000
+#dbpf $(PREFIX)Reg150-Sp 510000
+#dbpf $(PREFIX)Reg151-Sp 510000
+#dbpf $(PREFIX)Reg152-Sp 100
+#dbpf $(PREFIX)Reg153-Sp 100
+#dbpf $(PREFIX)Reg154-Sp 100
+#dbpf $(PREFIX)Reg155-Sp 100
+#dbpf $(PREFIX)Reg156-Sp 100
+#dbpf $(PREFIX)Reg157-Sp 100
+#dbpf $(PREFIX)Reg158-Sp 510000
+#dbpf $(PREFIX)Reg159-Sp 510000
+#dbpf $(PREFIX)Reg160-Sp 510000
+#dbpf $(PREFIX)Reg161-Sp 510000
+#dbpf $(PREFIX)Reg162-Sp 510000
+#dbpf $(PREFIX)Reg163-Sp 510000
+#dbpf $(PREFIX)Reg164-Sp 100
+#dbpf $(PREFIX)Reg165-Sp 100
+#dbpf $(PREFIX)Reg166-Sp 100
+#dbpf $(PREFIX)Reg167-Sp 100
+#dbpf $(PREFIX)Reg168-Sp 100
+#dbpf $(PREFIX)Reg169-Sp 100
+#dbpf $(PREFIX)Reg170-Sp 510000
+#dbpf $(PREFIX)Reg171-Sp 510000
+#dbpf $(PREFIX)Reg172-Sp 510000
+#dbpf $(PREFIX)Reg173-Sp 510000
+#dbpf $(PREFIX)Reg174-Sp 510000
+#dbpf $(PREFIX)Reg175-Sp 510000
+#dbpf $(PREFIX)Reg176-Sp 100
+#dbpf $(PREFIX)Reg177-Sp 100
+#dbpf $(PREFIX)Reg178-Sp 100
+#dbpf $(PREFIX)Reg179-Sp 100
+#dbpf $(PREFIX)Reg180-Sp 100
+#dbpf $(PREFIX)Reg181-Sp 100
+#dbpf $(PREFIX)Reg182-Sp 510000
+#dbpf $(PREFIX)Reg183-Sp 510000
+#dbpf $(PREFIX)Reg184-Sp 510000
+#dbpf $(PREFIX)Reg185-Sp 510000
+#dbpf $(PREFIX)Reg186-Sp 510000
+#dbpf $(PREFIX)Reg187-Sp 510000
 
-dbpf $(PREFIX)Reg8-Sp 32000
-dbpf $(PREFIX)Reg24-Sp 32000
-dbpf $(PREFIX)Reg25-Sp 32000
-dbpf $(PREFIX)Reg26-Sp 32000
-dbpf $(PREFIX)Reg27-Sp 32000
+#dbpf $(PREFIX)Reg8-Sp 32000
+#dbpf $(PREFIX)Reg24-Sp 32000
+#dbpf $(PREFIX)Reg25-Sp 32000
+#dbpf $(PREFIX)Reg26-Sp 32000
+#dbpf $(PREFIX)Reg27-Sp 32000
 
-dbpf $(PREFIX)Reg17-Sp 10000000
-dbpf $(PREFIX)Reg18-Sp 10000000
+#dbpf $(PREFIX)Reg17-Sp 10000000
+#dbpf $(PREFIX)Reg18-Sp 10000000
 
 dbl > $(TOP)/records.dbl

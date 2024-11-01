@@ -1,7 +1,7 @@
 import zipfile
 import tempfile
 import os
-import re
+
 
 serial_numbers = [
     "0005",
@@ -31,7 +31,7 @@ serial_numbers = [
 
 filename_all = {
     "10mA": "Range10mA.txt",
-    "1ma": "Range1mA.txt",
+    "1mA": "Range1mA.txt",
     "100uA": "Range100uA.txt",
     "10uA": "Range10uA.txt",
     "1uA": "Range1uA.txt",

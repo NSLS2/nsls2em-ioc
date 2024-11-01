@@ -11,8 +11,8 @@ record(epid, "$(Sys)$(Dev)$(PID)") {
   field(I, "0")
   field(DRVL, "0")
   field(DRVH, "0")
-  field(EGU, "$(OEGU,)")
-  field(PREC, "$(PREC,3)")
+  field(EGU, "$(OEGU)")
+  field(PREC, "$(PREC,PREC=3)")
   # field(FLNK, "$(Sys)$(Dev)Val:OBuf-Calc")
   info(autosaveFields, "DESC PREC SCAN VAL DRVL DRVH FMOD KP KI KD I")
 }
