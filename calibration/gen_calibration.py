@@ -3,7 +3,31 @@ import tempfile
 import os
 import re
 
-serial_numbers = ["0009", "0012"]
+serial_numbers = [
+    "0005",
+    "0006",
+    "0007",
+    "0008",
+    "0009",
+    "0010",
+    "0011",
+    "0012",
+    "0013",
+    "0014",
+    # "0015",
+    "0016",
+    "0017",
+    "0018",
+    "0019",
+    "0020",
+    "0021",
+    "0022",
+    "0023",
+    "0024",
+    "0025",
+    "0026",
+    "0027",
+]
 
 filename_all = {
     "10mA": "Range10mA.txt",
@@ -32,10 +56,10 @@ def create_pvs(I_range):
 def extract_values_from_file(file_path):
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    
+
     gain = []
     offset = []
-    
+
     for line in lines[1:5]:
         parts = line.strip().split(',')
         gain.append(int(parts[1]))
@@ -48,11 +72,11 @@ if __name__ == '__main__':
 
     # fln_tmp = tempfile.mkstemp()[1]
     fln_tmp = tempfile.mktemp()
-    os.makedirs(fln_tmp, exist_ok=True) 
+    os.makedirs(fln_tmp, exist_ok=True)
     print(f"Extracting calibration to temporary directory {fln_tmp!r}")
 
     for sn in serial_numbers:
-        fln = f"EC{sn}" 
+        fln = f"EC{sn}"
         fln_zip = f"{fln}.zip"
         electrometer_serial = f"E{sn}"
         fln_calib = f"{electrometer_serial}.cmd"
@@ -80,5 +104,3 @@ if __name__ == '__main__':
                     f.write(f"dbpf {pv} {offset}\n")
                 # f.write(f"dbpf {gain_I_pv} 32000")
                 # f.write(f"dbpf {offset_I_pv} 32000")
-
-  
