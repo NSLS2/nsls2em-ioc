@@ -1,8 +1,6 @@
 #!../../bin/linux-x86_64/nsls2em
 
-#< /epics/common/xf03idc-ioc2-netsetup.cmd
 < /epics/common/xf31id1-ioc1-netsetup.cmd
-
 
 errlogInit(5000)
 
@@ -16,7 +14,6 @@ dbLoadDatabase "$(NSLS2EM)/dbd/nsls2em.dbd"
 nsls2em_registerRecordDeviceDriver pdbbase
 
 ## Load record instances
-#epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(QUADEM)/db")
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db")
 
 
@@ -68,19 +65,11 @@ cd $(_WORK_DIR)
 # pscDrv port
 epicsThreadSleep 1
 var(PSCDebug, 1)
-#Port 7 for command and status
-#createPSC("CmdPort_$(PORT)", "$(DEVICE_IP)", 7,0)
-#setPSCSendBlockSize("CmdPort_$(PORT)", 80, 1400)
 createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 7,0)
 setPSCSendBlockSize("CmdPort_$(DEV)", 80, 1400)
 epicsThreadSleep 1
 
-#Port 17 for ADC waveform
-#dbLoadRecords("$(NSLS2EM)/db/ADCSingle.db","PriSys=NSLS2:XF00,PSC=EM1,Chan=Chan1,ADC_Single_POINTS=40")
-#createPSC("AdcPort_EM1", "$(DEVICE_IP)", 17,0)
-
 # EPID records for X and Y axes
-
 epicsEnvSet("PID_X", "PID_X")
 epicsEnvSet("PID_Y", "PID_Y")
 dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID,OEGU=nm")
@@ -109,73 +98,5 @@ dbpf $(PREFIX)Reg8-Sp 7520
 # Link updates to EPID records for X and Y axes
 dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X) 
 dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y) 
-
-#default calibration parameters
-# 1: for pscDrv  0 for quadEM
-#dbpf $(PREFIX)Reg200-Sp 0
-#
-#dbpf $(PREFIX)ChanA-Range-Sp 0
-#epicsThreadSleep 1
-#dbpf $(PREFIX)ChanA-Range-Sp 1
-#epicsThreadSleep 1
-#dbpf $(PREFIX)ChanA-Range-Sp 0
-#
-#dbpf $(PREFIX)Reg140-Sp 100
-#dbpf $(PREFIX)Reg141-Sp 100
-#dbpf $(PREFIX)Reg142-Sp 100
-#dbpf $(PREFIX)Reg143-Sp 100
-#dbpf $(PREFIX)Reg144-Sp 100
-#dbpf $(PREFIX)Reg145-Sp 100
-#dbpf $(PREFIX)Reg146-Sp 510000
-#dbpf $(PREFIX)Reg147-Sp 510000
-#dbpf $(PREFIX)Reg148-Sp 510000
-#dbpf $(PREFIX)Reg149-Sp 510000
-#dbpf $(PREFIX)Reg150-Sp 510000
-#dbpf $(PREFIX)Reg151-Sp 510000
-#dbpf $(PREFIX)Reg152-Sp 100
-#dbpf $(PREFIX)Reg153-Sp 100
-#dbpf $(PREFIX)Reg154-Sp 100
-#dbpf $(PREFIX)Reg155-Sp 100
-#dbpf $(PREFIX)Reg156-Sp 100
-#dbpf $(PREFIX)Reg157-Sp 100
-#dbpf $(PREFIX)Reg158-Sp 510000
-#dbpf $(PREFIX)Reg159-Sp 510000
-#dbpf $(PREFIX)Reg160-Sp 510000
-#dbpf $(PREFIX)Reg161-Sp 510000
-#dbpf $(PREFIX)Reg162-Sp 510000
-#dbpf $(PREFIX)Reg163-Sp 510000
-#dbpf $(PREFIX)Reg164-Sp 100
-#dbpf $(PREFIX)Reg165-Sp 100
-#dbpf $(PREFIX)Reg166-Sp 100
-#dbpf $(PREFIX)Reg167-Sp 100
-#dbpf $(PREFIX)Reg168-Sp 100
-#dbpf $(PREFIX)Reg169-Sp 100
-#dbpf $(PREFIX)Reg170-Sp 510000
-#dbpf $(PREFIX)Reg171-Sp 510000
-#dbpf $(PREFIX)Reg172-Sp 510000
-#dbpf $(PREFIX)Reg173-Sp 510000
-#dbpf $(PREFIX)Reg174-Sp 510000
-#dbpf $(PREFIX)Reg175-Sp 510000
-#dbpf $(PREFIX)Reg176-Sp 100
-#dbpf $(PREFIX)Reg177-Sp 100
-#dbpf $(PREFIX)Reg178-Sp 100
-#dbpf $(PREFIX)Reg179-Sp 100
-#dbpf $(PREFIX)Reg180-Sp 100
-#dbpf $(PREFIX)Reg181-Sp 100
-#dbpf $(PREFIX)Reg182-Sp 510000
-#dbpf $(PREFIX)Reg183-Sp 510000
-#dbpf $(PREFIX)Reg184-Sp 510000
-#dbpf $(PREFIX)Reg185-Sp 510000
-#dbpf $(PREFIX)Reg186-Sp 510000
-#dbpf $(PREFIX)Reg187-Sp 510000
-
-#dbpf $(PREFIX)Reg8-Sp 32000
-#dbpf $(PREFIX)Reg24-Sp 32000
-#dbpf $(PREFIX)Reg25-Sp 32000
-#dbpf $(PREFIX)Reg26-Sp 32000
-#dbpf $(PREFIX)Reg27-Sp 32000
-
-#dbpf $(PREFIX)Reg17-Sp 10000000
-#dbpf $(PREFIX)Reg18-Sp 10000000
 
 dbl > $(TOP)/records.dbl
