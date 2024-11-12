@@ -1,7 +1,56 @@
 
-record(epid, "$(Sys)$(Dev)$(PID)") {
+# Theory of operation:
+# 1. A signal is available as an EPICS process variable.
+#    The signal source can be in the VME with the feedback software
+#    or in another VME available on the local network.
+# 2. An input calculation (calcout record) is used to allow some
+#    flexibility for conditioning the input signal to the feedback.
+# 3. An epid record is used to provide real-time feedback
+#    and recalculate the output variable.
+# 4. The output from the epid record is buffered by
+#    the outbuf calculation which watches the Feedback ON (FBON)
+#    switch and retains the previous output value if the feedback
+#    software is switched off.
+# 5. An output calculation is used to allow some flexibility
+#    for conditioning the output signal to the positioner.
+#    The conditioned epid result is pushed to the positioner.
+# 6. A positioner responds to the result from the epid record
+#    and thus further modifies the input signal.
+# 7. The feedback can be switched on manually, subject to
+#    the logic of some other calculation.  For example,
+#    shutter closed could suspend feedback.  In this case,
+#    the output is not driven.
+# 8. When the feedback is switched on, the positioner should
+#    not jerk to a different position.  The feedback software
+#    must be prepared to start moving the positioner from its 
+#    present location.
+# References
+#  epid          http://cars9.uchicago.edu/software/epics/epidRecord.html
+#  PID tuning    see the epid documentation (above)
+#------------------------------------------
+#
+# epid record to actually calculate the 
+# feedback response to the input
+#
+record(ao, "$(Sys)$(Dev)PID-SP") {
+  field(OUT, "$(Sys)$(Dev)PID.VAL")
+  field(PREC, "$(PREC,3)")
+  field(EGU, "$(IEGU,)")
+  field(FLNK, "$(Sys)$(Dev)PID-RB")
+  field(PINI, "YES")
+  info(autosaveFields, "DESC VAL PREC")
+}
+
+record(ai, "$(Sys)$(Dev)PID-RB") {
+  field(INP, "$(Sys)$(Dev)PID.VAL")
+  field(PREC, "$(PREC,3)")
+  field(EGU, "$(IEGU,)")
+  info(autosaveFields, "PREC")
+}
+
+record(epid, "$(Sys)$(Dev)PID") {
   field(DESC, "EPID feedback")
-  field(INP, "$(Sys)$(Dev)$(CV)")
+  field(INP, "$(Sys)$(Dev)Inp-Sts")
   field(FMOD, "$(MODE)")
   field(FBON, "Off")
   field(SCAN, "Passive")
@@ -11,8 +60,208 @@ record(epid, "$(Sys)$(Dev)$(PID)") {
   field(I, "0")
   field(DRVL, "0")
   field(DRVH, "0")
-  field(EGU, "$(OEGU)")
-  field(PREC, "$(PREC,PREC=3)")
-  # field(FLNK, "$(Sys)$(Dev)Val:OBuf-Calc")
+  field(EGU, "$(OEGU,)")
+  field(PREC, "$(PREC,3)")
+  field(FLNK, "$(Sys)$(Dev)Val:OBuf-Calc")
   info(autosaveFields, "DESC PREC SCAN VAL DRVL DRVH FMOD KP KI KD I")
 }
+
+record(ai, "$(Sys)$(Dev)Val:DBnd-SP") {
+  field(PINI, "YES")
+  field(EGU, "$(OEGU)")
+  field(PREC, "$(PREC,3)")
+  info(autosaveFields, "VAL")
+}
+
+record(calc, "$(Sys)$(Dev)Val:DBnd-I") {
+  field(CALC, "ABS(A-B) > C")
+  field(INPA, "$(Sys)$(Dev)Inp-Sts")
+  field(INPB, "$(Sys)$(Dev)PID.VAL")
+  field(INPC, "$(Sys)$(Dev)Val:DBnd-SP.VAL")
+  field(FLNK, "$(Sys)$(Dev)Sts:FB-Calc")
+}
+
+record(calcout, "$(Sys)$(Dev)Val:OBuf-Calc") {
+  field(DESC, "EPID FBON output buffer")
+  field(CALC, "A+B")
+  field(INPA, "$(Sys)$(Dev)PID.OVAL")
+  field(INPB, "$(OUT)")
+  field(EGU, "$(OEGU,)")
+  field(PREC, "$(PREC,3)")
+  field(SDIS, "$(Sys)$(Dev)PID.FBON")
+  field(DISA, "1")
+  field(DOPT, "Use CALC")
+  field(DISV, "0")
+  field(FLNK, "$(Sys)$(Dev)Val:OBuf2")
+}
+
+# Bumpless start feature
+# 
+# When $(Sys)$(Dev).FBON transitions from 0 to 1, clear the integral gain
+record(calcout, "$(Sys)$(Dev)Val:Res-Calc") {
+  field(CALC, "A")
+  field(INPA, "$(Sys)$(Dev)PID.FBON")
+  field(OOPT, "Transition To Non-zero")
+  field(DOPT, "Use CALC")
+  field(OUT, "$(Sys)$(Dev)PID.I")
+  field(FLNK, "$(Sys)$(Dev)PID")
+}
+
+#
+# permit
+#
+# Sometimes, the feedback software must be suspended.
+# This must happen automatically, based on some 
+# simple calculation or a more complex database 
+# resulting in this simple calculation.
+# $(Sys)$(Dev):enable drives the $(Sys)$(Dev).FBON field
+#
+record(bo, "$(Sys)$(Dev)Sts:FB-Sel") {
+  field(DESC, "Off/On")
+  field(ZNAM, "OFF")
+  field(ONAM, "ON")
+  field(PINI, "YES")
+  info(autosaveFields, "VAL")
+}
+
+record(calcout, "$(Sys)$(Dev)Sts:FB-Calc") {
+  field(DESC, "EPID feedback permit")
+  field(PREC, "$(PREC,3)")
+  #field(OCAL, "$(CALC)")
+  field(DOPT, "Use CALC")
+  field(CALC, "$(CALC)")
+  field(SCAN, "Passive")
+  field(FLNK, "$(Sys)$(Dev)Val:Res-Calc")
+  field(OUT, "$(Sys)$(Dev)PID.FBON")
+  field(INPA, "$(PERMIT1=1)")
+  field(INPB, "$(PERMIT2=1)")
+  field(INPC, "$(PERMIT3=1)")
+  field(INPD, "$(PERMIT4=1)")
+  field(INPE, "$(PERMIT5=1)")
+  field(INPF, "$(PERMIT6=1)")
+  field(INPJ, "$(Sys)$(Dev)Sts:FB-Sel")
+  field(INPK, "$(Sys)$(Dev)Inp-Sts.OVAL")
+  field(INPL, "$(Sys)$(Dev)Val:DBnd-I.VAL")
+}
+
+#
+# Monitor of input value
+#
+record(calcout, "$(Sys)$(Dev)Inp-Sts") {
+  field(INPA, "$(IN)")
+  field(INPB, "$(Sys)$(Dev)Inp-LowLim")
+  field(INPC, "$(Sys)$(Dev)Inp-HighLim")
+  field(CALC, "A")
+  field(OCAL, "(A>B)&&(A<C)")
+  field(DOPT, "Use OCAL")
+  field(SCAN, "Passive")
+  #field(SCAN, "5 second")
+  field(DESC, "Input and validity checks")
+  field(FLNK, "$(Sys)$(Dev)_fout")
+  field(PREC, "$(PREC,3)")
+  info(autosaveFields, "SCAN VAL PREC")
+}
+
+record(calcout, "$(Sys)$(Dev)Inp-Sts-BelowHighLim") {
+  field(INPA, "$(Sys)$(Dev)Inp-Sts.VAL")
+  field(INPB, "$(Sys)$(Dev)Inp-HighLim")
+  field(CALC, "A<B")
+  field(DOPT, "Use CALC")
+}
+
+record(calcout, "$(Sys)$(Dev)Inp-Sts-AboveLowLim") {
+  field(INPA, "$(Sys)$(Dev)Inp-Sts.VAL")
+  field(INPB, "$(Sys)$(Dev)Inp-LowLim")
+  field(CALC, "A>B")
+  field(DOPT, "Use CALC")
+}
+
+# User selected minimum and maximum limits on the input signal
+#
+record(ai, "$(Sys)$(Dev)Inp-HighLim") {
+  field(DESC, "Input High Limit")
+  field(VAL, "10")
+  field(PREC, "$(PREC,3)")
+  field(PINI, "YES")
+  info(autosaveFields, "VAL PREC")
+}
+
+record(ai, "$(Sys)$(Dev)Inp-LowLim") {
+  field(DESC, "Input Low Limit")
+  field(VAL, "0")
+  field(PREC, "$(PREC,3)")
+  field(PINI, "YES")
+  info(autosaveFields, "VAL PREC")
+}
+
+# User selected minimum and maximum outputs to the motor
+record(ai, "$(Sys)$(Dev)Out-LowLim") {
+  field(DESC, "Output Low Limit")
+  field(PREC, "$(PREC,3)")
+  field(PINI, "YES")
+  info(autosaveFields, "VAL PREC")
+}
+
+record(ai, "$(Sys)$(Dev)Out-HighLim") {
+  field(DESC, "Output High Limit")
+  field(PREC, "$(PREC,3)")
+  field(PINI, "YES")
+  info(autosaveFields, "VAL PREC")
+}
+
+# If the feedback output is outside the set limits, go instead to the set limit
+record(calcout, "$(Sys)$(Dev)Val:OBuf2") {
+  field(FLNK, "$(Sys)$(Dev)Val:OBuf3")
+  field(OCAL, "A<B?B:A")
+  field(INPA, "$(Sys)$(Dev)Val:OBuf-Calc")
+  field(INPB, "$(Sys)$(Dev)Out-LowLim")
+  field(CALC, "A>B")
+  field(DOPT, "Use OCAL")
+}
+
+record(calcout, "$(Sys)$(Dev)Val:OBuf3") {
+  field(DOPT, "Use OCAL")
+  field(OCAL, "A>B?B:A")
+  field(INPA, "$(Sys)$(Dev)Val:OBuf2.OVAL")
+  field(INPB, "$(Sys)$(Dev)Out-HighLim")
+  #field(OUT, "$(Sys)$(Dev)Out-Sts")
+  field(CALC, "A<B")
+  field(PREC, "$(PREC,3)")
+  field(FLNK, "$(Sys)$(Dev)_fout2")
+}
+
+record(fanout, "$(Sys)$(Dev)_fout2") {
+  field(FLNK, "$(Sys)$(Dev)Sts:Warn")
+  field(LNK1, "$(Sys)$(Dev)Out-Sts")
+}
+
+record(calcout, "$(Sys)$(Dev)Out-Sts") {
+  field(CALC, "A")
+  field(DOPT, "Use CALC")
+  field(INPA, "$(Sys)$(Dev)Val:OBuf3.OVAL")
+  field(PREC, "$(PREC,3)")
+  field(OUT, "$(OUT)")
+}
+
+record(calcout, "$(Sys)$(Dev)Sts:Warn") {
+  field(DESC, "Output or Input lim exceeded")
+  #field(CALC, "!(A&&B&&C&&D&&E&&!F&&!G&&!H&&I)")
+  field(CALC, "!(A&&B&&C)")
+  field(INPA, "$(Sys)$(Dev)Inp-Sts.OVAL")
+  field(INPB, "$(Sys)$(Dev)Val:OBuf2")
+  field(INPC, "$(Sys)$(Dev)Val:OBuf3")
+  #field(INPD, "$(Sys)$(Dev)Sts:FB-Calc.C")
+  #field(INPE, "$(Sys)$(Dev)Sts:FB-Calc.D")
+  #field(INPF, "$(Sys)$(Dev)Sts:FB-Calc.E")
+  #field(INPG, "$(Sys)$(Dev)Sts:FB-Calc.F")
+  #field(INPH, "$(Sys)$(Dev)Sts:FB-Calc.H")
+  #field(INPI, "$(Sys)$(Dev)Sts:FB-Calc.I")
+}
+
+record(fanout, "$(Sys)$(Dev)_fout") {
+  field(FLNK, "$(Sys)$(Dev)Sts:Warn")
+  field(LNK1, "$(Sys)$(Dev)Val:DBnd-I")
+  field(LNK2, "$(Sys)$(Dev)Inp-Sts-BelowHighLim")
+  field(LNK3, "$(Sys)$(Dev)Inp-Sts-AboveLowLim")
+}
+
