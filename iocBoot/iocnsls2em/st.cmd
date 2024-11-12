@@ -72,8 +72,15 @@ epicsThreadSleep 1
 # EPID records for X and Y axes
 epicsEnvSet("PID_X", "PID_X")
 epicsEnvSet("PID_Y", "PID_Y")
-dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID,OEGU=nm")
-dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID,OEGU=nm")
+#dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_X),CV=Reg49-I,MODE=PID,OEGU=nm")
+#dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)},PID=$(PID_Y),CV=Reg50-I,MODE=PID,OEGU=nm")
+
+epicsEnvSet("FB_ON_CALC","A&&B&&C&&D&&E&&F&&J&&K&&L") 
+epicsEnvSet("PID_PERMIT1", "1")
+epicsEnvSet("PID_PERMIT2", "1")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)}$(PID_X):,IN=$(SYS){$(DEV)}Reg49-I,OUT=,MODE=PID,CALC=$(FB_ON_CALC),PERMIT1=$(PID_PERMIT1=1),PERMIT2=$(PID_PERMIT2=1),PERMIT3=$(PID_PERMIT3=1),PERMIT4=$(PID_PERMIT4=1),PERMIT5=$(PID_PERMIT5=1),PERMIT6=$(PID_PERMIT6=1),PREC=0,EGU=nm,IEGU=nm,OEGU=nm,MTR_OFF=")
+dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)}$(PID_Y):,IN=$(SYS){$(DEV)}Reg50-I,OUT=,MODE=PID,CALC=$(FB_ON_CALC),PERMIT1=$(PID_PERMIT1=1),PERMIT2=$(PID_PERMIT2=1),PERMIT3=$(PID_PERMIT3=1),PERMIT4=$(PID_PERMIT4=1),PERMIT5=$(PID_PERMIT5=1),PERMIT6=$(PID_PERMIT6=1),PREC=0,EGU=nm,IEGU=nm,OEGU=nm,MTR_OFF=")
+
 
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
 
@@ -96,7 +103,7 @@ dbpf $(PREFIX)regsend.SCAN ".02 second"
 dbpf $(PREFIX)Reg8-Sp 7520
 
 # Link updates to EPID records for X and Y axes
-dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X) 
-dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y) 
+dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X):Inp-Sts 
+dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y):Inp-Sts  
 
 dbl > $(TOP)/records.dbl
