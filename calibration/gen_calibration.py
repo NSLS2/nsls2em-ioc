@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
                 f.write(f"\n# Calibration for {I_range} range\n")
                 for pv, gain in zip(gain_SP_pv, gain):
-                    f.write(f"dbpf {pv} {gain}\n")
+                    f.write(f"dbpf {pv} {-gain}\n")  # Negative gain is saved intentionally!
                 for pv, offset in zip(offset_SP_pv, offset):
                     f.write(f"dbpf {pv} {offset}\n")
                 # f.write(f"dbpf {gain_I_pv} 32000")
