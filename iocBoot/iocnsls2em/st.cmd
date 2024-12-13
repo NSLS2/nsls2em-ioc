@@ -98,6 +98,13 @@ epicsThreadSleep 1
 
 epicsThreadSleep 1
 
+# GTX reset
+dbpf $(PREFIX)Reg31-Sp 255
+epicsThreadSleep 0.2
+dbpf $(PREFIX)Reg31-Sp 0
+
+epicsThreadSleep 1
+
 # Set the update rate (50 Hz)
 dbpf $(PREFIX)regsend.SCAN ".02 second"
 dbpf $(PREFIX)Reg8-Sp 7520
