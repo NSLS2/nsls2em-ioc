@@ -12,6 +12,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <time.h>
+
 #include <epicsTypes.h>
 #include <epicsString.h>
 #include <epicsThread.h>
@@ -25,6 +27,11 @@
 #include "drvQuadEM.h"
 
 static const char *driverName="drvQuadEM";
+
+
+#define EPICS_EPOCH_OFFSET 631152000  // Seconds from 1970-01-01 to 1990-01-01
+
+
 
 static void exitHandlerC(void *pPvt)
 {
@@ -153,7 +160,8 @@ drvQuadEM::drvQuadEM(const char *portName, int ringBufferSize)
 /** This function computes the sums, diffs and positions, and does callbacks 
   * \param[in] raw Array of raw current readings 
   */
-void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
+  //void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
+  void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS], epicsFloat64 evr_timestamp)
 {
     int i;
     int count;
@@ -167,8 +175,17 @@ void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
     epicsInt32 intData[QE_MAX_DATA];
     epicsFloat64 doubleData[QE_MAX_DATA];
     epicsFloat64 denom;
+
+    epicsTimeStamp now;
+    epicsFloat64 timeStamp;
+
     static const char *functionName = "computePositions";
     
+    //test timestamp
+    epicsTimeGetCurrent(&now);
+    timeStamp = (now.secPastEpoch + EPICS_EPOCH_OFFSET) + now.nsec / 1.e9;
+    // 
+
     getIntegerParam(P_Geometry, &geometry);
     // If the ring buffer is full then remove the oldest entry
     if (epicsRingBytesFreeBytes(ringBuffer_) < (int)sizeof(doubleData)) {
@@ -183,6 +200,7 @@ void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
         setIntegerParam(P_RingOverflows, ringOverflows);
     }
     
+    //QE_MAX_INPUTS = 4 A/B/C/D
     for (i=0; i<QE_MAX_INPUTS; i++) {
         getDoubleParam(i, P_CurrentOffset, &currentOffset[i]);
         getDoubleParam(i, P_CurrentScale,  &currentScale[i]);
@@ -193,11 +211,19 @@ void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
         getDoubleParam(i, P_PositionScale, &positionScale[i]);
     }
     
+    //Sum signal
     doubleData[QESumAll] = doubleData[QECurrent1] + doubleData[QECurrent2] +
                            doubleData[QECurrent3] + doubleData[QECurrent4];
     if (geometry == QEGeometrySquare) {
         doubleData[QESumX]   = doubleData[QESumAll];
         doubleData[QESumY]   = doubleData[QESumAll];
+
+        // quadEM : Square mode
+        // X = Kx * ((B+C) - (A+D) / Sum) - Xoffset
+        // Y = Ky * ((A+B) - (C+D) / Sum) - Yoffset
+
+        //field(CALC, "(((((A+D)-(B+C))/E) * F)-G)/1")
+        //field(CALC, "(((((A+B)-(C+D))/E) * F)-G)/1")
         doubleData[QEDiffX]  = (doubleData[QECurrent2] + doubleData[QECurrent3]) -
                                (doubleData[QECurrent1] + doubleData[QECurrent4]);
         doubleData[QEDiffY]  = (doubleData[QECurrent1] + doubleData[QECurrent2]) -
@@ -216,6 +242,11 @@ void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
     if (denom == 0.) denom = 1.;
     doubleData[QEPositionY] = (positionScale[1] * doubleData[QEDiffY] / denom) -  positionOffset[1];
 
+    // add EVR timestamp data
+    doubleData[QEEVRtimestamp] = timeStamp;
+    //printf("evr=%f\n", timeStamp);
+    //
+    //printf("size=%d\n", sizeof(doubleData));
     count = epicsRingBytesPut(ringBuffer_, (char *)&doubleData, sizeof(doubleData));
     ringCount_++;
     rawCount_++;
@@ -278,22 +309,37 @@ asynStatus drvQuadEM::doDataCallbacks(int numRead)
             driverName, functionName, numRead, ringSize, rawCount_, ringCount_);
         return asynError;
     }
+    //printf("numRead=%d, ringSize=%d\n", numRead, ringSize); //numRead=1000, ringSize=1004
 
     dims[0] = QE_MAX_DATA;
     dims[1] = numRead;
     setIntegerParam(P_NumAveraged, numRead);
 
+#define EPICS_TS    
+#ifdef EPICS_TS  
+    // kha: timestamp is 20 years before  
     epicsTimeGetCurrent(&now);
+#else
+    struct timespec ts;
+    // Get current time with nanosecond precision
+    clock_gettime(CLOCK_REALTIME, &ts);
+    now.secPastEpoch = ts.tv_sec;
+    now.nsec = ts.tv_nsec;
+#endif
+
     getIntegerParam(NDArrayCounter, &arrayCounter);
     arrayCounter++;
     setIntegerParam(NDArrayCounter, arrayCounter);
 
     pArrayAll = pNDArrayPool->alloc(2, dims, NDFloat64, 0, 0);
     pArrayAll->uniqueId = arrayCounter;
-    timeStamp = now.secPastEpoch + now.nsec / 1.e9;
+    
+    timeStamp = (now.secPastEpoch + EPICS_EPOCH_OFFSET) + now.nsec / 1.e9;
+
     pArrayAll->timeStamp = timeStamp;
     getAttributes(pArrayAll->pAttributeList);
 
+    //Read data from ring buffer
     count = epicsRingBytesGet(ringBuffer_, (char *)pArrayAll->pData, numRead * sampleSize);
     if (count != numRead * sampleSize) {
         asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
@@ -308,7 +354,12 @@ asynStatus drvQuadEM::doDataCallbacks(int numRead)
     for (i=0; i<QE_MAX_DATA; i++) {
         pArraySingle = pNDArrayPool->alloc(1, dims, NDFloat64, 0, 0);
         pArraySingle->uniqueId = arrayCounter;
-        pArraySingle->timeStamp = timeStamp;
+
+        //3/11/25 kha: need to replace the HW timestamp
+        pArraySingle->timeStamp = timeStamp;    //epicsFloat64
+        //printf("timeStamp=%f\n", timeStamp);  //test
+        //printf("EPICS Time: %ld seconds\n", now.secPastEpoch);
+
         getAttributes(pArraySingle->pAttributeList);
         pIn = (epicsFloat64 *)pArrayAll->pData;
         pOut = (epicsFloat64 *)pArraySingle->pData;
