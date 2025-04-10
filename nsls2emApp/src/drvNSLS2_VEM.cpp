@@ -324,7 +324,7 @@ void drvNSLS2_VEM::readThread(void)
                     for (i=numChannels_; i<4; i++) f64Data[i] = 0.0;
                     //printf(" %d: %.9f, %.9f, %.9f, %.9f\n", loop_Cnt, f64Data[0],f64Data[1], f64Data[2], f64Data[3]);                   
                     //calculation position from quadQM
-                    computePositions(f64Data);
+                    computePositions(f64Data, 0.0);
                     setIntegerParam(P_StreamRateMon, loop_Cnt++);
                    break;
 

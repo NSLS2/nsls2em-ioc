@@ -107,4 +107,20 @@ record(longout, "$(PriSys){$(PSC)}R213-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 852")  
 }
 
+# 3/31/25: Bias DAC output
+record(ao, "$(PriSys){$(PSC)}Bias-Sp")
+{
+  field(HOPR, "9.999")
+  field(DRVH, "9.999")
+  field(LOPR, "-9.999")
+  field(DRVL, "-9.999")
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Bias-calcout")
+}
+
+record(calcout, "$(PriSys){$(PSC)}DAC-Bias-calcout") {
+  field(INPA, "$(PriSys){$(PSC)}Bias-Sp")
+  field(CALC, "(32767+(A*3276.8))")
+  field(OUT , "$(PriSys){$(PSC)}Reg32-Sp")
+  field(FLNK, "$(PriSys){$(PSC)}Reg32-Sp")
+}
 

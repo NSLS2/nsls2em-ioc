@@ -81,7 +81,8 @@ typedef enum {
     QEDiffX,
     QEDiffY,
     QEPositionX,
-    QEPositionY
+    QEPositionY,
+    QEEVRtimestamp
 } QEData_t;
 
 typedef enum {
@@ -120,7 +121,9 @@ typedef enum {
 } QEReadFormat_t;
 
 
-#define QE_MAX_DATA (QEPositionY+1)
+//#define QE_MAX_DATA (QEPositionY+1)
+#define QE_MAX_DATA (QEEVRtimestamp+1)
+
 #define QE_MAX_INPUTS 4
 #define QE_DEFAULT_RING_BUFFER_SIZE 2048
 
@@ -182,7 +185,8 @@ protected:
     int acquiring_;
     int numAcquired_;
 
-    void computePositions(epicsFloat64 raw[QE_MAX_INPUTS]);
+    //void computePositions(epicsFloat64 raw[QE_MAX_INPUTS]);
+    void computePositions(epicsFloat64 raw[QE_MAX_INPUTS], epicsFloat64 evr_timestamp);
     virtual asynStatus readStatus()=0;
     virtual asynStatus reset()=0;
     virtual asynStatus setAcquire(epicsInt32 value);

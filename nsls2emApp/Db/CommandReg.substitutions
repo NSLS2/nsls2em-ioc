@@ -8,6 +8,7 @@ file db/CommandReg.template
 {"Passive",40,Reg10,FA-Rate-Sel}
 {"Passive",44,Reg11,Clk-Sel}
 {"Passive",48,Reg12,FanSpeed}
+{"Passive",60,Reg15,Geometry}
 {"Passive",68,Reg17,Kx}
 {"Passive",72,Reg18,Ky}
 {"Passive",76,Reg19,ADC-Rate}
@@ -21,6 +22,7 @@ file db/CommandReg.template
 {"Passive",108,Reg27,ChD-Gain}
 {"Passive",112,Reg28,I-Gain-Sel}
 {"Passive",116,Reg29,V-Gain-Sel}
+{"Passive",120,Reg30,FA-Freq-Cnt}
 {"Passive",124,Reg31,GTX-Reset}
 {"Passive",128,Reg32,HV-Bias}
 {"Passive",136,Reg34,Xpos-Offset}

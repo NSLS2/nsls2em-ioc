@@ -25,9 +25,7 @@ nsls2em_DBD += base.dbd
 #
 nsls2em_DBD += pscCore.dbd
 nsls2em_DBD += asSupport.dbd
-nsls2em_DBD += drvTetrAMM.dbd
 nsls2em_DBD += drvNSLS2_VEM.dbd
-nsls2em_DBD += drvNSLS2_EM.dbd
 nsls2em_DBD += asyn.dbd
 nsls2em_DBD += drvAsynIPPort.dbd
 nsls2em_DBD += ADSupport.dbd
@@ -44,11 +42,9 @@ nsls2em_DBD += stdSupport.dbd
 nsls2em_DBD += epidRecord.dbd
 
 #
-nsls2em_SRCS += drvTetrAMM.cpp
 nsls2em_SRCS += subCalcAlarm.c
 nsls2em_SRCS += drvQuadEM.cpp
 nsls2em_SRCS += drvNSLS2_VEM.cpp
-nsls2em_SRCS += drvNSLS2_EM.cpp
 #nsls2em_SRCS += subCalcAlarm.c
 
 #
