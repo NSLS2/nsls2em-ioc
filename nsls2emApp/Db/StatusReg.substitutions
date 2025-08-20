@@ -1,7 +1,7 @@
 file db/StatusReg.template
 {pattern
 {RegOffset,Reg,Name}
-{0,Reg0,Gpio}
+#{0,Reg0,Gpio}
 {20,Reg5,LED}
 {28,Reg7,FPGA-Ver}
 {52,Reg13,Fan-Speed}
@@ -20,17 +20,46 @@ file db/StatusReg.template
 {184,Reg46,ChC-SA-I}
 {188,Reg47,ChD-SA-I}
 {192,Reg48,ChA-SA-V}
-{196,Reg49,ChB-SA-V}
+#used Position X/Y
+{196,Reg49,ChB-SA-V} 
 {200,Reg50,ChC-SA-V}
+#
 {204,Reg51,ChD-SA-V}
-{208,Reg52,EVR-TS-s}
-{212,Reg53,EVR-TS-ns}
+#{208,Reg52,EVR-TS-s}
+#{212,Reg53,EVR-TS-ns}
 {216,Reg54,EVR-Lat-s}
 {220,Reg55,EVR-Lat-ns}
-{336,Reg84,Temp0}
-{340,Reg85,Temp1}
+{236,Reg59,RX-Rate}
+{324,Reg81,DMA_Turn-Cnt}
+{328,Reg82,DMA_Trig-Cnt}
+#{336,Reg84,Temp0}
+#{340,Reg85,Temp1}
 {344,Reg86,Input-V}
 {348,Reg87,Input-I}
+#reg88 - 
+{352,ADC0-neg_peak,Reg88}
+{356,ADC1-neg_peak,Reg89}
+{360,ADC2-neg_peak,Reg90}
+{364,ADC3-neg_peak,Reg91}
+{368,ADC0-pos_peak,Reg92}
+{372,ADC1-pos_peak,Reg93}
+{376,ADC2-pos_peak,Reg94}
+{380,ADC3-pos_peak,Reg95}
+
+#{508,Reg127,SA-loopTime}
+#
 {512,Reg128,FA-Data}
 {516,Reg129,FIFO-Cout}
+
+#{856,Reg214, Control}
+{1024,Reg256,FA-Volt-Ch0}
+{1028,Reg257,FA-Volt-Ch1}
+{1032,Reg258,FA-Volt-Ch2}
+{1036,Reg259,FA-Volt-Ch3}
+#
+{1040,GPIO:PulsCNT0, Reg260}
+{1044,GPIO:PulsCNT1, Reg261}
+{1048,GPIO:PulsCNT2, Reg262}
+{1052,GPIO:PulsCNT3, Reg263}
+{1056,GPIO:FreqCnt0, Reg264}
 }

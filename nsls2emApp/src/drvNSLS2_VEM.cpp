@@ -50,6 +50,7 @@
 // We make it twice this size for doing synchonization so it is guaranteed to contain intact NaN
 #define BINARY_BUFFER_SIZE 80
 
+#define CHANNELS 6  //4
 
 static const char *driverName="drvNSLS2_VEM";
 static void readThread(void *drvPvt);
@@ -93,10 +94,13 @@ drvNSLS2_VEM::drvNSLS2_VEM(const char *portName, const char *QEPortName, int rin
     readingActive_ = 0;
     resolution_ = 20;
     setIntegerParam(P_Model, QE_ModelNSLS2_EM);
-    setIntegerParam(P_ValuesPerRead, 5);
+    setIntegerParam(P_ValuesPerRead, 1);  //10 kHz
 
     setIntegerParam(P_NumChannels, 4);
-    numChannels_ = 4;
+
+    //numChannels_ = 4;
+    numChannels_ = CHANNELS;    //with HW timestamp
+
     setIntegerParam(P_StreamSendCmdSts, 0);
     setIntegerParam(P_StreamRateMon, 0);
 
@@ -234,6 +238,10 @@ void drvNSLS2_VEM::readThread(void)
     long long lastValue;
     size_t nRequested;
     long loop_Cnt=0;
+    epicsFloat64 hw_timestamp;
+    uint32_t lower32;
+    uint8_t gpio ;
+    uint32_t count ;        
 
     static const char *functionName = "readThread";
 
@@ -254,7 +262,12 @@ void drvNSLS2_VEM::readThread(void)
     }
     pasynOctet = (asynOctet *)pasynInterface->pinterface;
     octetPvt = pasynInterface->drvPvt;
-    
+ 
+    //for loop time measurement
+    struct timespec prevTime, currTime;
+    double dt_usec, rate_Hz;
+    clock_gettime(CLOCK_MONOTONIC, &prevTime);
+
     /* Loop forever */
     lock();
     while (1) {
@@ -276,6 +289,7 @@ void drvNSLS2_VEM::readThread(void)
         if (readFormat == QEReadFormatBinary) 
         { 
             nRequested = (numChannels_ + 1) * bytesPerValue;
+
             unlock();
             pasynManager->lockPort(pasynUser);
 
@@ -316,7 +330,9 @@ void drvNSLS2_VEM::readThread(void)
             }
             lastValue = i64Data[numChannels_];
             //printf("***Debug: %d : last = 0x%llx\n", numChannels_, lastValue);
-            //printf("***Debug: NCh=%d :  0x%llx, 0x%llx, 0x%llx, 0x%llx, 0x%llx\n", numChannels_, i64Data[0], i64Data[1], i64Data[2], i64Data[3], i64Data[4]);
+            //printf("***Debug: NCh=%d :  0x%llx, 0x%llx, 0x%llx, 0x%llx, 0x%llx, 0x%llx, 0x%llx\n", numChannels_, i64Data[0], i64Data[1], i64Data[2], i64Data[3], i64Data[4], i64Data[5], i64Data[6]);
+            //printf("***Debug: NCh=%d :  0x%llx, 0x%llx, 0x%llx, 0x%llx, 0x%llx, 0x%llx\n", numChannels_, i64Data[0], i64Data[1], i64Data[2], i64Data[3], i64Data[4], i64Data[6]);
+
             switch(lastValue) {
                 
                 case 0xfff40002ffffffffll:
@@ -324,8 +340,28 @@ void drvNSLS2_VEM::readThread(void)
                     for (i=numChannels_; i<4; i++) f64Data[i] = 0.0;
                     //printf(" %d: %.9f, %.9f, %.9f, %.9f\n", loop_Cnt, f64Data[0],f64Data[1], f64Data[2], f64Data[3]);                   
                     //calculation position from quadQM
-                    computePositions(f64Data, 0.0);
+                    hw_timestamp = ((epicsFloat64)((i64Data[5] >> 32) & 0xFFFFFFFF)) +
+                            ((epicsFloat64)(i64Data[5] & 0xFFFFFFFF)) / 1e9;
+
+                    //7/22/25: extract gpio and count
+                    lower32 = (uint32_t)(i64Data[4] & 0xFFFFFFFF);
+                    gpio = (lower32 >> 24) & 0xFF;
+                    count = lower32 & 0xFFFFFF;  
+                    //printf(" %x, %d\n",  gpio,  count);                        
+                    //
+                    computePositions(f64Data, hw_timestamp, gpio, count);
                     setIntegerParam(P_StreamRateMon, loop_Cnt++);
+ 
+                    // RX loop measurement from nsls2EM TCP/IP
+                    /*
+                    clock_gettime(CLOCK_MONOTONIC, &currTime);
+                    dt_usec = (currTime.tv_sec - prevTime.tv_sec) * 1e6 +
+                            (currTime.tv_nsec - prevTime.tv_nsec) / 1e3;
+                    rate_Hz = 1e6 / dt_usec;
+                    printf("Actual sampling rate: %.2f Hz (%.2f us interval)\n", rate_Hz, dt_usec);
+                    prevTime = currTime;
+                    */
+                    //                    
                    break;
 
                 case 0xfff40000ffffffffll:
@@ -361,7 +397,7 @@ void drvNSLS2_VEM::readThread(void)
 
 
                 default: 
-                    
+                    printf("%s::%s: warning, lost sync, no NaN where expected; resynchronizing\n");
                     // We have lost sync, probably due to a dropped packet.
                     // Recover sync by reading 2 times length per sample, which is enough to guarantee that
                     // it will contain a NaN unless we are losing many packets
@@ -566,8 +602,8 @@ asynStatus drvNSLS2_VEM::setAcquireParams()
     getIntegerParam(P_NumAcquire,       &numAcquire);
 
     // Compute the sample time.  This is 10 microseconds times valuesPerRead. 
-    valuesPerRead = 10;  //10 kHz fixed rate
-    sampleTime = 10e-6 * valuesPerRead;
+    //valuesPerRead = 10;  //10 kHz fixed rate
+    sampleTime = 1e-4 * valuesPerRead;
     setDoubleParam(P_SampleTime, sampleTime);
 
     // Compute the number of values that will be accumulated in the ring buffer before averaging
@@ -769,6 +805,7 @@ asynStatus drvNSLS2_VEM::setTriggerPolarity(epicsInt32 value)
   */
 asynStatus drvNSLS2_VEM::setValuesPerRead(epicsInt32 value) 
 {    
+    printf("setValuesPerRead=%d\n", value);
     return setAcquireParams();
 }
 
@@ -789,9 +826,8 @@ asynStatus drvNSLS2_VEM::readStatus()
     prevAcquiring = acquiring_;
     if (prevAcquiring) setAcquire(0);
 
-
     // Compute the sample time.  This is 10 microseconds times valuesPerRead. 
-    sampleTime = 10e-6 * valuesPerRead;
+    sampleTime = 1e-4 * valuesPerRead;
     setDoubleParam(P_SampleTime, sampleTime);
 
 
@@ -815,7 +851,7 @@ asynStatus drvNSLS2_VEM::readStatus()
     setIntegerParam(P_ValuesPerRead, valuesPerRead);
 
     // Compute the sample time.  This is 10 microseconds times valuesPerRead. 
-    sampleTime = 10e-6 * valuesPerRead;
+    sampleTime = 1e-4 * valuesPerRead;
     setDoubleParam(P_SampleTime, sampleTime);
 
     strcpy(outString_, "HVS:?");

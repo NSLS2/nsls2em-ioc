@@ -155,13 +155,13 @@ drvQuadEM::drvQuadEM(const char *portName, int ringBufferSize)
     }
    
     epicsAtExit(exitHandlerC, this);
-}
+}      
 
 /** This function computes the sums, diffs and positions, and does callbacks 
   * \param[in] raw Array of raw current readings 
   */
   //void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS])
-  void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS], epicsFloat64 evr_timestamp)
+  void drvQuadEM::computePositions(epicsFloat64 raw[QE_MAX_INPUTS], epicsFloat64 evr_timestamp, uint8_t gpio, uint32_t fa_count)
 {
     int i;
     int count;
@@ -182,8 +182,9 @@ drvQuadEM::drvQuadEM(const char *portName, int ringBufferSize)
     static const char *functionName = "computePositions";
     
     //test timestamp
-    epicsTimeGetCurrent(&now);
-    timeStamp = (now.secPastEpoch + EPICS_EPOCH_OFFSET) + now.nsec / 1.e9;
+    //epicsTimeGetCurrent(&now);
+    //timeStamp = (now.secPastEpoch + EPICS_EPOCH_OFFSET) + now.nsec / 1.e9;
+    timeStamp = evr_timestamp;
     // 
 
     getIntegerParam(P_Geometry, &geometry);
@@ -245,6 +246,10 @@ drvQuadEM::drvQuadEM(const char *portName, int ringBufferSize)
     // add EVR timestamp data
     doubleData[QEEVRtimestamp] = timeStamp;
     //printf("evr=%f\n", timeStamp);
+    //7/22/25 ISS
+    doubleData[QEGPIO] = gpio;
+    doubleData[QEFACounter] = fa_count;
+
     //
     //printf("size=%d\n", sizeof(doubleData));
     count = epicsRingBytesPut(ringBuffer_, (char *)&doubleData, sizeof(doubleData));

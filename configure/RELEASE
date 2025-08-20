@@ -29,6 +29,9 @@
 #SNCSEQ = $(MODULES)/seq-ver
 
 #
+
+STD=/epics/modules/std
+
 SUPPORT=/usr/lib/epics
 
 # EPICS_BASE should appear last so earlier modules can override stuff:

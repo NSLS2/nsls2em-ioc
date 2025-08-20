@@ -6,7 +6,6 @@ include $(TOP)/configure/CONFIG
 # Install databases, templates & substitutions like this
 DB += nsls2emVersion.db
 DB += quadEM.template
-DB += TetrAMM.template
 #
 DB += nsls2em_RevD.template
 DB += quadEM_nsls2em.template
@@ -23,6 +22,7 @@ DB += StatusFloatReg.template StatusFloatReg.substitutions
 DB += StatusReg.template StatusReg.substitutions
 DB += RangeGainOffset.template RangeGainOffset.substitutions
 DB += fb_epid.db
+DB += rf_epid.db
 
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_TEMPLATE = <templatename>

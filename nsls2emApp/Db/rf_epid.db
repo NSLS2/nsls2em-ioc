@@ -1,0 +1,160 @@
+record(bo,     "$(S1){$(D1)-$(SDE)}Cmd:Rst") {
+  field(DESC,  "Reset control loop:")
+  field(PINI,  "YES")
+  field(ZNAM,  "Idle")
+  field(ONAM,  "Reset")
+  field(HIGH,  "1.0")
+  field(FLNK,  "$(S1){$(D1)-$(SDE)}Phs:Offs2-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SDE)}Phs:Offs2-Calc") {
+  field(DESC,  "Reset control loop:")
+  field(CALC,  "(A+B)/2.0")
+  field(INPA,  "$(S1){$(D1)-$(SD2)}Phs:IWutN1-Calc")
+  field(INPB,  "$(S1){$(D1)-$(SD3)}Phs:IWutN1-Calc")
+  field(FLNK,  "$(S1){$(D1)-$(SDE)}Phs:Offs1-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SDE)}Phs:Offs1-Calc") {
+  field(DESC,  "Normalized 0 ref :")
+  field(CALC,  "(A>B)?(A-D):((A<C)?(A+D):A)")
+  field(INPA,  "$(S1){$(D1)-$(SDE)}Phs:Offs2-Calc")
+  field(INPB,  "+180.0")
+  field(INPC,  "-180.0")
+  field(INPD,  "+360.0")
+  field(OUT,   "$(S1){$(D1)-$(SDE)}Phs:R-SP PP")
+}
+
+record(ao,     "$(S1){$(D1)-$(SDE)}Phs:R-SP") {
+  field(DESC,  "External phase ref:")
+  field(DRVH,  "+180.0")
+  field(HOPR,  "+180.0")
+  field(LOPR,  "-180.0")
+  field(DRVL,  "-180.0")
+  field(PREC,  "3")
+}
+
+record(calcout,"$(S1){$(D1)-$(SD2)}Phs:IWutN2-Calc") {
+  field(DESC,  "Normalized phase:")
+  field(SCAN,  "1 second")
+  field(CALC,  "A-B")
+  field(INPA,  "$(S1){$(D1)-$(SD2)}Phs:IWut")
+  field(INPB,  "$(S1){$(D1)-$(SD0)}Phs:IWut")
+  field(FLNK,  "$(S1){$(D1)-$(SD2)}Phs:IWutN1-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SD2)}Phs:IWutN1-Calc") {
+  field(DESC,  "Normalized phase:")
+  field(CALC,  "(A>B)?(A-D):((A<C)?(A+D):A)")
+  field(INPA,  "$(S1){$(D1)-$(SD2)}Phs:IWutN2-Calc")
+  field(INPB,  "+180.0")
+  field(INPC,  "-180.0")
+  field(INPD,  "+360.0")
+  field(FLNK,  "$(S1){$(D1)-$(SD3)}Phs:IWutN2-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SD3)}Phs:IWutN2-Calc") {
+  field(DESC,  "Normalized phase:")
+  field(CALC,  "A-B")
+  field(INPA,  "$(S1){$(D1)-$(SD3)}Phs:IWut")
+  field(INPB,  "$(S1){$(D1)-$(SD0)}Phs:IWut")
+  field(FLNK,  "$(S1){$(D1)-$(SD3)}Phs:IWutN1-Calc") 
+}
+
+record(calcout,"$(S1){$(D1)-$(SD3)}Phs:IWutN1-Calc") {
+  field(DESC,  "Normalized phase:")
+  field(CALC,  "(A>B)?(A-D):((A<C)?(A+D):A)")
+  field(INPA,  "$(S1){$(D1)-$(SD3)}Phs:IWutN2-Calc")
+  field(INPB,  "+180.0")
+  field(INPC,  "-180.0")
+  field(INPD,  "+360.0")
+  field(FLNK,  "$(S1){$(D1)-$(SDE)}Phs:Y-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SDE)}Phs:Y-Calc") {
+  field(DESC,  "Phase delay calc:")
+  field(CALC,  "(A+B)/2.0")
+  field(INPA,  "$(S1){$(D1)-$(SD2)}Phs:IWutN1-Calc")
+  field(INPB,  "$(S1){$(D1)-$(SD3)}Phs:IWutN1-Calc")
+  field(OUT,   "$(S1){$(D1)-$(SDE)}Phs:Y-I PP")
+}
+
+record(ao,     "$(S1){$(D1)-$(SDE)}Phs:Y-I") {
+  field(DESC,  "Phase error Cav+Fwd:")
+  field(PREC,  "3")
+  field(FLNK,  "$(S1){$(D1)-$(SDE)}Phs:E-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SDE)}Phs:E-Calc") {
+  field(DESC,  "Phase delay calc:")
+  field(CALC,  "A-B")
+  field(INPA,  "$(S1){$(D1)-$(SDE)}Phs:R-SP")
+  field(INPB,  "$(S1){$(D1)-$(SDE)}Phs:Y-I")
+  field(OUT,   "$(S1){$(D1)-$(SDE)}Phs:E-I PP")
+}
+
+record(ao,     "$(S1){$(D1)-$(SDE)}Phs:E-I") {
+  field(DESC,  "Phase error Cav+Fwd:")
+  field(PREC,  "3")
+  field(FLNK,  "$(S1){$(D1)-PID}Dsbl:Calc")
+}
+
+record(calcout, "$(S1){$(D1)-PID}Dsbl:Calc") {
+  field(DESC,   "Signal too low:")
+  field(CALC,   "((A<D)||(B<D)||(C<D))?1:0")
+  field(INPA,   "$(S1){$(D1)-$(SD2)}E:N-I")
+  field(INPB,   "$(S1){$(D1)-$(SD3)}E:N-I")
+  field(INPC,   "$(S1){$(D1)-$(SD0)}E:N-I")
+  field(INPD,   "0.09")
+  field(OUT,    "$(S1){$(D1)-PID}Dsbl:Sts PP")
+}
+
+record(bo,      "$(S1){$(D1)-PID}Dsbl:Sts") {
+  field(DESC,   "Disable:")
+  field(ZNAM,   "Enable")
+  field(ONAM,   "Disable")
+  field(FLNK,   "$(S1){$(D1)-PID}Val:C")
+}
+
+record(epid,    "$(Sys)$(Dev)PID") {
+  field(INP,    "$(Sys)$(Dev)Inp-Sts")
+  field(SMSL,   "closed_loop")
+  field(STPL,   "$(S1){$(D1)-$(SDE)}Phs:R-SP")
+  field(OUTL,   "$(S1){$(D1)-$(SDE)}Phs:U-SP")
+  field(PREC,   "3")
+  field(KP,     "0.4")
+  field(KI,     "0.2")
+  field(KD,     "0.0")
+  field(DRVH,   "+32767.0")
+  field(DRVL,   "-32767.0")
+  field(EGU,    "$(OEGU,)")
+  field(SDIS,   "$(S1){$(D1)-PID}Dsbl:Sts")
+  field(FLNK,   "$(S1){$(D1)-$(SDE)}Phs:U-SP")
+}
+
+record(ao,      "$(S1){$(D1)-$(SDE)}Phs:U-SP") {
+  field(DESC,   "Controller output U:")
+  field(PREC,   "3")
+  field(FLNK,   "$(S1){$(D1)-$(SDE)}Phs:SP-Calc")
+}
+
+record(calcout,"$(S1){$(D1)-$(SDE)}Phs:SpInv-Calc") {
+  field(DESC,  "Invert:")
+  field(CALC,  "A")
+  field(INPA,  "$(S1){$(D1)-$(SDE)}Phs:U-SP")
+  field(OUT,   "$(S1){$(D1)-$(SDE)}Phs:SP-Calc PP")
+}
+
+record(calcout,"$(S1){$(D1)-$(SDE)}Phs:SP-Calc") {
+  field(DESC,  "Ranges:")
+  field(CALC,  "(A>B)?(A-D):((A<C)?(A+D):A)")
+  field(INPA,  "$(S1){$(D1)-$(SDE)}Phs:U-SP")
+  field(INPB,  "+180.0")
+  field(INPC,  "-180.0")
+  field(INPD,  "+360.0")
+  field(OUT,   "$(S1){$(D1)}Phs:SP PP")
+}
+
+
+
+

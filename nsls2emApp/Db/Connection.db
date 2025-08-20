@@ -2,7 +2,7 @@
 # The command frame ID is: 80. Frame length is: 128. Socket: Tx (port 7)  #
 
 #Tx Connection PV
-record(bi, "$(PriSys){$(PSC)}Txconn") {
+record(bi,    "$(PriSys){$(PSC)}Txconn") {
   field(DTYP, "PSC Ctrl Connected")
   field(INP , "@CmdPort_$(PSC)")
   field(SCAN, "I/O Intr")
@@ -12,21 +12,48 @@ record(bi, "$(PriSys){$(PSC)}Txconn") {
 }
 
 #flush reg to socket buffer, trigger send to send all socket buffer to PSC
-record(longout, "$(PriSys){$(PSC)}regsend") {
-  field(DTYP, "PSC Ctrl Send")
-  field(SCAN, ".1 second")  
-  # field(SCAN, ".02 second")  
-  field(OUT , "@CmdPort_$(PSC)")
-  field(VAL , "80")
-  field(FLNK, "$(PriSys){$(PSC)}send")
+#record(longout, "$(PriSys){$(PSC)}regsend") {
+#  field(DTYP,   "PSC Ctrl Send")
+  #field(SCAN,   ".1 second")  
+#  field(OUT ,   "@CmdPort_$(PSC)")
+#  field(VAL ,   "80")
+#  field(FLNK,   "$(PriSys){$(PSC)}send")
+#}
+
+record(longout, "$(PriSys){$(PSC)}GoRegSingleWrite") {
+  field(DTYP,   "PSC Ctrl Send")
+  field(OUT ,   "@CmdPort_$(PSC)")
+  field(VAL ,   "80")
+  field(FLNK,   "$(PriSys){$(PSC)}send")
 }
 
 #Send all buffer to PSC
-record(bo, "$(PriSys){$(PSC)}send") {
+record(bo,    "$(PriSys){$(PSC)}send") {
   field(DTYP, "PSC Ctrl Send All")
   field(OUT , "@CmdPort_$(PSC)")
   field(ZNAM, "Send")
   field(ONAM, "Send")
 }
 
+record(bo, "$(PriSys){$(PSC)}wfm-RECONNECT") {
+  field(DTYP, "PSC Ctrl Reconnect")
+  field(OUT , "@wfm_rx_$(PSC)")
+  field(ZNAM, "Wfm Reconnect")
+  field(ONAM, "Wfm Reconnect")
+}
+
+
+record(bo, "$(PriSys){$(PSC)}TX-RECONNECT") {
+  field(DTYP, "PSC Ctrl Reconnect")
+  field(OUT , "@CmdPort_$(PSC)")
+  field(ZNAM, "Ctrl Reconnect")
+  field(ONAM, "Ctrl Reconnect")
+}
+
+record(bo, "$(PriSys){$(PSC)}RX10Hz-RECONNECT") {
+  field(DTYP, "PSC Ctrl Reconnect")
+  field(OUT , "@RxPort_$(PSC)")
+  field(ZNAM, "10Hz Rx Reconnect")
+  field(ONAM, "10Hz Rx Reconnect")
+}
 
