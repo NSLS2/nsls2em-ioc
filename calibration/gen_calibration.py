@@ -27,7 +27,6 @@ serial_numbers = [
     "0025",
     "0026",
     "0027",
-    "0028",
 ]
 
 filename_all = {

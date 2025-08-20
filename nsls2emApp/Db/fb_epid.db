@@ -32,35 +32,36 @@
 # epid record to actually calculate the 
 # feedback response to the input
 #
-record(ao, "$(Sys)$(Dev)PID-SP") {
-  field(OUT, "$(Sys)$(Dev)PID.VAL")
+record(ao,    "$(Sys)$(Dev)PID-SP") {
+  #field(OUT,  "$(Sys)$(Dev)PID.VAL")
+  field(OUT,  "$(Sys)$(Dev)PID.VAL PP")
   field(PREC, "$(PREC,3)")
-  field(EGU, "$(IEGU,)")
+  field(EGU,  "$(IEGU,)")
   field(FLNK, "$(Sys)$(Dev)PID-RB")
-  field(PINI, "YES")
+  #field(PINI, "YES")
   info(autosaveFields, "DESC VAL PREC")
 }
 
-record(ai, "$(Sys)$(Dev)PID-RB") {
-  field(INP, "$(Sys)$(Dev)PID.VAL")
+record(ai,    "$(Sys)$(Dev)PID-RB") {
+  field(INP,  "$(Sys)$(Dev)PID.VAL")
   field(PREC, "$(PREC,3)")
-  field(EGU, "$(IEGU,)")
+  field(EGU,  "$(IEGU,)")
   info(autosaveFields, "PREC")
 }
 
-record(epid, "$(Sys)$(Dev)PID") {
+record(epid,  "$(Sys)$(Dev)PID") {
   field(DESC, "EPID feedback")
-  field(INP, "$(Sys)$(Dev)Inp-Sts")
+  field(INP,  "$(Sys)$(Dev)Inp-Sts")
   field(FMOD, "$(MODE)")
   field(FBON, "Off")
   field(SCAN, "Passive")
-  field(KP, "0")
-  field(KI, "0")
-  field(KD, "0")
-  field(I, "0")
+  field(KP,   "0")
+  field(KI,   "0")
+  field(KD,   "0")
+  field(I,    "0")
   field(DRVL, "0")
   field(DRVH, "0")
-  field(EGU, "$(OEGU,)")
+  field(EGU,  "$(OEGU,)")
   field(PREC, "$(PREC,3)")
   field(FLNK, "$(Sys)$(Dev)Val:OBuf-Calc")
   info(autosaveFields, "DESC PREC SCAN VAL DRVL DRVH FMOD KP KI KD I")
@@ -81,12 +82,34 @@ record(calc, "$(Sys)$(Dev)Val:DBnd-I") {
   field(FLNK, "$(Sys)$(Dev)Sts:FB-Calc")
 }
 
+record(ao,    "$(Sys)$(Dev)Out-Gain-Set") {
+  field(DESC, "PID gain")
+  field(DTYP, "Soft Channel")
+  field(PREC, "3")
+  field(VAL,  "1.0")
+  field(PINI, "YES")
+}
+
+record(ao, "$(Sys)$(Dev)IN-Offset") {
+  field(DTYP, "Soft Channel")
+  field(PREC, "3")
+  field(VAL,  "0.0")
+  field(PINI, "YES")
+}
+
+
+# Note: openloop test use field(CALC, "A")
+#       closeloop use field(CALC, "A+B")
+#       A : PID out
+#       B : DAC set offset
 record(calcout, "$(Sys)$(Dev)Val:OBuf-Calc") {
   field(DESC, "EPID FBON output buffer")
   field(CALC, "A+B")
+#  field(CALC, "A")
   field(INPA, "$(Sys)$(Dev)PID.OVAL")
   field(INPB, "$(OUT)")
-  field(EGU, "$(OEGU,)")
+  field(INPC, "$(Sys)$(Dev)Out-Gain-Set")
+  field(EGU,  "$(OEGU,)")
   field(PREC, "$(PREC,3)")
   field(SDIS, "$(Sys)$(Dev)PID.FBON")
   field(DISA, "1")
@@ -146,11 +169,12 @@ record(calcout, "$(Sys)$(Dev)Sts:FB-Calc") {
 
 #
 # Monitor of input value
-#
+# INPD - user offset for the test
 record(calcout, "$(Sys)$(Dev)Inp-Sts") {
   field(INPA, "$(IN)")
   field(INPB, "$(Sys)$(Dev)Inp-LowLim")
   field(INPC, "$(Sys)$(Dev)Inp-HighLim")
+#  field(INPD, "$(Sys)$(Dev):IN-Offset CP")
   field(CALC, "A")
   field(OCAL, "(A>B)&&(A<C)")
   field(DOPT, "Use OCAL")
@@ -240,7 +264,7 @@ record(calcout, "$(Sys)$(Dev)Out-Sts") {
   field(DOPT, "Use CALC")
   field(INPA, "$(Sys)$(Dev)Val:OBuf3.OVAL")
   field(PREC, "$(PREC,3)")
-  field(OUT, "$(OUT)")
+  field(OUT, "$(OUT) PP")
 }
 
 record(calcout, "$(Sys)$(Dev)Sts:Warn") {

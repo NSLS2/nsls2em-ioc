@@ -1,7 +1,7 @@
 file db/CommandReg.template
 {pattern
 {SCAN,RegOffset,Reg,Name}
-{".1 second",4,Reg1,Gpio}
+#{"1 second",4,Reg1,Gpio}
 {"Passive",8,Reg2,AdcTest}
 {"Passive",32,Reg8,SA-Rate-Sel}
 {"Passive",36,Reg9,SA-IRQ}
@@ -27,17 +27,33 @@ file db/CommandReg.template
 {"Passive",128,Reg32,HV-Bias}
 {"Passive",136,Reg34,Xpos-Offset}
 {"Passive",140,Reg35,Ypos-Offset}
-{"Passive",224,Reg56,EVR-trig}
-{"Passive",228,Reg57,EVR-num}
+#176, Reg44 Ampl:SaChA-I
+#Reg44 Ampl:SaChB-I
+#Reg45
+#Reg46
+{"Passive",224,Reg56,EVR-trigDly}
+{"Passive",228,Reg57,EVR-trigNum}
+#{"Passive",232,Reg58,DMA-SoftTrig}
+#{"Passive",240,Reg60,DDS-Freq}
+{"Passive",244,Reg61,DDS-Enable}
+{"Passive",248,Reg62,ADC-filt}
 {"Passive",288,Reg72,FB-Dac}
 {"Passive",292,Reg73,FB-Dac-Ld}
-{"Passive",296,Reg74,DAC-opmode}
+#{"Passive",296,Reg74,DAC-opmode}
 {"Passive",300,Reg76,ThermDac}
 {"Passive",320,Reg80,ThermData}
-{"Passive",520,Reg130,Soft-trig}
+#Reg84 - 87
+#Reg88 - 95 ADC peak to peak
+#Reg100 - Run/Stop for quadEM send
+#Reg127 - Cnt:Trig-I
+#508, Reg127 Cnt:Trig-I
+
+{"Passive",520,Reg130,DMA-Soft-trig}
 {"Passive",532,Reg133,FA-Rate-Sel}
 {"Passive",536,Reg134,FA-Ctl}
 {"Passive",540,Reg135,FA-Stop}
+{"Passive",544,FA:DMA:Size,Reg136}
+#
 {"Passive",560,Reg140,ChA-R0-Ofst}
 {"Passive",564,Reg141,ChA-R1-Ofst}
 {"Passive",568,Reg142,ChA-R2-Ofst}
@@ -86,5 +102,52 @@ file db/CommandReg.template
 {"Passive",740,Reg185,ChD-R3-Gain}
 {"Passive",744,Reg186,ChD-R4-Gain}
 {"Passive",748,Reg187,ChD-R5-Gain}
+#Reg191 - Freq:Rx-I
+#Reg192 - FAtxCnt-I
 {"Passive",800,Reg200,quad-Psc-Sel}
+#Reg201 - A uA to quadEM
+#Reg202 - B uA to quadEM
+#Reg203 - C uA to quadEM
+#Reg204 - D uA to quadEM
+#Reg210 - 213 reserved by soft DACsetpoint
+#
+#Reg215 - 235 for PID
+{"Passive",860, Reg215, FPGA-PIref-X-nm}
+{"Passive",864, Reg216, FPGA-PIref-Y-nm}
+
+{"Passive",884,Reg221,PI:DAC_Offset}
+{"Passive",888,Reg222,PI:OUT:Limit}
+
+#read only
+#{"Passive",892,Reg223,FPGA-DAC-PIout-X}
+#{"Passive",896,Reg224,FPGA-DAC-PIout-Y}
+
+
+#--freq_div_ch0 0x3D0   976     244
+#--freq_div_ch1 0x3D4   980     245
+#--freq_div_ch2 0x3D8   984     246
+#--freq_div_ch3 0x3DC   988     247
+#--pulse_width_ch0      0x3E0   992     248
+#--pulse_width_ch1      0x3E4   996     249
+#--pulse_width_ch2      0x3E8   1000    250
+#--pulse_width_ch3      0x3EC   1004    251
+
+{"Passive",976,GPIO:Freq:Out0,Reg244}
+{"Passive",980,GPIO:Freq:Out1,Reg245}
+{"Passive",984,GPIO:Freq:Out2,Reg246}
+{"Passive",988,GPIO:Freq:Out3,Reg247}
+{"Passive",992,GPIO:Width:Out0,Reg248}
+{"Passive",996,GPIO:Width:Out1,Reg249}
+{"Passive",1000,GPIO:Width:Out2,Reg250}
+{"Passive",1004,GPIO:Width:Out3,Reg251}
+#
+{"Passive",1008,GPIO:MaxCNT0,Reg252}
+{"Passive",1012,GPIO:MaxCNT1,Reg253}
+{"Passive",1016,GPIO:MaxCNT2,Reg254}
+{"Passive",1020,GPIO:MaxCNT3,Reg255}
+
+## MAX 350 - 1400 bytes
+#
+#Reg500 - SysReboot
+#Reg501 - vTask delay
 }

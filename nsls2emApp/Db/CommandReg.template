@@ -1,19 +1,22 @@
+
 record(longout, "$(PriSys){$(PSC)}$(Reg)-Sp") {
   field(DESC, "$(Reg)-$(Name)")
 #  field(SCAN, "$(SCAN)")
-  field(DTYP, "PSC Reg")
+# field(DTYP, "PSC Reg")
+  field(DTYP, "PSC Single I32")
 #
-  info(autosaveFields_pass0, "VAL")
-  info(SYNC, "ProcOnConn")
-  field(TPRO, "1")
+#  info(autosaveFields_pass0, "VAL")
+#  info(SYNC, "ProcOnConn")
+#  field(TPRO, "1")
 #
   field(OUT , "@CmdPort_$(PSC) 80 $(RegOffset)")  
+  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
 
 record(longin, "$(PriSys){$(PSC)}$(Reg)-I")
 {
   field(DESC, "$(Reg)-$(Name)")
   field(DTYP, "PSC Reg")
-  field(INP , "@CmdPort_$(PSC) 80 $(RegOffset)")
+  field(INP , "@RxPort_$(PSC) 82 $(RegOffset)")
   field(SCAN, "I/O Intr")
 }

@@ -1,3 +1,16 @@
+
+
+# Macro
+#epicsEnvSet("SYS",    "XF:31ID-BI:")
+#epicsEnvSet("DEV",    "TetrAMM:")
+#epicsEnvSet("PORT",      "TetrAMM")
+#epicsEnvSet("TEMPLATE",  "TetrAMM")
+##epicsEnvSet("MODEL",     "TetrAMM")
+#epicsEnvSet("QSIZE",     "20")
+#epicsEnvSet("RING_SIZE", "10000")
+#epicsEnvSet("TSPOINTS",  "1000")
+
+#
 epicsEnvSet("T1",  "Current1")
 epicsEnvSet("T2",  "Current2")
 epicsEnvSet("T3",  "Current3")
@@ -10,18 +23,10 @@ epicsEnvSet("T9",  "DiffY")
 epicsEnvSet("T10", "PosX")
 epicsEnvSet("T11", "PosY")
 epicsEnvSet("T12", "EVR")
+epicsEnvSet("T13", "GPIO")
+epicsEnvSet("T14", "COUNT")
 
-# Macro
-#epicsEnvSet("SYS",    "XF:31ID-BI:")
-#epicsEnvSet("DEV",    "TetrAMM:")
-#epicsEnvSet("PORT",      "TetrAMM")
-#epicsEnvSet("TEMPLATE",  "TetrAMM")
-##epicsEnvSet("MODEL",     "TetrAMM")
-#epicsEnvSet("QSIZE",     "20")
-#epicsEnvSet("RING_SIZE", "10000")
-#epicsEnvSet("TSPOINTS",  "1000")
-
-# Create 11 statistics plugins
+# Create 14 statistics plugins
 
 NDStatsConfigure("$(PORT)_STATS1", $(QSIZE), 0, "$(PORT)", 0, 0, 0)
 dbLoadRecords("$(ADCORE)/db/NDStats.template",     "P=$(SYS),R={$(DEV)}$(T1):, PORT=$(PORT)_STATS1, ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=0, HIST_SIZE=256,XSIZE=$(RING_SIZE),YSIZE=0,NCHANS=$(TSPOINTS),ENABLED=1,")
@@ -85,24 +90,35 @@ dbLoadRecords("$(ADCORE)/db/NDStats.template",     "P=$(SYS),R={$(DEV)}$(T12):,P
 NDTimeSeriesConfigure("$(PORT)_STATS12_TS", $(QSIZE), 0, "$(PORT)_STATS12", 1, 23)
 dbLoadRecords("$(ADCORE)/db/NDTimeSeries.template",  "P=$(SYS),R={$(DEV)}$(T12):TS:, PORT=$(PORT)_STATS12_TS,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)_STATS12,NDARRAY_ADDR=1,NCHANS=$(TSPOINTS),ENABLED=1")
 
+# 7/22/25 GPIO
+NDStatsConfigure("$(PORT)_STATS13",$(QSIZE), 0, "$(PORT)", 12, 0, 0)
+dbLoadRecords("$(ADCORE)/db/NDStats.template",     "P=$(SYS),R={$(DEV)}$(T13):,PORT=$(PORT)_STATS13,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=12,HIST_SIZE=256,XSIZE=$(RING_SIZE),YSIZE=0,NCHANS=$(TSPOINTS),ENABLED=1")
+NDTimeSeriesConfigure("$(PORT)_STATS13_TS", $(QSIZE), 0, "$(PORT)_STATS13", 1, 23)
+dbLoadRecords("$(ADCORE)/db/NDTimeSeries.template",  "P=$(SYS),R={$(DEV)}$(T13):TS:, PORT=$(PORT)_STATS13_TS,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)_STATS13,NDARRAY_ADDR=1,NCHANS=$(TSPOINTS),ENABLED=1")
+# 7/22/25 COUNT
+NDStatsConfigure("$(PORT)_STATS14",$(QSIZE), 0, "$(PORT)", 13, 0, 0)
+dbLoadRecords("$(ADCORE)/db/NDStats.template",     "P=$(SYS),R={$(DEV)}$(T14):,PORT=$(PORT)_STATS14,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=13,HIST_SIZE=256,XSIZE=$(RING_SIZE),YSIZE=0,NCHANS=$(TSPOINTS),ENABLED=1")
+NDTimeSeriesConfigure("$(PORT)_STATS14_TS", $(QSIZE), 0, "$(PORT)_STATS14", 1, 23)
+dbLoadRecords("$(ADCORE)/db/NDTimeSeries.template",  "P=$(SYS),R={$(DEV)}$(T14):TS:, PORT=$(PORT)_STATS14_TS,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT)_STATS14,NDARRAY_ADDR=1,NCHANS=$(TSPOINTS),ENABLED=1")
+
 
 
 # Create a netCDF file saving plugin.
-NDFileNetCDFConfigure("$(PORT)_FileNetCDF1", $(QSIZE), 0, "$(PORT)", 12)
-dbLoadRecords("$(ADCORE)/db/NDFileNetCDF.template","P=$(SYS),R={$(DEV)}netCDF1:,PORT=$(PORT)_FileNetCDF1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=12,ENABLED=0")
+NDFileNetCDFConfigure("$(PORT)_FileNetCDF1", $(QSIZE), 0, "$(PORT)", 14)
+dbLoadRecords("$(ADCORE)/db/NDFileNetCDF.template","P=$(SYS),R={$(DEV)}netCDF1:,PORT=$(PORT)_FileNetCDF1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=14,ENABLED=0")
 
 # Create an HDF5 file saving plugin
-NDFileHDF5Configure("$(PORT)_FileHDF1", $(QSIZE), 0, "$(PORT)", 12)
+NDFileHDF5Configure("$(PORT)_FileHDF1", $(QSIZE), 0, "$(PORT)", 14)
 dbLoadRecords("$(ADCORE)/db/NDFileHDF5.template",  "P=$(SYS),R={$(DEV)}HDF1:,PORT=$(PORT)_FileHDF1,ADDR=0,TIMEOUT=1,XMLSIZE=2048,NDARRAY_PORT=$(PORT)")
 
 # This creates a waveform large enough for 11x10000 arrays.
-NDStdArraysConfigure("$(PORT)_Image1", $(QSIZE), 0, "$(PORT)", 12)
-dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(SYS),R={$(DEV)}image1:,PORT=$(PORT)_Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=12,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=110000,ENABLED=0")
+NDStdArraysConfigure("$(PORT)_Image1", $(QSIZE), 0, "$(PORT)", 14)
+dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(SYS),R={$(DEV)}image1:,PORT=$(PORT)_Image1,ADDR=0,TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=14,TYPE=Float64,FTVL=DOUBLE,NELEMENTS=110000,ENABLED=0")
 
 
 # Time series plugin
-NDTimeSeriesConfigure("$(PORT)_TS1", $(QSIZE), 0, "$(PORT)", 12, 12)
-dbLoadRecords("$(ADCORE)/db/NDTimeSeries.template",  "P=$(SYS),R={$(DEV)}TS:,       PORT=$(PORT)_TS1,ADDR=0, TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=11,NCHANS=$(TSPOINTS),TIME_LINK=$(SYS){$(DEV)}SampleTime_RBV CP MS,ENABLED=1")
+NDTimeSeriesConfigure("$(PORT)_TS1", $(QSIZE), 0, "$(PORT)", 14, 14)
+dbLoadRecords("$(ADCORE)/db/NDTimeSeries.template",  "P=$(SYS),R={$(DEV)}TS:,       PORT=$(PORT)_TS1,ADDR=0, TIMEOUT=1,NDARRAY_PORT=$(PORT),NDARRAY_ADDR=13,NCHANS=$(TSPOINTS),TIME_LINK=$(SYS){$(DEV)}SampleTime_RBV CP MS,ENABLED=1")
 dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T1):, PORT=$(PORT)_TS1,ADDR=0, TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T1)")
 dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T2):, PORT=$(PORT)_TS1,ADDR=1, TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T2)")
 dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T3):, PORT=$(PORT)_TS1,ADDR=2, TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T3)")
@@ -114,6 +130,9 @@ dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T8
 dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T9):, PORT=$(PORT)_TS1,ADDR=8 ,TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T9)")
 dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T10):,PORT=$(PORT)_TS1,ADDR=9, TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T10)")
 dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T11):,PORT=$(PORT)_TS1,ADDR=10,TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T11)")
+#
+dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T12):,PORT=$(PORT)_TS1,ADDR=11,TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T12)")
+dbLoadRecords("$(ADCORE)/db/NDTimeSeriesN.template", "P=$(SYS),R={$(DEV)}TS:$(T13):,PORT=$(PORT)_TS1,ADDR=12,TIMEOUT=1,NCHANS=$(TSPOINTS),NAME=$(T13)")
 
 
 

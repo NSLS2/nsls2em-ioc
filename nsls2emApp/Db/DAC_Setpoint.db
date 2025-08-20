@@ -3,16 +3,17 @@
 # ao -> calout -> longout --> pscdrv tcp/ip -> ARM tcp server -> FPGA DAC spi control
 #
 
-# DAC0 Setpoint
+# DAC0 Setpoint +/-10V
 record(ao, "$(PriSys){$(PSC)}DAC-Chan1-Sp")
 {  
   field(HOPR, "9.999")
   field(DRVH, "9.999")
   field(LOPR, "-9.999")
   field(DRVL, "-9.999")  
+  field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan1-calcout")
+  info(autosaveFields, "VAL")
 }
-
 #2nd complement
 record(calcout, "$(PriSys){$(PSC)}DAC-Chan1-calcout") {
   field(INPA, "$(PriSys){$(PSC)}DAC-Chan1-Sp")  
@@ -21,13 +22,44 @@ record(calcout, "$(PriSys){$(PSC)}DAC-Chan1-calcout") {
   field(FLNK, "$(PriSys){$(PSC)}R210-Sp")
 }
 
-record(longout, "$(PriSys){$(PSC)}R210-Sp") {
-  field(DESC, "R210-DAC1-Sp")
-  field(SCAN, "Passive")
-  field(DTYP, "PSC Reg")
-#  field(TPRO, "1")
-  field(OUT , "@CmdPort_$(PSC) 80 840")  
+### PID interface
+# Direct integer DAC value (range: -32768 ~ 32767)
+record(ao, "$(PriSys){$(PSC)}DAC-Chan1-Cp") {
+  field(HOPR, "32767")
+  field(DRVH, "32767")
+  field(LOPR, "-32768")
+  field(DRVL, "-32768")
+  field(VAL , "0") 
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Chan1-PIDout")
+  info(autosaveFields, "VAL")
 }
+# 2's complement encode for DAC
+record(calcout, "$(PriSys){$(PSC)}DAC-Chan1-PIDout") {
+  field(INPA, "$(PriSys){$(PSC)}DAC-Chan1-Cp")
+  field(CALC, "((1-1)<<16) + (((A>32767)?32767:(A<-32768)?(65536-32768):(A>=0)?A:(65536+A)))")
+  field(OUT , "$(PriSys){$(PSC)}R210-Sp")
+  field(FLNK, "$(PriSys){$(PSC)}R210-Sp")
+  field(PREC, "0")
+}
+record(longout, "$(PriSys){$(PSC)}R210-Sp") {
+  field(DESC,  "R210-DAC1-Sp")
+  field(SCAN,  "Passive")
+  field(DTYP,  "PSC Single I32")
+#  field(TPRO, "1")
+  field(OUT , "@CmdPort_$(PSC) 80 840")
+  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")  
+}
+record(longin,  "$(PriSys){$(PSC)}DAC:X-I") {
+    field(DESC, "Reg210, DAC X output")
+    field(DTYP, "PSC Reg")
+    field(INP , "@RxPort_$(PSC) 82 840")
+    field(SCAN, "I/O Intr")
+    field(EGU,  "Cnt")
+}
+
+
+
+
 
 # DAC1 Setpoint
 record(ao, "$(PriSys){$(PSC)}DAC-Chan2-Sp")
@@ -36,6 +68,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan2-Sp")
   field(DRVH, "9.999")
   field(LOPR, "-9.999")
   field(DRVL, "-9.999")  
+  field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan2-calcout")
 }
 
@@ -47,13 +80,42 @@ record(calcout, "$(PriSys){$(PSC)}DAC-Chan2-calcout") {
   field(FLNK, "$(PriSys){$(PSC)}R211-Sp")
 }
 
+###
+### PID interface
+# Direct integer DAC value (range: -32768 ~ 32767)
+record(ao, "$(PriSys){$(PSC)}DAC-Chan2-Cp") {
+  field(HOPR, "32767")
+  field(DRVH, "32767")
+  field(LOPR, "-32768")
+  field(DRVL, "-32768")
+  field(VAL , "0") 
+  field(FLNK, "$(PriSys){$(PSC)}DAC-Chan2-PIDout")
+  info(autosaveFields, "VAL")
+}
+# 2's complement encode for DAC
+record(calcout, "$(PriSys){$(PSC)}DAC-Chan2-PIDout") {
+  field(INPA, "$(PriSys){$(PSC)}DAC-Chan2-Cp")
+  field(CALC, "((1-1)<<16) + (((A>32767)?32767:(A<-32768)?(65536-32768):(A>=0)?A:(65536+A)))")
+  field(OUT , "$(PriSys){$(PSC)}R211-Sp")
+  field(FLNK, "$(PriSys){$(PSC)}R211-Sp")
+  field(PREC, "0")
+}
 record(longout, "$(PriSys){$(PSC)}R211-Sp") {
   field(DESC, "R211-DAC1-Sp")
   field(SCAN, "Passive")
-  field(DTYP, "PSC Reg")
+  field(DTYP, "PSC Single I32")
 #  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 844")  
+  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
+record(longin,  "$(PriSys){$(PSC)}DAC:Y-I") {
+    field(DESC, "Reg211, DAC Y output")
+    field(DTYP, "PSC Reg")
+    field(INP , "@RxPort_$(PSC) 82 844")
+    field(SCAN, "I/O Intr")
+    field(EGU,  "Cnt")
+}
+
 
 # DAC2 Setpoint
 record(ao, "$(PriSys){$(PSC)}DAC-Chan3-Sp")
@@ -62,6 +124,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan3-Sp")
   field(DRVH, "9.999")
   field(LOPR, "-9.999")
   field(DRVL, "-9.999")  
+  field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan3-calcout")
 }
 
@@ -76,9 +139,11 @@ record(calcout, "$(PriSys){$(PSC)}DAC-Chan3-calcout") {
 record(longout, "$(PriSys){$(PSC)}R212-Sp") {
   field(DESC, "R212-DAC1-Sp")
   field(SCAN, "Passive")
-  field(DTYP, "PSC Reg")
+  #field(DTYP, "PSC Reg")
+  field(DTYP, "PSC Single I32")
 #  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 848")  
+  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
 
 # DAC3 Setpoint
@@ -88,6 +153,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan4-Sp")
   field(DRVH, "9.999")
   field(LOPR, "-9.999")
   field(DRVL, "-9.999")  
+  field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan4-calcout")
 }
 
@@ -102,10 +168,29 @@ record(calcout, "$(PriSys){$(PSC)}DAC-Chan4-calcout") {
 record(longout, "$(PriSys){$(PSC)}R213-Sp") {
   field(DESC, "R213-DAC1-Sp")
   field(SCAN, "Passive")
-  field(DTYP, "PSC Reg")
+  #field(DTYP, "PSC Reg")
+  field(DTYP, "PSC Single I32")
 #  field(TPRO, "1")
   field(OUT , "@CmdPort_$(PSC) 80 852")  
+  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
+
+record(longin,  "$(PriSys){$(PSC)}DAC:3-I") {
+    field(DESC, "Reg212, DAC3 readback")
+    field(DTYP, "PSC Reg")
+    field(INP , "@RxPort_$(PSC) 82 848")
+    field(SCAN, "I/O Intr")
+    field(EGU,  "Cnt")
+}
+record(longin,  "$(PriSys){$(PSC)}DAC:4-I") {
+    field(DESC, "Reg213, DAC4 readback")
+    field(DTYP, "PSC Reg")
+    field(INP , "@RxPort_$(PSC) 82 852")
+    field(SCAN, "I/O Intr")
+    field(EGU,  "Cnt")
+}
+
+
 
 # 3/31/25: Bias DAC output
 record(ao, "$(PriSys){$(PSC)}Bias-Sp")
