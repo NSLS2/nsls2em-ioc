@@ -76,21 +76,8 @@ nsls2em_SRCS_vxWorks += -nil-
 # To build SNL programs, SNCSEQ must be defined
 # in the <top>/configure/RELEASE file
 ifneq ($(SNCSEQ),)
-    # Build sncExample into nsls2emSupport
-    sncExample_SNCFLAGS += +r
-    nsls2em_DBD += sncExample.dbd
-    # A .stt sequence program is *not* pre-processed:
-    nsls2emSupport_SRCS += sncExample.stt
     nsls2emSupport_LIBS += seq pv
     nsls2em_LIBS += seq pv
-
-    # Build sncProgram as a standalone program
-    PROD_HOST += sncProgram
-    sncProgram_SNCFLAGS += +m
-    # A .st sequence program *is* pre-processed:
-    sncProgram_SRCS += sncProgram.st
-    sncProgram_LIBS += seq pv
-    sncProgram_LIBS += $(EPICS_BASE_HOST_LIBS)
 endif
 
 # Link QSRV (pvAccess Server) if available
