@@ -76,7 +76,6 @@ nsls2em_SRCS_vxWorks += -nil-
 # To build SNL programs, SNCSEQ must be defined
 # in the <top>/configure/RELEASE file
 ifneq ($(SNCSEQ),)
-    nsls2emSupport_LIBS += seq pv
     nsls2em_LIBS += seq pv
 endif
 
