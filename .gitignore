@@ -12,3 +12,4 @@ O.*
 db/
 bin/
 dbd/
+*.local
