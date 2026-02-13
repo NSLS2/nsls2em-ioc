@@ -25,37 +25,26 @@
 #MODULES = /path/to/modules
 #MYMODULE = $(MODULES)/my-module
 
-# If using the sequencer, point SNCSEQ at its top directory:
-#SNCSEQ = $(MODULES)/seq-ver
+#ADCORE=
+#ADSUPPORT=
+#PSCDRV=
+#QUADEM=
+#NSLS2EM=
+#STD=
 
-#
-
-STD=/epics/modules/std
-
-SUPPORT=/usr/lib/epics
+#ASYN=
+#AUTOSAVE=
+#BUSY=
+#CALC=
+#DEVIOCSTATS=
+#SSCAN=
+#STREAM=
+#SNCSEQ=
+#RECCASTER=
+#MOTOR=
 
 # EPICS_BASE should appear last so earlier modules can override stuff:
-EPICS_BASE=/usr/lib/epics
-
-# Set RULES here if you want to use build rules from somewhere
-# other than EPICS_BASE:
-#RULES = $(MODULES)/build-rules
-
-
-###
-ASYN=/usr/lib/epics
-AUTOSAVE=/usr/lib/epics
-IOCSTATS=/usr/lib/epics
-CAPUTLOG=/usr/lib/epics
-BUSY=/usr/lib/epics
-CALC=/usr/lib/epics
-#PSCDRV=$(SUPPORT)/pscdrv
-PSCDRV=/epics/modules/pscdrv
-
-NPDPLUGIN=/epics/modules
-AREA_DETECTOR=/epics/modules
-ADCORE=/epics/modules/ADCore
-
+#EPICS_BASE=/usr/lib/epics
 
 # These lines allow developers to override these RELEASE settings
 # without having to modify this file directly.
