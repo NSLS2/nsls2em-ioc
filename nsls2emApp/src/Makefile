@@ -26,8 +26,23 @@ $(PROD_NAME)_DBD += pscCore.dbd
 $(PROD_NAME)_DBD += drvNSLS2_VEM.dbd
 $(PROD_NAME)_DBD += epidRecord.dbd
 
+$(PROD_NAME)_DBD += pscCore.dbd
+$(PROD_NAME)_DBD += asSupport.dbd
+$(PROD_NAME)_DBD += drvNSLS2_VEM.dbd
+$(PROD_NAME)_DBD += asyn.dbd
+$(PROD_NAME)_DBD += drvAsynIPPort.dbd
+$(PROD_NAME)_DBD += ADSupport.dbd
+$(PROD_NAME)_DBD += NDPluginSupport.dbd
+$(PROD_NAME)_DBD += busySupport.dbd
+$(PROD_NAME)_DBD += calcSupport.dbd
+$(PROD_NAME)_DBD += system.dbd
+$(PROD_NAME)_DBD += caPutLog.dbd
+$(PROD_NAME)_DBD += caPutLog.dbd
+$(PROD_NAME)_DBD += stdSupport.dbd
+
 $(PROD_NAME)_LIBS += std
 $(PROD_NAME)_LIBS += pscCore
+$(PROD_NAME)_LIBS += caPutLog
 
 $(PROD_NAME)_SRCS += subCalcAlarm.c
 $(PROD_NAME)_SRCS += drvQuadEM.cpp
