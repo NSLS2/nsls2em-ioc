@@ -335,7 +335,7 @@ void drvNSLS2_VEM::readThread(void)
 
             switch(lastValue) {
                 
-                case 0xfff40002ffffffffll:
+                case (long long)0xfff40002ffffffffll:
                     // This is a signalling Nan at the end of normal data                  
                     for (i=numChannels_; i<4; i++) f64Data[i] = 0.0;
                     //printf(" %d: %.9f, %.9f, %.9f, %.9f\n", loop_Cnt, f64Data[0],f64Data[1], f64Data[2], f64Data[3]);                   
@@ -364,7 +364,7 @@ void drvNSLS2_VEM::readThread(void)
                     //                    
                    break;
 
-                case 0xfff40000ffffffffll:
+                case (long long)0xfff40000ffffffffll:
                     // This is a signalling Nan on the rising edge of a trigger
                     numTrigStarts++;
                     if (nextExpectedEdge != 0) {
@@ -374,7 +374,7 @@ void drvNSLS2_VEM::readThread(void)
                     }
                     nextExpectedEdge = 1;
                     break;
-                case 0xfff40001ffffffffll:
+                case (long long)0xfff40001ffffffffll:
                     // This is a signalling Nan on the falling edge of a trigger
                     numTrigEnds++;
                     if (triggerMode == QETriggerModeExtBulb) {
@@ -388,7 +388,7 @@ void drvNSLS2_VEM::readThread(void)
                     nextExpectedEdge = 0;
                     break;
 
-                case 0xfff40003ffffffffll:
+                case (long long)0xfff40003ffffffffll:
                     // This is a signaling Nan when the acquistion was stopped
                     asynPrint(pasynUserSelf, ASYN_TRACEIO_DRIVER,
                             "%s::%s: seen acq done sNaN (0xfff40003ffffffffll)\n",
