@@ -2,6 +2,8 @@ file db/StatusReg.template
 {pattern
 {RegOffset,Reg,Name}
 #{0,Reg0,Gpio}
+{12,GTX-Rx_CRCerror, Reg3}
+{16,GTX-Rx_pktcnt, Reg4}
 {20,Reg5,LED}
 {28,Reg7,FPGA-Ver}
 {52,Reg13,Fan-Speed}
@@ -45,6 +47,10 @@ file db/StatusReg.template
 {372,ADC1-pos_peak,Reg93}
 {376,ADC2-pos_peak,Reg94}
 {380,ADC3-pos_peak,Reg95}
+
+# PID fb in
+{384,FB-Xpos-nm, Reg96}
+{388,FB-Ypos-nm, Reg97}
 
 #{508,Reg127,SA-loopTime}
 #
