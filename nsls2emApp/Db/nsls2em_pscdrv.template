@@ -1,6 +1,7 @@
 # 11/7/25 added FaRate-I
 # 11/19/25 added PI-D and notch filter coefficent W/R
-
+# 3/9/26  added DAC:Slimit for PID step limiter control
+# 5/21/26 added FA:PosSel-Cmd
 
 
 record(bo, "$(PriSys){$(PSC)}OUT0-Cmd") {
@@ -461,7 +462,7 @@ record(calc, "$(PriSys){$(PSC)}FaRate-I") {
 }
 
 
-### PI
+### PI control
 record(bo, "$(PriSys){$(PSC)}PI:I-Reset-Sp") {
   field(DTYP, "Soft Channel")
   field(ZNAM, "I Ready")
@@ -484,25 +485,18 @@ record(bo, "$(PriSys){$(PSC)}DMA:Enable-Cmd") {
 
 record(bo, "$(PriSys){$(PSC)}PI:Refsel-Cmd") {
   field(DTYP, "Soft Channel")
-  field(ZNAM, "User setpoint")
-  field(ONAM, "NCO refernce")
-  field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.B3 PP")
-}
-
-record(bo, "$(PriSys){$(PSC)}PI:Refsel2-Cmd") {
-  field(DTYP, "Soft Channel")
-  field(ZNAM, "User set/NCO")
-  field(ONAM, "Vin")
+  field(ZNAM, "User Set(Opr)")
+  field(ONAM, "Vin-Ch-H(Test)")
   field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.B4 PP")
 }
 
-#disabled
-#record(bo, "$(PriSys){$(PSC)}PI:Insel-Cmd") {
-#  field(DTYP, "Soft Channel")
-#  field(ZNAM, "Position")
-#  field(ONAM, "G/H Voltage")
-#  field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.B5 PP")
-#}
+#
+record(bo, "$(PriSys){$(PSC)}PI:Insel-Cmd") {
+  field(DTYP, "Soft Channel")
+  field(ZNAM, "Pos(Filter/Pos)")
+  field(ONAM, "G/H Voltage")
+  field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.B5 PP")
+}
 
 record(bo, "$(PriSys){$(PSC)}PI:Insel2-Cmd") {
   field(DTYP, "Soft Channel")
@@ -530,7 +524,34 @@ record(bo, "$(PriSys){$(PSC)}DAC3:Out-Sel") {
   field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.B9 PP")
 }
 
-# PID notch filter disable
+#b10
+record(bo, "$(PriSys){$(PSC)}PI:Insel3-Cmd") {
+  field(DTYP, "Soft Channel")
+  field(ZNAM, "PI-Pos-Data")
+  field(ONAM, "PI-GTX-PosData")
+  field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.BA PP")
+}
+
+#b11
+record(bo, "$(PriSys){$(PSC)}PID:I-Sel") {
+  field(DTYP, "Soft Channel")
+  field(ZNAM, "I-Add bypass")
+  field(ONAM, "I-Add Enable")
+  field(PINI, "YES")
+  field(VAL,  "1")
+  info(autosaveFields, "VAL")
+  field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.BB PP")
+}
+#b12:
+record(bo, "$(PriSys){$(PSC)}GTX:CRC-Rst") {
+  field(DTYP, "Soft Channel")
+  field(ZNAM, "Ready")
+  field(ONAM, "CRC Reset")
+  field(HIGH, ".1")
+  field(OUT , "$(PriSys){$(PSC)}Reg214-Sp.BC PP")
+}
+
+#b17 PID notch filter disable
 record(bo, "$(PriSys){$(PSC)}PI:NF-Sel") {
   field(DTYP, "Soft Channel")
   field(ZNAM, "PIDpos in NF disable")
@@ -618,7 +639,7 @@ record(longin,  "$(PriSys){$(PSC)}PI:DAC:Yout-I") {
 record(ao, "$(PriSys){$(PSC)}F:PI:X:Kp-Sp") {
   field(DESC, "Reg217 Kp X")
   field(DTYP, "PSC Single F32")
-  field(PREC,"3")
+  field(PREC,"4")
   field(LINR,"LINEAR")
   field(HOPR,"1000")
   field(LOPR,"-1000")
@@ -632,14 +653,14 @@ record(ai,    "$(PriSys){$(PSC)}F:PI:X:Kp-I") {
   field(DTYP, "PSC Reg F32")
   field(INP , "@RxPort_$(PSC) 82 868")
   field(LINR, "LINEAR")
-  field(PREC, "3")
+  field(PREC, "4")
   field(SCAN, "I/O Intr")
 }
 
 record(ao, "$(PriSys){$(PSC)}F:PI:X:Ki-Sp") {
   field(DESC, "Reg218 Ki X")
   field(DTYP, "PSC Single F32")
-  field(PREC,"3")
+  field(PREC,"4")
   field(LINR,"LINEAR")
   field(HOPR,"1000")
   field(LOPR,"-1000")
@@ -653,7 +674,7 @@ record(ai,    "$(PriSys){$(PSC)}F:PI:X:Ki-I") {
   field(DTYP, "PSC Reg F32")
   field(INP , "@RxPort_$(PSC) 82 872")
   field(LINR, "LINEAR")
-  field(PREC, "3")
+  field(PREC, "4")
   field(SCAN, "I/O Intr")
 }
 
@@ -661,21 +682,21 @@ record(ai,    "$(PriSys){$(PSC)}F:PI:X:Ki-I") {
   field(DTYP, "PSC Reg F32")
   field(INP , "@RxPort_$(PSC) 82 872")
   field(LINR, "LINEAR")
-  field(PREC, "3")
+  field(PREC, "4")
   field(SCAN, "I/O Intr")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Ki-I") {
   field(DTYP, "PSC Reg F32")
   field(INP , "@RxPort_$(PSC) 82 872")
   field(LINR, "LINEAR")
-  field(PREC, "3")
+  field(PREC, "4")
   field(SCAN, "I/O Intr")
 }
 
 record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kp-Sp") {
   field(DESC, "Reg219 Kp Y")
   field(DTYP, "PSC Single F32")
-  field(PREC,"3")
+  field(PREC,"4")
   field(LINR,"LINEAR")
   field(HOPR,"1000")
   field(LOPR,"-1000")
@@ -689,13 +710,13 @@ record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Kp-I") {
   field(DTYP, "PSC Reg F32")
   field(INP , "@RxPort_$(PSC) 82 876")
   field(LINR, "LINEAR")
-  field(PREC, "3")
+  field(PREC, "4")
   field(SCAN, "I/O Intr")
 }
 record(ao, "$(PriSys){$(PSC)}F:PI:Y:Ki-Sp") {
   field(DESC, "Reg220 Ki Y")
   field(DTYP, "PSC Single F32")
-  field(PREC,"3")
+  field(PREC,"4")
   field(LINR,"LINEAR")
   field(HOPR,"1000")
   field(LOPR,"-1000")
@@ -709,7 +730,7 @@ record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Ki-I") {
   field(DTYP, "PSC Reg F32")
   field(INP , "@RxPort_$(PSC) 82 880")
   field(LINR, "LINEAR")
-  field(PREC, "3")
+  field(PREC, "4")
   field(SCAN, "I/O Intr")
 }
 
@@ -1273,14 +1294,14 @@ record(mbbo,"$(PriSys){$(PSC)}DACOut:ModeSel-Cmd") {
   field( TWST, "None")
   field( THST, "FPGA PID OUT")
   field( FRST, "None")
-  field( FVST, "NCO Output")  
+  field( FVST, "Limiter Output")  
   field( TWVL, "2")
   field( THVL, "3")
   field( FRVL, "4")
   field( FVVL, "5")  
   field(SXST,  "None")
   field(SVVL,  "7")
-  field(SVST,  "PID N-Filter out")
+  field(SVST,  "PID N-Filter Out")
 
   field(OUT , "@CmdPort_$(PSC) 80 296")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
@@ -1342,6 +1363,31 @@ record(longin, "$(PriSys){$(PSC)}NCO:Freq-I")
   field(DTYP, "PSC Reg")
   field(INP , "@RxPort_$(PSC) 82 240")
   field(SCAN, "I/O Intr")
+}
+
+#0xF4 select FA position source
+record(mbbo,"$(PriSys){$(PSC)}FA:PosSel-Cmd") {
+  field(SCAN,  "Passive")
+  field(DTYP,  "PSC Single U32")
+  field(ZRVL,  "0")
+  field(ZRST,  "XY_Pos")
+  field(ONVL,  "1")
+  field(ONST,  "GTX_Pos")
+
+#  field( TWST, "None")
+#  field( THST, "FPGA PID OUT")
+#  field( FRST, "None")
+#  field( FVST, "Limiter Output")
+#  field( TWVL, "2")
+#  field( THVL, "3")
+#  field( FRVL, "4")
+#  field( FVVL, "5")
+#  field(SXST,  "None")
+#  field(SVVL,  "7")
+#  field(SVST,  "PID N-Filter Out")
+#
+  field(OUT , "@CmdPort_$(PSC) 80 244")
+  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
 
 
@@ -1408,9 +1454,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kd-Sp") {
   field(DTYP, "PSC Single F32")
   field(PREC,"3")
   field(LINR,"LINEAR")
-  field(HOPR,"1000")
-  field(LOPR,"-1000")
-  field(DRVH,"1000")
+  field(HOPR,"10000")
+  field(LOPR,"-10000")
+  field(DRVH,"10000")
   field(DRVL,"-10000")
   #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 968")
@@ -1429,9 +1475,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kd-Sp") {
   field(DTYP, "PSC Single F32")
   field(PREC,"3")
   field(LINR,"LINEAR")
-  field(HOPR,"1000")
-  field(LOPR,"-1000")
-  field(DRVH,"1000")
+  field(HOPR,"10000")
+  field(LOPR,"-10000")
+  field(DRVH,"10000")
   field(DRVL,"-10000")
   #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 972")
@@ -1450,9 +1496,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kdc-Sp") {
   field(DTYP, "PSC Single F32")
   field(PREC,"3")
   field(LINR,"LINEAR")
-  field(HOPR,"1000")
-  field(LOPR,"-1000")
-  field(DRVH,"1000")
+  field(HOPR,"10000")
+  field(LOPR,"-10000")
+  field(DRVH,"10000")
   field(DRVL,"-10000")
   #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 1060")
@@ -1471,9 +1517,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kdc-Sp") {
   field(DTYP, "PSC Single F32")
   field(PREC,"3")
   field(LINR,"LINEAR")
-  field(HOPR,"1000")
-  field(LOPR,"-1000")
-  field(DRVH,"1000")
+  field(HOPR,"10000")
+  field(LOPR,"-10000")
+  field(DRVH,"10000")
   field(DRVL,"-10000")
   #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 1064")
@@ -1762,3 +1808,38 @@ record(ao, "$(PriSys){$(PSC)}DAC3Gain-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 1140")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
+
+# 3/9/26
+record(longout, "$(PriSys){$(PSC)}DAC:Slimit-Sp") {
+  field(DESC,   "Reg0x478")
+  field(SCAN,   "Passive")
+  field(DTYP,   "PSC Single I32")
+  field(OUT ,   "@CmdPort_$(PSC) 80 1144")
+  field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+}
+record(longin,  "$(PriSys){$(PSC)}DAC:Slimit-I") {
+  field(DTYP, "PSC Reg")
+  field(INP , "@RxPort_$(PSC) 82 1144")
+  field(SCAN, "I/O Intr")
+  field(EGU,  "Cnt")
+}
+
+#event for trigger
+record(longout, "$(PriSys){$(PSC)}event-Sp") {
+  field(DESC,   "Reg0xE4")
+  field(SCAN,   "Passive")
+  field(DTYP,   "PSC Single I32")
+  field(OUT ,   "@CmdPort_$(PSC) 80 228")
+  field(PINI,   "YES")
+  field(VAL,    "35")
+  info(autosaveFields, "VAL")
+  field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+}
+record(longin,  "$(PriSys){$(PSC)}event-I") {
+  field(DTYP, "PSC Reg")
+  field(INP , "@RxPort_$(PSC) 82 228")
+  field(SCAN, "I/O Intr")
+  field(EGU,  "Cnt")
+}
+
+
