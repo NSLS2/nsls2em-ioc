@@ -1,4 +1,4 @@
-epicsEnvSet("DEVICE_IP", "10.69.58.70")
+epicsEnvSet("DEVICE_IP", "10.69.58.68")
 epicsEnvSet("SYS",       "XF:31ID1-BI")
 epicsEnvSet("DEV",       "EM:1")
 epicsEnvSet("PORT",      "NSLS2_EM")
