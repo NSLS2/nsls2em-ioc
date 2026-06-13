@@ -1,13 +1,14 @@
 #!../../bin/linux-x86_64/nsls2em
 
-< /epics/common/xf31id1-ioc1-netsetup.cmd
+< /epics/common/xf31id1-lab3-ioc1-netsetup.cmd
 
 errlogInit(5000)
 
-< "$(FILE_ENV_PATHS=envPaths.cmd)"
+< "$(FILE_ENV_PATHS=envPaths)"
 < "$(FILE_EPICS_ENV=epicsEnv.cmd)"
 
 epicsEnvSet("PREFIX", "$(SYS){$(DEV)}")
+epicsEnvSet("NSLS2EM", "$(TOP)")
 
 ## Register all support components
 dbLoadDatabase "$(NSLS2EM)/dbd/nsls2em.dbd"
@@ -17,7 +18,7 @@ nsls2em_registerRecordDeviceDriver(pdbbase)
 callbackSetQueueSize(32768)
 
 ## Load record instances
-epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db")
+epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(NSLS2EM)/db:$(PSCDRV)/db:$(ADCORE)/db:$(EPICS_BASE)/db")
 
 
 ######################################################
@@ -85,7 +86,14 @@ dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)}$(PID_Y):,IN=$
 # pscDrv port
 epicsThreadSleep 1
 var(PSCDebug, 1)
-createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 1234, 1234)
+# createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 1234, 1234)
+createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 7,0)
+setPSCSendBlockSize("CmdPort_$(DEV)", 80, 1400)
+
+# DMA waveform
+createPSC("wfm_rx_$(DEV)",  $(DEVICE_IP), 3000, 20)
+createPSC("RxPort_$(DEV)", "$(DEVICE_IP)", 7,10)
+
 epicsThreadSleep 1
 
 < $(NSLS2EM)/iocBoot/iocnsls2em/saveRestore.cmd
@@ -106,7 +114,12 @@ save_restoreSet_status_prefix("$(PREFIX)")
 
 iocInit()
 
+epicsThreadSleep 1
+
+cd $(TOP)/as/req
 makeAutosaveFiles()
+cd $(TOP)
+
 create_monitor_set("info_settings.req", 30, "")
 create_monitor_set("info_positions.req", 10, "")
 
