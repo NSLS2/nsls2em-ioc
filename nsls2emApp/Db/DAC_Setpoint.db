@@ -14,6 +14,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan1-Sp")
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan1-calcout")
   info(autosaveFields, "VAL")
 }
+
 #2nd complement
 record(calcout, "$(PriSys){$(PSC)}DAC-Chan1-calcout") {
   field(INPA, "$(PriSys){$(PSC)}DAC-Chan1-Sp")  
@@ -70,6 +71,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan2-Sp")
   field(DRVL, "-9.999")  
   field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan2-calcout")
+  info(autosaveFields, "VAL")
 }
 
 #2nd complement
@@ -126,6 +128,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan3-Sp")
   field(DRVL, "-9.999")  
   field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan3-calcout")
+  info(autosaveFields, "VAL")
 }
 
 #2nd complement
@@ -155,6 +158,7 @@ record(ao, "$(PriSys){$(PSC)}DAC-Chan4-Sp")
   field(DRVL, "-9.999")  
   field(VAL , "0") 
   field(FLNK, "$(PriSys){$(PSC)}DAC-Chan4-calcout")
+  info(autosaveFields, "VAL")
 }
 
 #2nd complement
@@ -200,6 +204,7 @@ record(ao, "$(PriSys){$(PSC)}Bias-Sp")
   field(LOPR, "-9.999")
   field(DRVL, "-9.999")
   field(FLNK, "$(PriSys){$(PSC)}DAC-Bias-calcout")
+  info(autosaveFields, "VAL")
 }
 
 record(calcout, "$(PriSys){$(PSC)}DAC-Bias-calcout") {
