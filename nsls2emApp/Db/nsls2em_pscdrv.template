@@ -321,6 +321,7 @@ record(mbbo,"$(PriSys){$(PSC)}ADC-filt-Sp") {
     field(TWST, "Filt_Pos")    
     field(OUT , "@CmdPort_$(PSC) 80 248")
     field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+    info(autosaveFields, "VAL")
 }
 
 #DMA trigger
@@ -645,9 +646,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kp-Sp") {
   field(LOPR,"-1000")
   field(DRVH,"1000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 868")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Kp-I") {
   field(DTYP, "PSC Reg F32")
@@ -666,9 +667,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Ki-Sp") {
   field(LOPR,"-1000")
   field(DRVH,"1000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 872")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Ki-I") {
   field(DTYP, "PSC Reg F32")
@@ -702,9 +703,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kp-Sp") {
   field(LOPR,"-1000")
   field(DRVH,"1000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 876")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Kp-I") {
   field(DTYP, "PSC Reg F32")
@@ -722,9 +723,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Ki-Sp") {
   field(LOPR,"-1000")
   field(DRVH,"1000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 880")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Ki-I") {
   field(DTYP, "PSC Reg F32")
@@ -934,6 +935,7 @@ record(longout, "$(PriSys){$(PSC)}DDS:Kx-Sp") {
   field(DTYP,   "PSC Single I32")
   field(OUT ,   "@CmdPort_$(PSC) 80 944")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(longin,  "$(PriSys){$(PSC)}DDS:Kx-I") {
   field(DESC, "Reg326")
@@ -948,6 +950,7 @@ record(longout, "$(PriSys){$(PSC)}DDS:Ky-Sp") {
   field(DTYP,   "PSC Single I32")
   field(OUT ,   "@CmdPort_$(PSC) 80 948")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(longin,  "$(PriSys){$(PSC)}DDS:Ky-I") {
   field(DESC, "Reg327")
@@ -1009,9 +1012,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Isgain-Sp") {
   field(LOPR,"0")
   field(DRVH,"1.0")
   field(DRVL,"0")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 952")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Isgain-I") {
   field(DTYP, "PSC Reg F32")
@@ -1029,9 +1032,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Isgain-Sp") {
   field(LOPR,"0")
   field(DRVH,"1.0")
   field(DRVL,"0")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 956")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Isgain-I") {
   field(DTYP, "PSC Reg F32")
@@ -1047,6 +1050,7 @@ record(longout, "$(PriSys){$(PSC)}PI:X:Gain-Sp") {
   field(DTYP,   "PSC Single I32")
   field(OUT ,   "@CmdPort_$(PSC) 80 960")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(longin,  "$(PriSys){$(PSC)}PI:X:Gain-I") {
   field(DESC, "Reg240")
@@ -1062,6 +1066,7 @@ record(longout, "$(PriSys){$(PSC)}PI:Y:Gain-Sp") {
   field(DTYP,   "PSC Single I32")
   field(OUT ,   "@CmdPort_$(PSC) 80 964")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(longin,  "$(PriSys){$(PSC)}PI:Y:Gain-I") {
   field(DESC, "Reg241")
@@ -1305,6 +1310,7 @@ record(mbbo,"$(PriSys){$(PSC)}DACOut:ModeSel-Cmd") {
 
   field(OUT , "@CmdPort_$(PSC) 80 296")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(longin, "$(PriSys){$(PSC)}DAC:Mode-I")
 {
@@ -1458,9 +1464,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kd-Sp") {
   field(LOPR,"-10000")
   field(DRVH,"10000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 968")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Kd-I") {
   field(DTYP, "PSC Reg F32")
@@ -1479,9 +1485,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kd-Sp") {
   field(LOPR,"-10000")
   field(DRVH,"10000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 972")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Kd-I") {
   field(DTYP, "PSC Reg F32")
@@ -1500,9 +1506,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kdc-Sp") {
   field(LOPR,"-10000")
   field(DRVH,"10000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 1060")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Kdc-I") {
   field(DTYP, "PSC Reg F32")
@@ -1521,9 +1527,9 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kdc-Sp") {
   field(LOPR,"-10000")
   field(DRVH,"10000")
   field(DRVL,"-10000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 1064")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Kdc-I") {
   field(DTYP, "PSC Reg F32")
@@ -1558,6 +1564,7 @@ record(ao, "$(PriSys){$(PSC)}NF:b0-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1072")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}NF:b1-Sp") {
   field(DESC,   "0x434")
@@ -1566,6 +1573,7 @@ record(ao, "$(PriSys){$(PSC)}NF:b1-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1076")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}NF:b2-Sp") {
   field(DESC,   "0x438")
@@ -1574,6 +1582,7 @@ record(ao, "$(PriSys){$(PSC)}NF:b2-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1080")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}NF:a1-Sp") {
   field(DESC,   "0x43C")
@@ -1582,6 +1591,7 @@ record(ao, "$(PriSys){$(PSC)}NF:a1-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1084")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}NF:a2-Sp") {
   field(DESC,   "0x440")
@@ -1590,6 +1600,7 @@ record(ao, "$(PriSys){$(PSC)}NF:a2-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1088")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 
 ## 
@@ -1649,6 +1660,7 @@ record(ao, "$(PriSys){$(PSC)}PosNF:b0-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1092")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}PosNF:b1-Sp") {
   field(DESC,   "0x448")
@@ -1657,6 +1669,7 @@ record(ao, "$(PriSys){$(PSC)}PosNF:b1-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1096")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}PosNF:b2-Sp") {
   field(DESC,   "0x44C")
@@ -1665,6 +1678,7 @@ record(ao, "$(PriSys){$(PSC)}PosNF:b2-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1100")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}PosNF:a1-Sp") {
   field(DESC,   "0x450")
@@ -1673,6 +1687,7 @@ record(ao, "$(PriSys){$(PSC)}PosNF:a1-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1104")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(ao, "$(PriSys){$(PSC)}PosNF:a2-Sp") {
   field(DESC,   "0x454")
@@ -1681,6 +1696,7 @@ record(ao, "$(PriSys){$(PSC)}PosNF:a2-Sp") {
   field(DTYP,   "PSC Single F32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1108")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 ###
 record(longin,  "$(PriSys){$(PSC)}PosNF:b0-I") {
@@ -1761,6 +1777,7 @@ record(longout, "$(PriSys){$(PSC)}FF:Dly-Sp") {
   field(DTYP,   "PSC Single I32")
   field(OUT ,   "@CmdPort_$(PSC) 80 1132")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 record(longin,  "$(PriSys){$(PSC)}FF:Dly-I") {
   field(DTYP, "PSC Reg")
@@ -1783,9 +1800,9 @@ record(ao, "$(PriSys){$(PSC)}FF:Gain-Sp") {
   field(LOPR,"-1000")
   field(DRVH,"1000")
   field(DRVL,"-1000")
-  #       info(autosaveFields, "VAL")
   field(OUT , "@CmdPort_$(PSC) 80 1136")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  info(autosaveFields, "VAL")
 }
 
 record(longin,  "$(PriSys){$(PSC)}FF:Gain-I") {
