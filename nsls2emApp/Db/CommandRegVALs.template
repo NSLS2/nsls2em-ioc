@@ -1,6 +1,7 @@
 
 record(longout, "$(PriSys){$(PSC)}$(Reg)-Sp") {
   field(DESC, "$(Reg)-$(Name)")
+  field(VAL, "$(Val)")
   field(DTYP, "PSC Single I32")
   field(OUT , "@CmdPort_$(PSC) 80 $(RegOffset)")  
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")

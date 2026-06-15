@@ -1,3 +1,12 @@
+file db/CommandRegVALs.template
+{ pattern
+  {SCAN,RegOffset,Reg,Name,Val}
+  {"Passive",96,Reg24, ChA-Gain,32767}
+  {"Passive",100,Reg25,ChB-Gain,32767}
+  {"Passive",104,Reg26,ChC-Gain,32767}
+  {"Passive",108,Reg27,ChD-Gain,32767}
+}
+
 file db/CommandReg.template
 {pattern
 {SCAN,RegOffset,Reg,Name}
@@ -16,10 +25,6 @@ file db/CommandReg.template
 {"Passive",84,Reg21,ChB-Offset}
 {"Passive",88,Reg22,ChC-Offset}
 {"Passive",92,Reg23,ChD-Offset}
-{"Passive",96,Reg24, ChA-Gain}
-{"Passive",100,Reg25,ChB-Gain}
-{"Passive",104,Reg26,ChC-Gain}
-{"Passive",108,Reg27,ChD-Gain}
 {"Passive",112,Reg28,I-Gain-Sel}
 {"Passive",116,Reg29,V-Gain-Sel}
 {"Passive",120,Reg30,FA-Freq-Cnt}
