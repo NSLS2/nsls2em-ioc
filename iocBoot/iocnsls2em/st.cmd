@@ -87,8 +87,13 @@ dbLoadRecords("$(NSLS2EM)/db/fb_epid.db", "Sys=$(SYS),Dev={$(DEV)}$(PID_Y):,IN=$
 epicsThreadSleep 1
 var(PSCDebug, 1)
 # createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 1234, 1234)
-createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 7,0)
-setPSCSendBlockSize("CmdPort_$(DEV)", 80, 1400)
+# createPSC("CmdPort_$(DEV)", "$(DEVICE_IP)", 7,0)
+# setPSCSendBlockSize("CmdPort_$(DEV)", 80, 1400)
+
+## UDP Protocol
+# Listen on 0.0.0.0:1234  (pass zero for random port)
+# for messages coming from "device" localhost:8765
+createPSCUDP("CmdPort_$(DEV)", $(DEVICE_IP), 1234, 1234)
 
 # DMA waveform
 createPSC("wfm_rx_$(DEV)",  $(DEVICE_IP), 3000, 20)
