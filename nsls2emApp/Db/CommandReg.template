@@ -5,8 +5,8 @@ record(longout, "$(PriSys){$(PSC)}$(Reg)-Sp") {
 # field(DTYP, "PSC Reg")
   field(DTYP, "PSC Single I32")
 #
-#  info(autosaveFields_pass0, "VAL")
-#  info(SYNC, "ProcOnConn")
+  info(autosaveFields_pass0, "VAL")
+  info(SYNC, "ProcOnConn")
 #  field(TPRO, "1")
 #
   field(OUT , "@CmdPort_$(PSC) 80 $(RegOffset)")  

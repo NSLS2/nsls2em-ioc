@@ -61,6 +61,7 @@ record(mbbo,"$(P)$(R)AcquireMode") {
     field(ONST, "Multiple")
     field(TWVL, "2")
     field(TWST, "Single")
+    info(autosaveFields, "VAL")
 }
 
 record(mbbi,"$(P)$(R)AcquireMode_RBV") {
@@ -81,6 +82,7 @@ record(mbbo,"$(P)$(R)Range") {
     field(PINI, "YES")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT) 0)QE_RANGE")
+    info(autosaveFields, "VAL")    
 }
 
 record(mbbi,"$(P)$(R)Range_RBV") {
@@ -375,6 +377,7 @@ record(longout,"$(P)$(R)ValuesPerRead") {
     field(DTYP, "asynInt32")
     field(VAL,  "1")
     field(OUT,  "@asyn($(PORT) 0)QE_VALUES_PER_READ")
+    info(autosaveFields, "VAL")
 }
 
 record(longin,"$(P)$(R)ValuesPerRead_RBV") {
@@ -390,6 +393,7 @@ record(longout,"$(P)$(R)NumAcquire") {
     field(DTYP, "asynInt32")
     field(VAL,  "1")
     field(OUT,  "@asyn($(PORT) 0)QE_NUM_ACQUIRE")
+    info(autosaveFields, "VAL")
 }
 
 record(longin,"$(P)$(R)NumAcquire_RBV") {
@@ -431,6 +435,7 @@ record(ao,"$(P)$(R)AveragingTime") {
     field(DTYP, "asynFloat64")
     field(VAL,  "0.1")
     field(OUT,  "@asyn($(PORT) 0)QE_AVERAGING_TIME")
+    info(autosaveFields, "VAL")
 }
 
 record(ai,"$(P)$(R)AveragingTime_RBV") {
@@ -480,6 +485,7 @@ record(mbbo,"$(P)$(R)Geometry") {
     field(TWST, "SquareCC")
     field(DTYP, "asynInt32")
     field(OUT,  "@asyn($(PORT) 0)QE_GEOMETRY")
+    info(autosaveFields, "VAL")
 }
 
 record(mbbi,"$(P)$(R)Geometry_RBV") {
@@ -498,21 +504,25 @@ record(mbbi,"$(P)$(R)Geometry_RBV") {
 record(stringin,"$(P)$(R)CurrentName1") {
     field(DESC, "Name")
     field(VAL,  "1")
+    info(autosaveFields, "VAL")
 }
 
 record(stringin,"$(P)$(R)CurrentName2") {
     field(DESC, "Name")
     field(VAL,  "2")
+    info(autosaveFields, "VAL")
 }
 
 record(stringin,"$(P)$(R)CurrentName3") {
     field(DESC, "Name")
     field(VAL,  "3")
+    info(autosaveFields, "VAL")
 }
 
 record(stringin,"$(P)$(R)CurrentName4") {
     field(DESC, "Name")
     field(VAL,  "4")
+    info(autosaveFields, "VAL")
 }
 
 record(ao,"$(P)$(R)CurrentOffset1") {
@@ -520,6 +530,7 @@ record(ao,"$(P)$(R)CurrentOffset1") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn($(PORT) 0)QE_CURRENT_OFFSET")
+    info(autosaveFields, "VAL")
 }
 
 record(mbbo,"$(P)$(R)CurrentPrec1") {
@@ -608,6 +619,7 @@ record(ao,"$(P)$(R)CurrentOffset2") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn($(PORT) 1)QE_CURRENT_OFFSET")
+    info(autosaveFields, "VAL")
 }
 
 record(mbbo,"$(P)$(R)CurrentPrec3") {
@@ -659,6 +671,7 @@ record(ao,"$(P)$(R)CurrentOffset3") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn($(PORT) 2)QE_CURRENT_OFFSET")
+    info(autosaveFields, "VAL")
 }
 
 record(mbbo,"$(P)$(R)CurrentPrec4") {
@@ -700,6 +713,7 @@ record(ao,"$(P)$(R)CurrentOffset4") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn($(PORT) 3)QE_CURRENT_OFFSET")
+    info(autosaveFields, "VAL")
 }
 
 record(calcout,"$(P)$(R)ComputeCurrentOffset1") {
@@ -742,6 +756,7 @@ record(ao,"$(P)$(R)CurrentScale1") {
     field(VAL,  "1.0")
     field(PREC, "3")
     field(PREC, "3")
+    info(autosaveFields, "VAL")
 }
 
 record(ao,"$(P)$(R)CurrentScale2") {
@@ -751,6 +766,7 @@ record(ao,"$(P)$(R)CurrentScale2") {
     field(OUT,  "@asyn($(PORT) 1)QE_CURRENT_SCALE")
     field(VAL,  "1.0")
     field(PREC, "3")
+    info(autosaveFields, "VAL")
 }
 
 record(ao,"$(P)$(R)CurrentScale3") {
@@ -760,6 +776,7 @@ record(ao,"$(P)$(R)CurrentScale3") {
     field(OUT,  "@asyn($(PORT) 2)QE_CURRENT_SCALE")
     field(VAL,  "1.0")
     field(PREC, "3")
+    info(autosaveFields, "VAL")
 }
 
 record(ao,"$(P)$(R)CurrentScale4") {
@@ -769,6 +786,7 @@ record(ao,"$(P)$(R)CurrentScale4") {
     field(OUT,  "@asyn($(PORT) 3)QE_CURRENT_SCALE")
     field(VAL,  "1.0")
     field(PREC, "3")
+    info(autosaveFields, "VAL")
 }
 
 record(mbbo,"$(P)$(R)PositionPrecX") {
@@ -810,6 +828,7 @@ record(ao,"$(P)$(R)PositionOffsetX") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn($(PORT) 0)QE_POSITION_OFFSET")
+    info(autosaveFields, "VAL")    
 }
 
 record(mbbo,"$(P)$(R)PositionPrecY") {
@@ -851,6 +870,7 @@ record(ao,"$(P)$(R)PositionOffsetY") {
     field(PINI, "YES")
     field(DTYP, "asynFloat64")
     field(OUT,  "@asyn($(PORT) 1)QE_POSITION_OFFSET")
+    info(autosaveFields, "VAL")    
 }
 
 record(calcout,"$(P)$(R)ComputePosOffsetX") {
@@ -876,6 +896,7 @@ record(ao,"$(P)$(R)PositionScaleX") {
     field(VAL,  "1000000.")
     field(PREC, "3")
     field(OUT,  "@asyn($(PORT) 0)QE_POSITION_SCALE")
+    info(autosaveFields, "VAL")    
 }
 
 record(ao,"$(P)$(R)PositionScaleY") {
@@ -885,6 +906,7 @@ record(ao,"$(P)$(R)PositionScaleY") {
     field(VAL,  "1000000.")
     field(PREC, "3")
     field(OUT,  "@asyn($(PORT) 1)QE_POSITION_SCALE")
+    info(autosaveFields, "VAL")    
 }
 
 record(longin,"$(P)$(R)RingOverflows") {
