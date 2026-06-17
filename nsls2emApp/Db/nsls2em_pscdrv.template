@@ -936,6 +936,7 @@ record(longout, "$(PriSys){$(PSC)}DDS:Kx-Sp") {
   field(OUT ,   "@CmdPort_$(PSC) 80 944")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(longin,  "$(PriSys){$(PSC)}DDS:Kx-I") {
   field(DESC, "Reg326")
@@ -951,6 +952,7 @@ record(longout, "$(PriSys){$(PSC)}DDS:Ky-Sp") {
   field(OUT ,   "@CmdPort_$(PSC) 80 948")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(longin,  "$(PriSys){$(PSC)}DDS:Ky-I") {
   field(DESC, "Reg327")
@@ -1015,6 +1017,7 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Isgain-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 952")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Isgain-I") {
   field(DTYP, "PSC Reg F32")
@@ -1035,6 +1038,7 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Isgain-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 956")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Isgain-I") {
   field(DTYP, "PSC Reg F32")
@@ -1051,6 +1055,7 @@ record(longout, "$(PriSys){$(PSC)}PI:X:Gain-Sp") {
   field(OUT ,   "@CmdPort_$(PSC) 80 960")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(longin,  "$(PriSys){$(PSC)}PI:X:Gain-I") {
   field(DESC, "Reg240")
@@ -1067,6 +1072,7 @@ record(longout, "$(PriSys){$(PSC)}PI:Y:Gain-Sp") {
   field(OUT ,   "@CmdPort_$(PSC) 80 964")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(longin,  "$(PriSys){$(PSC)}PI:Y:Gain-I") {
   field(DESC, "Reg241")
@@ -1095,6 +1101,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:Freq0-Sp")
   field(VAL , "10") 
   field(FLNK, "$(PriSys){$(PSC)}GPIO:Freq0-calcout")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}GPIO:Freq0-calcout") {
   field(INPA, "$(PriSys){$(PSC)}GPIO:Freq0-Sp")  
@@ -1111,6 +1118,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:Freq1-Sp")
   field(VAL , "10") 
   field(FLNK, "$(PriSys){$(PSC)}GPIO:Freq1-calcout")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}GPIO:Freq1-calcout") {
   field(INPA, "$(PriSys){$(PSC)}GPIO:Freq1-Sp")  
@@ -1128,6 +1136,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:Freq2-Sp")
   field(VAL , "10") 
   field(FLNK, "$(PriSys){$(PSC)}GPIO:Freq2-calcout")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}GPIO:Freq2-calcout") {
   field(INPA, "$(PriSys){$(PSC)}GPIO:Freq2-Sp")  
@@ -1145,6 +1154,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:Freq3-Sp")
   field(VAL , "100") 
   field(FLNK, "$(PriSys){$(PSC)}GPIO:Freq3-calcout")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}GPIO:Freq3-calcout") {
   field(INPA, "$(PriSys){$(PSC)}GPIO:Freq3-Sp")  
@@ -1227,6 +1237,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:DUTY0-Sp") {
   field(PREC, "0")
   field(VAL,  "50")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}DUTY0:N_HIGH_CALC") {
   field(DESC, "Calc High Sample Count (int)")
@@ -1243,6 +1254,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:DUTY1-Sp") {
   field(PREC, "0")
   field(VAL,  "50")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}DUTY1:N_HIGH_CALC") {
   field(DESC, "Calc High Sample Count (int)")
@@ -1259,6 +1271,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:DUTY2-Sp") {
   field(PREC, "0")
   field(VAL,  "50")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}DUTY2:N_HIGH_CALC") {
   field(DESC, "Calc High Sample Count (int)")
@@ -1275,6 +1288,7 @@ record(ao, "$(PriSys){$(PSC)}GPIO:DUTY3-Sp") {
   field(PREC, "0")
   field(VAL,  "50")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(calcout, "$(PriSys){$(PSC)}DUTY3:N_HIGH_CALC") {
   field(DESC, "Calc High Sample Count (int)")
@@ -1287,11 +1301,18 @@ record(calcout, "$(PriSys){$(PSC)}DUTY3:N_HIGH_CALC") {
   field(FLNK, "$(PriSys){$(PSC)}GPIO:Width:Out3-Sp")
 }
 
-
+# 6/16/26: working for autosave for mbbo
+record(seq, "$(PriSys){$(PSC)}Autosave-Seq_")
+{
+  field(LNK1, "$(PriSys){$(PSC)}DACOut:ModeSel-Cmd.PROC PP")
+  field(PINI, "YES")
+  field(DLY1, "2")
+}
+# 6/16/26: save/restore not wight to FPGA
+#          PINI also not working to write to FPGA after IOC reboot
+#
 record(mbbo,"$(PriSys){$(PSC)}DACOut:ModeSel-Cmd") {
-  field(SCAN,  "Passive")
-  #field(DTYP, "PSC Reg")
-  field(DTYP,  "PSC Single U32")
+  field(DTYP, "PSC Single U32")
   field(ZRVL,  "0")
   field(ZRST,  "PV Control")
   field(ONVL,  "1")
@@ -1307,11 +1328,14 @@ record(mbbo,"$(PriSys){$(PSC)}DACOut:ModeSel-Cmd") {
   field(SXST,  "None")
   field(SVVL,  "7")
   field(SVST,  "PID N-Filter Out")
-
-  field(OUT , "@CmdPort_$(PSC) 80 296")
-  field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
+  field(OUT ,  "@CmdPort_$(PSC) 80 296")
+  field(FLNK,  "$(PriSys){$(PSC)}GoRegSingleWrite")
+#  field(VAL,   "3")
+#  field(PINI,  "YES")
   info(autosaveFields, "VAL")
+  info(SYNC,   "ProcOnConn")
 }
+
 record(longin, "$(PriSys){$(PSC)}DAC:Mode-I")
 {
   field(DESC, "Reg74")
@@ -1361,6 +1385,7 @@ record(ao, "$(PriSys){$(PSC)}NCO:Freq-Sp") {
   field(VAL , "10")
   field(PINI, "YES")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
 record(longin, "$(PriSys){$(PSC)}NCO:Freq-I")
@@ -1393,9 +1418,10 @@ record(mbbo,"$(PriSys){$(PSC)}FA:PosSel-Cmd") {
 #  field(SVST,  "PID N-Filter Out")
 #
   field(OUT , "@CmdPort_$(PSC) 80 244")
+  info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
-
 
 record(calc, "$(PriSys){$(PSC)}Voltage0-Cal") {
   field(DESC, "Voltage 0")
@@ -1439,6 +1465,7 @@ record(ao, "$(PriSys){$(PSC)}BiasDAC-V-Sp") {
   field(VAL, "0")
   field(FLNK, "$(PriSys){$(PSC)}BiasDAC-Cal")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
   field(EGU,  "V")
 }
 
@@ -1467,6 +1494,7 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kd-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 968")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Kd-I") {
   field(DTYP, "PSC Reg F32")
@@ -1488,6 +1516,7 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kd-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 972")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Kd-I") {
   field(DTYP, "PSC Reg F32")
@@ -1509,6 +1538,7 @@ record(ao, "$(PriSys){$(PSC)}F:PI:X:Kdc-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 1060")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:X:Kdc-I") {
   field(DTYP, "PSC Reg F32")
@@ -1530,6 +1560,7 @@ record(ao, "$(PriSys){$(PSC)}F:PI:Y:Kdc-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 1064")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(ai,    "$(PriSys){$(PSC)}F:PI:Y:Kdc-I") {
   field(DTYP, "PSC Reg F32")
@@ -1778,6 +1809,7 @@ record(longout, "$(PriSys){$(PSC)}FF:Dly-Sp") {
   field(OUT ,   "@CmdPort_$(PSC) 80 1132")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 record(longin,  "$(PriSys){$(PSC)}FF:Dly-I") {
   field(DTYP, "PSC Reg")
@@ -1803,6 +1835,7 @@ record(ao, "$(PriSys){$(PSC)}FF:Gain-Sp") {
   field(OUT , "@CmdPort_$(PSC) 80 1136")
   field(FLNK, "$(PriSys){$(PSC)}GoRegSingleWrite")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
 }
 
 record(longin,  "$(PriSys){$(PSC)}FF:Gain-I") {
@@ -1850,6 +1883,7 @@ record(longout, "$(PriSys){$(PSC)}event-Sp") {
   field(PINI,   "YES")
   field(VAL,    "35")
   info(autosaveFields, "VAL")
+  info(SYNC, "ProcOnConn")
   field(FLNK,   "$(PriSys){$(PSC)}GoRegSingleWrite")
 }
 record(longin,  "$(PriSys){$(PSC)}event-I") {

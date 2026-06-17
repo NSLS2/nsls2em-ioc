@@ -140,8 +140,6 @@ dbpf $(PREFIX)Reg31-Sp 0
 
 epicsThreadSleep 1
 
-dbpf $(PREFIX)Reg8-Sp 7520
-
 # Link updates to EPID records for X and Y axes
 dbpf $(PREFIX)Reg49-I.FLNK $(PREFIX)$(PID_X):Inp-Sts 
 dbpf $(PREFIX)Reg50-I.FLNK $(PREFIX)$(PID_Y):Inp-Sts  
