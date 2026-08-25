@@ -1301,12 +1301,26 @@ record(calcout, "$(PriSys){$(PSC)}DUTY3:N_HIGH_CALC") {
   field(FLNK, "$(PriSys){$(PSC)}GPIO:Width:Out3-Sp")
 }
 
+
+record(bo, "$(PriSys){$(PSC)}Autostart")
+{
+  field(ZNAM, "Off")
+  field(ONAM, "On")
+  info(autosaveFields, "VAL")
+}
+
 # 6/16/26: working for autosave for mbbo
 record(seq, "$(PriSys){$(PSC)}Autosave-Seq_")
 {
   field(LNK1, "$(PriSys){$(PSC)}DACOut:ModeSel-Cmd.PROC PP")
-  field(PINI, "YES")
   field(DLY1, "2")
+  field(LNK2, "$(PriSys){$(PSC)}Acquire PP")
+  field(DOL2, "$(PriSys){$(PSC)}Autostart")
+  field(DLY2, "3")
+  field(LNK3, "$(PriSys){$(PSC)}SRun-Sp PP")
+  field(DOL3, "$(PriSys){$(PSC)}Autostart")
+  field(DLY3, "3")
+  field(PINI, "YES")
 }
 # 6/16/26: save/restore not wight to FPGA
 #          PINI also not working to write to FPGA after IOC reboot
